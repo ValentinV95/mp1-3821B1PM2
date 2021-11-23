@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Bubsort.cpp">
+    <ClCompile Include="Bubsort.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
