@@ -3,7 +3,7 @@
 int main()
 {
 	float massiv[N];
-	int i, j, k, zamena, sravnen = 0,shag = 0;
+	int i, j, k, zamena, sravnen = 0, shag = 0, perestanovok = 0;
 	for (i = 0; i < N; i++)
 	{
 		scanf_s("%f", &massiv[i]);
@@ -19,6 +19,7 @@ int main()
 				massiv[j] = massiv[j + 1];
 				massiv[j + 1] = zamena;
 				k = 1;
+				perestanovok += 1;
 			}
 			sravnen++;
 		}
@@ -30,5 +31,5 @@ int main()
 	{
 		printf("%f ", massiv[i]);
 	}
-	printf("\nkolvo shagov = %d   kolvo sravnenii = %d", shag, sravnen);
+	printf("\nkolvo shagov = %d   kolvo sravnenii = %d   kolvo perestanovok = %d", shag, sravnen, perestanovok);
 }
