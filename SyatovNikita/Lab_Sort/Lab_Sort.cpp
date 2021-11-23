@@ -3,11 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int selection_sort(int arr[], int size)
+int selection_sort(float arr[], int size)
 {
     int i, j, min, tmp, index;
     index = 0;
-    for (j = 0; j < size - 2; j++)
+    for (j = 0; j < size - 1; j++)
     {
         min = arr[j];
         for (i = j; i < size - 1; i++)        //нахождение минимального элемента
@@ -23,25 +23,25 @@ int selection_sort(int arr[], int size)
     return 0;
 }
 
-void randomArr(int arr[], int size)       // генерация массива
+void randomArr(float arr[], int size)       // генерация массива
 {
     int t;
     for (t = 0; t < size; t++)
     {
         arr[t] = rand() % 100;
-        printf("%d\t", arr[t]);
+        printf("%f\t", arr[t]);
     }
 }
 
 void main()
 {
-    int n, k, a[10];
+    int n, k;
+    float a[10];
     n = 10;
     randomArr(a, n);
     selection_sort(a, n);
 
     printf("\n");
     for (k = 0; k < 10; k++)
-        printf("%d\t", a[k]);
+        printf("%f\t", a[k]);
 }
-
