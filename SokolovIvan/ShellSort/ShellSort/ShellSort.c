@@ -2,7 +2,7 @@
 #define N 10
 int main()
 {
-	int MarcineCiur[9] = { 1,4,10,23,57,132,301,701,1750 };   // оптимально для N<4000
+	int MarcineCiur[9] = { 1,4,10,23,57,132,301,701,1750 };   // оптимально для N<4000 -
 	float massiv[N];
 	int i, j,l, step, zamena,sravnen=0,perestanov=0,shag=0;
 	for (i = 0; i < N; i++)
