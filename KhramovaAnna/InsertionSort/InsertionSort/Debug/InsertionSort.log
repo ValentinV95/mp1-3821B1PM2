@@ -1,3 +1,0 @@
-﻿  InsertionSort.cpp
-D:\учеба\лабораторная Си\InsertionSort\InsertionSort\InsertionSort.cpp(7,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  InsertionSort.vcxproj -> D:\учеба\лабораторная Си\InsertionSort\Debug\InsertionSort.exe

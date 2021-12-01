@@ -1,40 +1,62 @@
 ﻿#include <stdio.h>
-#define int size 10;
-void merge(double a[], double b[],double c[], int n, int m) {
-	int i, j, k;
-	i = 0; j = 0, k = 0;
-	while ((i < n) && (j < m)) {
-		if (a[i] < b[j]) {
-			c[k] = a[i];
-			i++;
-		}
-		else {
-			c[k] = b[j];
+#include <stdlib.h>
+#define size 7
+void merge(double a[], int low, int middle, int high) {
+
+	int j = low;
+	int k = middle + 1;
+	int count = low - high + 1;
+	int i = 0;
+	double b[size] = {0};
+
+	while (j <= middle && k <= high) {
+		if (a[j] < a[k]) {
+			b[i] = a[j];
 			j++;
 		}
-		k++;
-	}
-	while (i < n) {
-		c[k] = a[i];
+		else {
+			b[i] = a[k];
+			k++;
+		}
 		i++;
-		k++;
 	}
-	while (j < m) {
-		c[k] = b[j];
+	while (j <= middle) {
+		b[i] = a[j];
 		j++;
-		k++;
+		i++;
 	}
+	while (k <= high) {
+		b[i] = a[k];
+		k++;
+		i++;
+	}
+	for (int i = low; i <= high; i++) {
+		a[i] = b[i-low];
+	}
+}
 
-	for (k = 0; k < (n + m); k++) {
-		printf("c[%d] = %d\t", k, c[k]);
+void Mergesort(double a[], int l, int r) {
+	if (l < r) {
+		int q = l + (r-l)/2;
+		Mergesort(a, l, q);
+		Mergesort(a, q + 1, r);
+		merge(a, l, q, r);
 	}
 }
 
 int main() {
-	int i; 
+	int i = 0; 
 	double a[size];
-	for (i = 0; i < n; i++) {
+	//double b[size];
+	for (i = 0; i < size; i++) {
 		printf("a[%d] = ", i);
-		scanf_s("%d", &a[i]);
+		scanf_s("%lf", &a[i]);
 	}
+
+	printf("sorted massive\n");
+	Mergesort(a,0, size - 1);
+	for (int i = 0; i < size; i++) {
+		printf("a[%d] = %lf\n", i, a[i]);
+	}
+	return 0;
 }
