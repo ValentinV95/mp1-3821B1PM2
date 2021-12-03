@@ -1,5 +1,4 @@
-#include <stdio.h>
-
+#pragma once
 int comb_sort(double array[], const size_t size)
 {
 	double factor = 1.2473309; // оптимальный фактор
@@ -32,10 +31,10 @@ int comb_sort(double array[], const size_t size)
 	for (i = 0; i < size; i++)
 	{
 		r2 = array[i];
-		printf("%lf\n", r2);
+		printf("	%lf\n", r2);
 
 	}
-	printf("sort_times = %d	check_times = %d", sort_time, check_time);
+	printf("sort_times = %d	check_times = %d\n\n", sort_time, check_time);
 }
 
 
@@ -45,9 +44,10 @@ int comb_sort(double array[], const size_t size)
 
 
 
-int main()
+int c_comb_sort()
 {
 	double a[10];
+
 	int i = 0;
 	double b;
 
@@ -58,5 +58,8 @@ int main()
 		scanf_s("%lf", &b);
 		a[i] = b;
 	}
+
+
+
 	comb_sort(a, 10);
 }
