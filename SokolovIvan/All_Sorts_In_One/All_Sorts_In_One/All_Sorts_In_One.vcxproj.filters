@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ShellSort.c">
+    <ClCompile Include="All_Sorts_In_One.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
