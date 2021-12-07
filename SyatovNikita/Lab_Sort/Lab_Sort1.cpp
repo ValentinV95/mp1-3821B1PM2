@@ -1,9 +1,10 @@
-﻿// Сортировка выбором и быстрая сортировка
+﻿// Сортировка выбором(SelectionSort), быстрая сортировка(QuickSort), сортировкп слиянием(MergeSort)
 //
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <locale.h>
+#define SIZE 10
 
 void swap(float* f, float* s)
 {
@@ -15,9 +16,10 @@ void swap(float* f, float* s)
 
 int separation(float array[], int left, int right)    // разделение массива и кусочная сортировка
 {
-    int l, r;
+    int l, r, id;
     float v;
-    v = array[(left + right) / 2];                      // выбор рандомного элемента
+    id = rand() % right;
+    v = array[id];                      // выбор рандомного элемента
     l = left;
     r = right;
     while (l <= r)
@@ -33,21 +35,21 @@ int separation(float array[], int left, int right)    // разделение м
     return r;
 }
 
-void quicksort(float arr[], int left, int right)      /* left - левый индекс массива(arr[0]); right - правый индекс массива(arr[size])*/
+void QuickSort(float arr[], int left, int right)      /* left - левый индекс массива(arr[0]); right - правый индекс массива(arr[size])*/
 {
     int sct;                                         // sct(select) - опорный элемент массива
     if (left < right)
     {
         sct = separation(arr, left, right);
-        quicksort(arr, left, sct);                   // сортировка подмассивов
-        quicksort(arr, sct + 1, right);
+        QuickSort(arr, left, sct);                   // сортировка подмассивов
+        QuickSort(arr, sct + 1, right);
     }
 }
 
 void SelectionSort(float arr[], int size)
 {
     int i, j, index;
-    for (j = 0; j < size; j++)
+    for (j = 0; j < size - 1; j++)
     {
         index = j;
         for (i = j + 1; i < size; i++)                  //нахождение минимального элемента
@@ -56,6 +58,38 @@ void SelectionSort(float arr[], int size)
                 index = i;
             }
         swap(&arr[j], &arr[index]);
+    }
+}
+
+void merge(float arr[], float second[], int l, int m, int r)
+{
+    int k, i, j, t, step;
+    step = l;
+    for (i = l, j = m + 1, k = 0; (i <= m) && (j <= r);)
+    {
+        if (arr[i] < arr[j])                // слияние отсортированных частей массива в отсортированный массив(second)
+            second[k++] = arr[i++];
+        else
+            second[k++] = arr[j++];
+    }
+    for (; i <= m; i++)
+        second[k++] = arr[i];
+    for (; j <= r; j++)
+        second[k++] = arr[j];
+
+    for (t = 0; t <= k - 1; t++)            // перемещение сортированного массива в исходный массив
+        arr[step++] = second[t];
+}
+
+void MergeSort(float arr[], float second[], int left, int right)
+{
+    if (left < right)
+    {
+        int middle;
+        middle = (left + right) / 2;                // нахождение среднего элемента массива
+        MergeSort(arr, second, left, middle);      // поочередный вызов двух частей массива
+        MergeSort(arr, second, middle + 1, right);
+        merge(arr, second, left, middle, right);    // слияние
     }
 }
 
@@ -73,28 +107,30 @@ void randomArr(float arr[], int size)       // генерация массива
 
 int main()
 {
-    int n, k, select;
-    float a[10];
+    int k, select;
+    float a[SIZE], secondary[SIZE];
     setlocale(LC_ALL, "Rus");
-    n = 10;
     printf("Ваш массив:\n");
-    randomArr(a, n);
-    printf("Введите нужную сортировку из списка:\n1 - сортировка выбором\n2 - быстрая сортировка Хоара\nВаш выбор: ");
+    randomArr(a, SIZE);
+    printf("Введите нужную сортировку из списка:\n1 - сортировка выбором\n2 - быстрая сортировка Хоара\n3 - сортировка слиянием\nВаш выбор: ");
     scanf_s("%i", &select);
     switch (select)
     {
     case 1:
-        SelectionSort(a, n);
+        SelectionSort(a, SIZE);
         break;
     case 2:
-        quicksort(a, 0, 9);
+        QuickSort(a, 0, SIZE - 1);
+        break;
+    case 3:
+        MergeSort(a, secondary, 0, SIZE - 1);
         break;
     default:
         printf("Ошибочка вышла(\n");
         break;
     }
     printf("Результат программы:\n");
-    for (k = 0; k < 10; k++)
+    for (k = 0; k < SIZE; k++)
         printf("%f\t", a[k]);
 
     return 0;
