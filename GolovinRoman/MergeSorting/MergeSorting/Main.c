@@ -4,16 +4,16 @@
 #include <malloc.h>
 #include <math.h>
 
-int set_walue = 0, compare = 0;
+int assigning = 0, compare = 0;
 
 float* createMas(int length)
 {
 	int i = 0;
-	float* m = calloc(length, sizeof(float));
+	float* m = (float*)malloc(length * sizeof(float));
 
 	for (i; i < length; i++)
 	{
-		m[i] = rand() % 1001 + (rand() % 1000) / 1000.0f;
+		m[i] = (rand() % 1001 + (rand() % 1000) / 1000.0f) * pow(-1.0, (rand() % 2));
 	}
 
 	//for (i = 0; i < length; i++)
@@ -24,38 +24,61 @@ float* createMas(int length)
 	return m;
 }
 
-float *merge(float *a,int n,float *b,int m)
+int compareFunction(const void* a, const void* b)
+{
+	float fa = *(const float*)a;
+	float fb = *(const float*)b;
+	return (fa > fb) - (fa < fb);
+}
+
+int isSortCorrect(float* orig_mas, float* sort_mas, int length)
+{
+	int i = 0;
+
+	qsort(orig_mas, length, sizeof(float), compareFunction);
+
+	for (i = 0; i < length; i++)
+	{
+		if (sort_mas[i] != orig_mas[i])
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+
+float *merge(float *mas1,int l_mas1,float *mas2,int l_mas2)
 {
 	int i = 0,j =0, l = 0;
-	float *c = malloc(sizeof(float)*(m+n));
+	float *c = (float*)malloc(sizeof(float)*(l_mas2+l_mas1));
 
-	while((i < n) && (j < m))
+	while((i < l_mas1) && (j < l_mas2))
 	{
 		compare += 2;
-		if (a[i]<b[j])
+		if (mas1[i]<mas2[j])
 		{
-			c[l++] = a[i++];
+			c[l++] = mas1[i++];
 		}
 		else
 		{
-			c[l++] = b[j++];
+			c[l++] = mas2[j++];
 		}
 		compare++;
-		set_walue++;
+		assigning++;
 	}
 
-	for (;i<n;i++)
+	for (;i<l_mas1;i++)
 	{
 		compare++;
-		set_walue++;
-		c[l++] = a[i];
+		assigning++;
+		c[l++] = mas1[i];
 	}
 
-	for (; j < m; j++)
+	for (; j < l_mas2; j++)
 	{
 		compare++;
-		set_walue++;
-		c[l++] = b[j];
+		assigning++;
+		c[l++] = mas2[j];
 	}
 
 	return c;
@@ -63,17 +86,15 @@ float *merge(float *a,int n,float *b,int m)
 
 float* mergeSort(float *sortable, int left, int right)
 {
+	compare++;
 	if (left<right)
 	{
 		int q = (left+right) / 2;
 
 		int lright = right - (q+1)+1, lleft = q-left+1;
 
-		float* l_mas = malloc(sizeof(float)* lleft);
-		float* r_mas = malloc(sizeof(float)* lright);
-
-		l_mas = mergeSort(sortable,left,q);
-		r_mas = mergeSort(sortable,q+1, right);
+		float* l_mas = mergeSort(sortable, left, q);
+		float* r_mas = mergeSort(sortable,q+1, right);
 
 		return merge(l_mas, lleft,r_mas, lright);
 	}
@@ -81,35 +102,47 @@ float* mergeSort(float *sortable, int left, int right)
 	return &sortable[left];
 }
 
-
 void main()
 {
-	int length = 10;
-	int i = 0, j = 0;
-	extern set_walue, compare;
-	float *mas = malloc(sizeof(float)*2);
+	int length = 100;
+	int i;
+	float* mas = createMas(length);
+	float* mas_copy = (float*)malloc(sizeof(float) * length);
 
-	srand(3589138759761531);
+	srand(1005483580247);
 
-	while (length < 1000)
+	while (length < 4001)
 	{
 		mas = createMas(length);
-		mas = mergeSort(mas, 0, length - 1);
 
-		printf("%d;%d;%d;%lf\n",length,set_walue,compare,length*log((double)length));
+		for (i = 0; i < length; i++)
+		{
+			mas_copy[i] = mas[i];
+		}
 
-		set_walue = 0;
+		mas_copy = mergeSort(mas, 0, length - 1);
+
+		if (isSortCorrect(mas, mas_copy, length))
+		{
+			double tmp = (assigning + compare) / round(length * log((double)length));
+			printf("%d;%d;%1.2lf\n",length,assigning+compare,tmp);
+		}
+		else
+		{
+			printf("The implementation of sorting is incorrect");
+			break;
+		}
+		length += 5;
+
 		compare = 0;
-		length += 10;
+		assigning = 0;
 
 		free(mas);
-		mas = NULL;
+		free(mas_copy);
+
+		mas_copy = (float*)malloc(sizeof(float) * length);
+		mas = createMas(length);
 	}
-
-
-	//printf_s("\nMas after sort\n");
-	//for (int i = 0; i < length; i++)
-	//{
-	//	printf_s("%lf\n",mas[i]);
-	//}
+	free(mas);
+	free(mas_copy);
 }
