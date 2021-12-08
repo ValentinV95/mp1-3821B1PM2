@@ -2,66 +2,116 @@
 #include <stdlib.h>
 #include <time.h>
 #include <malloc.h>
+#include <math.h>
 
-
-float *createMas(int length)
+float* createMas(int length)
 {
 	int i = 0;
-	float *m = calloc(length,sizeof(float));
+	float* m = (float*)malloc(length*sizeof(float));
 
 	for (i; i < length; i++)
 	{
-		m[i] = rand() % 1001 + (rand() % 1000) / 1000.0f;
+		m[i] = (rand() % 1001 + (rand() % 1000) / 1000.0f) * pow(-1.0, (rand() % 2));
 	}
 
 	//for (i = 0; i < length; i++)
 	//{
 	//	printf_s("%lf\n", m[i]);
 	//}
+
 	return m;
+}
+
+int compareFunction(const void* a, const void* b)
+{
+	float fa = *(const float*)a;
+	float fb = *(const float*)b;
+	return (fa > fb) - (fa < fb);
+}
+
+int isSortCorrect(float* orig_mas, float* sort_mas, int length)
+{
+	int i = 0;
+
+	qsort(orig_mas, length, sizeof(float), compareFunction);
+
+	for (i = 0; i < length; i++)
+	{
+		if (sort_mas[i] != orig_mas[i])
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+
+void bubleSort(float* data,int length,int* compare,int* swap)
+{
+	int i, j;
+	float tmp;
+
+	for (i = 0; i < length; i++)
+	{
+		(*compare)++;
+		for (j = 0; j < length; j++)
+		{
+			(*compare)+=2;
+			if (data[i] < data[j])
+			{
+				tmp = data[i];
+				data[i] = data[j];
+				data[j] = tmp;
+				(*swap)++;
+			}
+		}
+		(*compare)++;
+	}
+	(*compare)++;
+
+	return data;
 }
 
 int main()
 {
 	int length = 100;
-	int i = 0, j = 0;
-	int swap = 0, compare = 0;
-	float *mas = malloc(sizeof(float));
+	int swap = 0, compare = 0, i;
+	float *mas = createMas(length);
+	float* mas_copy =(float*)malloc(sizeof(float)*length);
 
 	srand(1005483580247);
 
-	while (length<1000)
+	while (length < 4001)
 	{
-		mas = createMas(length);
-
-		swap = 0;
-		compare = 0;
-		for (i=0; i < length; i++)
+		for (i = 0; i < length; i++)
 		{
-			compare += 1;
-			for (j = 0; j < length; j++)
-			{
-				compare++;
-				if (mas[i] > mas[j])
-				{
-					float tmp = mas[i];
-					mas[i] = mas[j];
-					mas[j] = tmp;
-
-					swap +=3;
-				}
-			}
+			mas_copy[i] = mas[i];
 		}
 
-		printf("%d;%d;%d;%d;%d\n",length,swap,compare,length*length,length*3);
+		bubleSort(mas_copy, length, &compare, &swap);
+		if (isSortCorrect(mas, mas_copy, length))
+		{
+			printf("%d;%d;%lf\n", length,swap + compare,(swap+compare)/(float)(length * length));
+		}
+		else
+		{
+			printf("The implementation of sorting is incorrect");
+			break;
+		}
+
 		length += 5;
 
-		free(mas);
-		mas = NULL;
-	}
+		compare = 0;
+		swap = 0;
 
+		free(mas);
+		free(mas_copy);
+
+		mas_copy = (float*)malloc(sizeof(float) * length);
+		mas = createMas(length);
+	}
+		
 	free(mas);
-	mas = NULL;
+	free(mas_copy);
 	return 0;
 }
 
