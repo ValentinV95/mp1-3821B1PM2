@@ -1,37 +1,62 @@
 ﻿#include<stdio.h>
 #include <math.h>
+#include<time.h>
+#define L 10
 
-void InsertionSort(float arr[], int n) {
-    int i, j, mov=0;
+int cnt = 0;
+
+void InsertionSort(float arr[], int n) 
+{
+    int i, j;
     float key;
-    for (i = 1; i < n; i++) {
+    for (i = 1; i < n; i++) 
+    {
+        cnt++;
         key = arr[i];
+        cnt++;
         j = i - 1;
-        /*Перемещаем элементы от 0 до i-1 ,большие ключа, на одну позицию вперёд */
-        while (j >= 0 && arr[j] > key) {
+        
+        while (j >= 0 && arr[j] > key)
+        {
+            cnt += 2;
             arr[j + 1] = arr[j];
             j = j - 1;
-            mov++;
+            cnt++;
         }
         arr[j + 1] = key;
+        cnt++;
     }
-    printf("number of swaps:%i\n", mov);
+   
 }
 
-void PrintArr(float arr[], int n) {
+void PrintArr(float arr[], int n) 
+{
     int i;
-    for (i=0; i < n; i++)
-        printf("%.1f ", arr[i]);
-
+    for (i = 0; i < n; i++)
+    {
+        printf("%.3f ", arr[i]);
+    }
 }
 
 int main() {
+    float arr[L];
+    int n = L;
+    int i = 0;
+    srand(time(0));
 
-	float arr[] = { 12.2, 72.9, 76.3, 14.0, 32.4, 88.2, 20.7, 80.6, 66.5, 86.8 };
-	int n = sizeof(arr) / sizeof(arr[0]);
-
-	InsertionSort(arr, n);
+    for (i = 0; i < L; i++) 
+    {
+        arr[i] = rand() % 1000 / 100.0 + (rand() % 1000) / 1000.0;
+    }
+    printf("Original array: ");
     PrintArr(arr, n);
+
+    InsertionSort(arr, n);
+
+    printf("\nSorted array: ");
+    PrintArr(arr, n);
+   
+    printf("\nnumber of swaps and compares: %i\n",cnt);
 
     return 0;
 }
