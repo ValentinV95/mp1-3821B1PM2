@@ -1,9 +1,10 @@
-﻿// Сортировка выбором(SelectionSort), быстрая сортировка(QuickSort), сортировкп слиянием(MergeSort)
+﻿// Сортировка выбором(SelectionSort), быстрая сортировка(QuickSort), сортировка слиянием(MergeSort), поразрядная сортировка(RadixSort).
 //
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <locale.h>
+#include <memory.h>
 #define SIZE 10
 
 void swap(float* f, float* s)
@@ -16,10 +17,9 @@ void swap(float* f, float* s)
 
 int separation(float array[], int left, int right)    // разделение массива и кусочная сортировка
 {
-    int l, r, id;
+    int l, r;
     float v;
-    id = rand() % right;
-    v = array[id];                      // выбор рандомного элемента
+    v = array[rand() % right];          // выбор рандомного элемента
     l = left;
     r = right;
     while (l <= r)
@@ -93,6 +93,61 @@ void MergeSort(float arr[], float second[], int left, int right)
     }
 }
 
+void createCounters(float data[], long counters[])
+{
+    unsigned char* bp = (unsigned char*)data;
+    unsigned char* dataEnd = (unsigned char*)(data + SIZE);
+    unsigned short int i;
+
+    memset(counters, 0, 256 * sizeof(float) * sizeof(long));
+
+    while (bp != dataEnd)
+    {
+        for (i = 0; i < sizeof(float); i++)
+            counters[256 * i + *(bp++)]++;
+    }
+}
+
+void radixPass(short Offset, float source[], float dest[], long count[]) //source - исходная последовательность, 
+{                                                                                      //dest - отсортирован Offset разряд
+    float* sp;
+    unsigned char* bp;
+    long s, c, i, * cp = count;
+
+    s = 0;
+    for (i = 256; i > 0; --i, ++cp)          // формирование вспомогательного массива
+    {
+        c = *cp;
+        *cp = s;
+        s += c;
+    }
+    bp = (unsigned char*)source + Offset;
+    sp = source;
+    for (i = SIZE; i > 0; --i, bp += sizeof(float), ++sp)
+    {
+        cp = count + *bp;
+        dest[*cp] = *sp;
+        (*cp)++;
+    }
+}
+
+void RadixSort(float in[], float out[], long counters[])
+{
+    long* count;
+    unsigned short int i;
+    createCounters(in, counters);
+
+    for (i = 0; i < sizeof(float); i++)
+    {
+        count = counters + 256 * i;
+        radixPass(i, in, out, count);
+        for (long j = 0; j < SIZE; j++)
+            in[j] = out[j];
+    }
+    count = counters + 256 * i;
+}
+
+
 void randomArr(float arr[], int size)       // генерация массива
 {
     int t;
@@ -109,6 +164,7 @@ int main()
 {
     int k, select;
     float a[SIZE], secondary[SIZE];
+    long counters[sizeof(float) * 256];
     setlocale(LC_ALL, "Rus");
     printf("Ваш массив:\n");
     randomArr(a, SIZE);
@@ -124,6 +180,9 @@ int main()
         break;
     case 3:
         MergeSort(a, secondary, 0, SIZE - 1);
+        break;
+    case 4:
+        RadixSort(a, secondary, counters);
         break;
     default:
         printf("Ошибочка вышла(\n");
