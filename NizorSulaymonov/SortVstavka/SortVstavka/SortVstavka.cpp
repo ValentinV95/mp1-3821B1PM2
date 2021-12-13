@@ -3,8 +3,7 @@
 
 #include <iostream>
 
-void
-main()
+void main()
 {
     std::cout << "Hello World!\n";
 }
