@@ -123,21 +123,18 @@ void radixPass(short Offset, int N, double* source, double* dest, int* count)
 void sign(double* in, double* out, int N)
 {
 	int i, k;
-
-	for (i = 0; i < N && out[i] >= 0; i++)
-	{
-	}
-	k = i;
-	for (i = N - 1; i >= k; i--)
+	k = 0;
+	for (i = N - 1; i > 0 && out[i] <= 0; i--)
 	{
 		in[N - i - 1] = out[i];
+		k++;
 	}
-	for (i = 0; i < k; i++)
+
+	for (i = 0; i + k < N; i++)
 	{
-		in[N - k + i] = out[i];
+		in[k + i] = out[i];
 	}
 }
-
 void radixSort(double* in, double* out, int* counters, int N)
 {
 	int* count;
@@ -191,6 +188,7 @@ int main()
 		}
 		break;
 	case 'e':
+		printf("enter an array:\n\n");
 		for (i = 0; i < len; i++) {
 			scanf_s("%lf",&a);
 			arr1[i] = a;

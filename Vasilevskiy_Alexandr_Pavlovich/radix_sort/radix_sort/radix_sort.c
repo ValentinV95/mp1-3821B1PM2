@@ -6,13 +6,13 @@ void createCounters(double* data, int* counters, int N)
 	unsigned char *bp = (unsigned char*)data;
 	unsigned char *dataEnd = (unsigned char*)(data + N);
 	int i;
-	memset( counters, 0, 256*sizeof(double)*sizeof(int));
+	memset( counters, 0, 256 *sizeof(double)*sizeof(int));
 
 	while (bp != dataEnd)
 	{
 		for (i = 0; i < sizeof(double); i++)
 		{
-			counters[256*i + *(bp++)]++;
+			counters[256 *i + *(bp++)]++;
 		}
 	}
 }
@@ -41,21 +41,20 @@ void radixPass(short Offset, int N, double* source, double* dest, int* count)
 
 void sign(double* in, double* out, int N)
 {
-	int i,k;
-
-	for (i = 0; i < N && out[i] >= 0; i++)
-	{
-	}
-	k = i;
-	for (i = N-1; i >= k; i--)
+	int i, k;
+	k = 0;
+	for (i = N - 1; i > 0 && out[i] <= 0; i--)
 	{
 		in[N - i - 1] = out[i];
+		k++;
 	}
-	for (i = 0; i < k; i++)
+
+	for (i = 0; i + k < N; i++)
 	{
-		in[N - k + i] = out[i];
+		in[k + i] = out[i];
 	}
 }
+
 void radixSort(double* in, double* out, int* counters, int N)
 {
 	int* count;
@@ -78,7 +77,7 @@ void radixSort(double* in, double* out, int* counters, int N)
 
 int main()
 {
-	int i, len = 10, c[256 * sizeof(double)];
+	int i, len = 5, c[256 * sizeof(double)];
 	double* ar1;
 	double* ar3;
 	int* ar2;
@@ -89,7 +88,7 @@ int main()
 	srand(666);
 	for (i = 0; i < len; i++)
 	{
-		ar1[i] = rand() % 1000000 + rand() % 1000000 / 1000000.0;
+		ar1[i] = (rand() % 100000000000) + rand()%100000/100000.0;
 		printf("a[%d] = %lf\n",i, ar1[i]);
 	}
 	radixSort(ar1, ar2, ar3, len);
