@@ -1,13 +1,37 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <time.h>
-int perm = 0, comp = 0;
+#define uint  unsigned int
+int perm = 0, comp = 0, assign = 0;
 
+/*double compare(const void* x1, const void* x2) {
+	return (*(double*)x1 - *(double *)x2);
+}
+
+void isSort(double a[], int size) {
+	int i;
+	double *b = NULL;
+	b = (double*)malloc(size * sizeof(double));
+	for (i = 0; i < size; i++) {
+		b[i] = a[i];
+	}
+	qsort(b, size, sizeof(double),compare );
+	for (i = 0; i < size; i++) {
+		if (a[i] != b[i]) {
+			print("Not sorted");
+			break;
+		}
+	}
+	for (i = 0; i < size; i++) {
+		print("%lf", a[i]);
+	}
+}
+*/
 double* Randomize(double a[], int size) {
 	int i;
 	srand(time(NULL));
 	for (i = 0; i < size; i++) {
-		a[i] = (double)rand() / (double)rand(); // задаём случайное дробное число
+		a[i] = (rand() % 2001+(rand()%2000) / 1000.0) - 1000.0 ; // задаём случайное дробное число
 	}
 	return a;
 }
@@ -63,42 +87,35 @@ void Shell(double a[], int size) {
 	system("pause");
 }
 
-void Merge(double a[], int left,int mid, int right) {
-	int size = right - left + 1, i = left, j = mid + 1, k = 0,f;
-	double *tmp = (double*)malloc(size * sizeof(double));
-	while (i <= mid && j <= right) {
-		if (a[i] < a[j]) {
-			tmp[k++] = a[i++];
+void merge(double* a, int left, int right) {
+	int mid = (right-left) / 2 + left;
+	int i = left;
+	int j = mid + 1;
+	int step = 0;
+	double *c = (double*)malloc(right * sizeof(double));
+	if (left >= right) return; // если границы массива схлопнулись, выходим из подпрограммы 
+	merge(a, left, mid); merge(a, mid + 1, right); // рекурсивно разбиваем массив на подмассивы
+	for (step; step < right - left + 1; step++) {
+		comp += 3;
+		if ((j > right) || ((i <= mid) && (a[i] < a[j]))) { // сортируем элементы массива сравнением двух половин
+			c[step] = a[i++];
+			assign++;
 		}
 		else {
-			tmp[k++] = a[j++];
+			c[step] = a[j++];
+			assign++;
 		}
 	}
-		for (; i <= mid;) {
-			tmp[k++] = a[i++];
-		}
-		for (; j <= right;) {
-			tmp[k++] = a[j++];
-		}
-		for(f=0;f<=size;f++){
-	    a[f]= tmp[f];
-		printf("%lf", a[f]);
+	for (step = 0; step < right - left + 1; step++) {
+		a[left + step] = c[step];      // переписываем отсортированный буфферный массив в исходный
 	}
+}
+
+int* createCounters(uint* data, int size) {
 	
 }
 
-void mergesort(double* a, int left, int right) {
-	int mid = (left + right) / 2,i;  //найди и перепиши по- человечески
-	if (left >= right) {
-		return;
-	}
-	mergesort(a, left, mid);
-	mergesort(a, mid + 1, right);
-
-	Merge(a, left, mid, right);
-}
-
-void Radix(double a[], int size) {
+void signedRadixSort(short Offset, long N, double in[], double out[], int size) {
 
 }
 
@@ -124,13 +141,14 @@ void main() {
 			switch (variant)
 			{
 			case 1:
-				Selection(a, size);
+				Selection(a, size); 
 				break;
 			case 2:
 				Shell(a, size);
 				break;
 			case 3:
-				mergesort(a,0,size-1);
+				perm = 0; comp = 0;
+				merge(a,0,size-1);
 				printf("Number of permition %d\n", perm);
 				printf("Number of comparisons %d\n", comp);
 				for (i = 0; i < size; i++) {
@@ -139,7 +157,6 @@ void main() {
 				system("pause");
 				break;
 			case 4:
-				Radix(a, size);
 				break;
 			case 5:
 				Randomize(a, size);
@@ -157,6 +174,5 @@ void main() {
 				printf("incorrent choice"); // проверка на ошибочные вводы
 				break;
 			}
-	} while (variant != 0);
-	
+	} while (variant != 0);	
 }
