@@ -1,0 +1,6 @@
+﻿  Merge_Sort_FINAL.c
+C:\Users\user\source\repos\Merge_Sort_FINAL\Merge_Sort_FINAL.c(94,14): warning C4047: функция: "double *" отличается по уровням косвенного обращения от "double (*)[120]"
+C:\Users\user\source\repos\Merge_Sort_FINAL\Merge_Sort_FINAL.c(94,10): warning C4024: feelMas: различные типы для формального и фактического параметров 1
+C:\Users\user\source\repos\Merge_Sort_FINAL\Merge_Sort_FINAL.c(94,25): warning C4047: функция: "double *" отличается по уровням косвенного обращения от "double (*)[120]"
+C:\Users\user\source\repos\Merge_Sort_FINAL\Merge_Sort_FINAL.c(94,16): warning C4024: feelMas: различные типы для формального и фактического параметров 2
+  Merge_Sort_FINAL.vcxproj -> C:\Users\user\source\repos\Merge_Sort_FINAL\Debug\Merge_Sort_FINAL.exe

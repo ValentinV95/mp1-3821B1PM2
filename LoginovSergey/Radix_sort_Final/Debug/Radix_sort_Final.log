@@ -1,0 +1,11 @@
+﻿  Radix_sort_Final.c
+C:\Users\user\source\repos\Radix_sort_Final\Radix_sort_Final.c(105,23): warning C4133: функция: несовместимые типы - из "double *" в "unsigned __int64 *"
+C:\Users\user\source\repos\Radix_sort_Final\Radix_sort_Final.c(105,36): warning C4133: функция: несовместимые типы - из "double *" в "unsigned __int64 *"
+C:\Users\user\source\repos\Radix_sort_Final\Radix_sort_Final.c(120,18): warning C4305: функция: усечение из "__int64" в "unsigned int"
+C:\Users\user\source\repos\Radix_sort_Final\Radix_sort_Final.c(122,14): warning C4047: функция: "double *" отличается по уровням косвенного обращения от "double (*)[40000]"
+C:\Users\user\source\repos\Radix_sort_Final\Radix_sort_Final.c(122,10): warning C4024: feelMas: различные типы для формального и фактического параметров 1
+C:\Users\user\source\repos\Radix_sort_Final\Radix_sort_Final.c(122,26): warning C4047: функция: "double *" отличается по уровням косвенного обращения от "double (*)[40000]"
+C:\Users\user\source\repos\Radix_sort_Final\Radix_sort_Final.c(122,16): warning C4024: feelMas: различные типы для формального и фактического параметров 2
+C:\Users\user\source\repos\Radix_sort_Final\Radix_sort_Final.c(122,38): warning C4047: функция: "double *" отличается по уровням косвенного обращения от "double (*)[40000]"
+C:\Users\user\source\repos\Radix_sort_Final\Radix_sort_Final.c(122,28): warning C4024: feelMas: различные типы для формального и фактического параметров 3
+  Radix_sort_Final.vcxproj -> C:\Users\user\source\repos\Radix_sort_Final\Debug\Radix_sort_Final.exe

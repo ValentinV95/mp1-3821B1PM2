@@ -1,0 +1,9 @@
+﻿  Comb_Sort_Final.c
+C:\Users\user\source\repos\Comb_Sort_Final\Comb_Sort_Final.c(36,14): warning C4047: функция: "double *" отличается по уровням косвенного обращения от "double (*)[100000]"
+C:\Users\user\source\repos\Comb_Sort_Final\Comb_Sort_Final.c(36,10): warning C4024: feelMas: различные типы для формального и фактического параметров 1
+C:\Users\user\source\repos\Comb_Sort_Final\Comb_Sort_Final.c(36,24): warning C4047: функция: "double *" отличается по уровням косвенного обращения от "double (*)[100000]"
+C:\Users\user\source\repos\Comb_Sort_Final\Comb_Sort_Final.c(36,16): warning C4024: feelMas: различные типы для формального и фактического параметров 2
+C:\Users\user\source\repos\Comb_Sort_Final\Comb_Sort_Final.c(53,23): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+C:\Users\user\source\repos\Comb_Sort_Final\Comb_Sort_Final.c(94,156): warning C4307: "*": переполнение целой константы со знаком
+C:\Users\user\source\repos\Comb_Sort_Final\Comb_Sort_Final.c(94,179): warning C4307: "*": переполнение целой константы со знаком
+  Comb_Sort_Final.vcxproj -> C:\Users\user\source\repos\Comb_Sort_Final\Debug\Comb_Sort_Final.exe

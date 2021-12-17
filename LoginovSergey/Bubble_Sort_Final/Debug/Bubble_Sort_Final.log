@@ -1,0 +1,6 @@
+﻿  Bubble_Sort_Final.c
+C:\Users\user\source\repos\Bubble_Sort_Final\Bubble_Sort_Final.c(35,14): warning C4047: функция: "double *" отличается по уровням косвенного обращения от "double (*)[15]"
+C:\Users\user\source\repos\Bubble_Sort_Final\Bubble_Sort_Final.c(35,10): warning C4024: feelMas: различные типы для формального и фактического параметров 1
+C:\Users\user\source\repos\Bubble_Sort_Final\Bubble_Sort_Final.c(35,24): warning C4047: функция: "double *" отличается по уровням косвенного обращения от "double (*)[15]"
+C:\Users\user\source\repos\Bubble_Sort_Final\Bubble_Sort_Final.c(35,16): warning C4024: feelMas: различные типы для формального и фактического параметров 2
+  Bubble_Sort_Final.vcxproj -> C:\Users\user\source\repos\Bubble_Sort_Final\Debug\Bubble_Sort_Final.exe
