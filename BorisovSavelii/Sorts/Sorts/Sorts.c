@@ -220,7 +220,7 @@ int main()
 
 	for (int z = 0; z < size; z++)
 	{
-		if (z % 2 != 0 && array[z] > 0.01f)
+		if (z % 2 != 0 && array[z] > 0.00f)
 		{
 			array[z] *= -1;
 		}
