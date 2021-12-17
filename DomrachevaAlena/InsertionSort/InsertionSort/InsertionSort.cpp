@@ -12,7 +12,7 @@ int main()
 	srand(1000);
 	for (int a = 0; a < N; a++)
 	{
-		array[a] = rand() % 1000;
+		array[a] = rand() % 2001 + (-1000) + (rand() % 1000) / 10000.0;
 		printf("%f ", array[a]);
 	}
 	for (i = 1; i < N; i++)
