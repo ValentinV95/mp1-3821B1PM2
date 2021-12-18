@@ -12,7 +12,11 @@ float* createMas(int length)
 
 	for (i; i < length; i++)
 	{
-		m[i] = (rand() % 1001 + (rand() % 1000) / 1000.0f) * pow(-1.0, (rand() % 2));
+		m[i] = (rand() % 1001 + (rand() % 1000) / 1000.0f) * (float)pow(-1.0, (rand() % 2));
+		if (m[i] == -0.0f)
+		{
+			m[i] = 0.0f;
+		}
 	}
 
 	//for (i = 0; i < length; i++)
@@ -74,14 +78,14 @@ void shellSort(float* data,int length,int* swap,int*compare)
 
 void main()
 {
-	int length = 100;
+	int length = 50;
 	int swap = 0, compare = 0, i;
-	float* mas = createMas(length);
+	float* mas = createMas(length), complexity = 0;
 	float* mas_copy = (float*)malloc(sizeof(float) * length);
 		
 	srand(1005483580247);
 
-	while (length < 4000)
+	while (length <= 40000)
 	{		
 		for (i = 0; i < length; i++)
 		{
@@ -92,8 +96,8 @@ void main()
 
 		if (isSortCorrect(mas, mas_copy, length))
 		{
-			float tmp = (swap + compare) / (length * pow(log(length), 2));
-			printf("%d;%d;%1.0lf,%d\n",length,swap+compare,tmp,(int)(tmp*100)%100);
+			complexity = (float)length * pow(log(length),2);
+			printf("%d;%d;%d;%lf;%lf\n",length,swap,compare,swap/complexity,compare/complexity);
 		}
 		else
 		{

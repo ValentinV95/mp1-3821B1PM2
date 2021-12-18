@@ -13,11 +13,15 @@ int assigning = 0, compare = 0;
 float* createMas(int length)
 {
 	int i = 0;
-	float* m = (float*)malloc(length*sizeof(float));
+	float* m = (float*)malloc(length * sizeof(float));
 
 	for (i; i < length; i++)
 	{
-		m[i] = (rand() % 1001 + (rand() % 1000) / 1000.0f) * pow(-1.0, (rand() % 2));
+		m[i] = (rand() % 1001 + (rand() % 1000) / 1000.0f) * (float)pow(-1.0, (rand() % 2));
+		if (m[i] == -0.0f)
+		{
+			m[i] = 0.0f;
+		}
 	}
 
 	//for (i = 0; i < length; i++)
@@ -45,6 +49,7 @@ int isSortCorrect(float* orig_mas, float* sort_mas, int length)
 	{
 		if (sort_mas[i] != orig_mas[i])
 		{
+			printf("Index = %d,orig[] = %lf,sort[]=%lf\n",i, orig_mas[i], sort_mas[i]);
 			return 0;
 		}
 	}
@@ -56,7 +61,7 @@ int* createCounters(float* data,int N)
 	uchar* bp = (uchar*)data;
 	uchar* dataEnd = (uchar*)(data + N);
 
-	ushort i;
+	uint i;
 
 	int* counters = (int*)malloc(256*sizeof(uint)*sizeof(int));
 	for (i = 0; i < 256 * sizeof(uint); i++)
@@ -101,7 +106,7 @@ void radixPass(short Offset,int N,uint* sourse,uint* dest,int* count)
 	for (i = N;i>0;--i,bp+= sizeof(uint),++sp)
 	{
 		compare++;
-		assigning++;
+		assigning+=3;
 		cp = count + *bp;
 		dest[*cp] = *sp;
 		(*cp)++;
@@ -111,7 +116,7 @@ void radixPass(short Offset,int N,uint* sourse,uint* dest,int* count)
 void signedRadixSort(float* data,float* sorted_data,int N)
 {
 	int* count;
-	ushort i;
+	uint i;
 	int numNeg = 0;
 	int* counters = createCounters(data,N);
 
@@ -144,17 +149,21 @@ void signedRadixSort(float* data,float* sorted_data,int N)
 		assigning++;
 		sorted_data[numNeg+i] = data[i];
 	}
+	free(counters);
 }
 
 void main()
 {
-	int length = 100;
+	int length = 50;
 	int i;
+	float complexity=0;
 	float* mas = createMas(length);
 	float* mas_copy1 = (float*)malloc(sizeof(float) * length);
 	float* mas_copy2 = (float*)malloc(sizeof(float) * length);
 
-	while (length<4001)
+	srand(5735738265787);
+
+	while (length<= 40000)
 	{
 		for (i = 0; i < length; i++)
 		{
@@ -166,12 +175,12 @@ void main()
 
 		if (isSortCorrect(mas, mas_copy1, length))
 		{
-			float tmp = (assigning + compare) / (float)(4 * (length + 256));
-			printf("%d;%d;%lf\n", length, assigning+compare,tmp);
+			complexity = (float)(4 * (length + 256)+length);
+			printf("%d;%d;%d;%lf;%lf\n",length,assigning,compare,assigning/complexity,compare/complexity);
 		}
 		else
 		{
-			printf("The implementation of sorting is incorrect");
+			printf("mas[%d] %lf,mas_copy[%d] %lf\n",i,mas[i],i,mas_copy1[i]);
 			break;
 		}
 

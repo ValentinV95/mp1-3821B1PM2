@@ -1,0 +1,10 @@
+﻿  Main.c
+D:\My programs\C\Лаба\mp1-3821B1PM2\GolovinRoman\MergeSorting\MergeSorting\Main.c(14,12): warning C4018: <: несоответствие типов со знаком и без знака
+D:\My programs\C\Лаба\mp1-3821B1PM2\GolovinRoman\MergeSorting\MergeSorting\Main.c(118,20): warning C4305: функция: усечение из "__int64" в "unsigned int"
+D:\My programs\C\Лаба\mp1-3821B1PM2\GolovinRoman\MergeSorting\MergeSorting\Main.c(136,35): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+  Создание кода
+  2 of 9 functions (22.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+  MergeSorting.vcxproj -> D:\My programs\C\Лаба\mp1-3821B1PM2\GolovinRoman\MergeSorting\Release\MergeSorting.exe

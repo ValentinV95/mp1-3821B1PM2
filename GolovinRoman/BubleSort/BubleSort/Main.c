@@ -7,11 +7,15 @@
 float* createMas(int length)
 {
 	int i = 0;
-	float* m = (float*)malloc(length*sizeof(float));
+	float* m = (float*)malloc(length * sizeof(float));
 
 	for (i; i < length; i++)
 	{
-		m[i] = (rand() % 1001 + (rand() % 1000) / 1000.0f) * pow(-1.0, (rand() % 2));
+		m[i] = (rand() % 1001 + (rand() % 1000) / 1000.0f) * (float)pow(-1.0, (rand() % 2));
+		if (m[i] == -0.0f)
+		{
+			m[i] = 0.0f;
+		}
 	}
 
 	//for (i = 0; i < length; i++)
@@ -73,14 +77,14 @@ void bubleSort(float* data,int length,int* compare,int* swap)
 
 int main()
 {
-	int length = 100;
+	int length = 50;
 	int swap = 0, compare = 0, i;
-	float *mas = createMas(length);
+	float *mas = createMas(length),complexity;
 	float* mas_copy =(float*)malloc(sizeof(float)*length);
 
 	srand(1005483580247);
 
-	while (length < 4001)
+	while (length <= 10000)
 	{
 		for (i = 0; i < length; i++)
 		{
@@ -90,7 +94,8 @@ int main()
 		bubleSort(mas_copy, length, &compare, &swap);
 		if (isSortCorrect(mas, mas_copy, length))
 		{
-			printf("%d;%d;%lf\n", length,swap + compare,(swap+compare)/(float)(length * length));
+			complexity = length * length;
+			printf("%d;%d;%d;%lf;%lf\n",length,swap,compare,swap/complexity,compare/complexity);
 		}
 		else
 		{

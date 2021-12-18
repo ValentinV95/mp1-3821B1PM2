@@ -1,0 +1,9 @@
+﻿  Main.c
+D:\My programs\C\Лаба\mp1-3821B1PM2\GolovinRoman\ShellSort\ShellSort\Main.c(86,21): warning C4305: функция: усечение из "__int64" в "unsigned int"
+D:\My programs\C\Лаба\mp1-3821B1PM2\GolovinRoman\ShellSort\ShellSort\Main.c(99,51): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+  Создание кода
+  1 of 8 functions (12.5%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+  ShellSort.vcxproj -> D:\My programs\C\Лаба\mp1-3821B1PM2\GolovinRoman\ShellSort\Release\ShellSort.exe
