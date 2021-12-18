@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include <locale.h>
 #include <memory.h>
 #define SIZE 10
@@ -108,8 +109,20 @@ void createCounters(float data[], long counters[])
     }
 }
 
+void signedradixPass(float source[], float out[])
+{
+    unsigned int i, j, index;
+    i = 0;
+    index = 0;
+    while (source[i++] > 0) {}
+    for (j = SIZE - 1; j >= i - 1; j--)
+        source[index++] = out[j];
+    for (j = 0; j < i - 1; j++)
+        source[index++] = out[j];
+}
+
 void radixPass(short Offset, float source[], float dest[], long count[]) //source - исходная последовательность, 
-{                                                                                      //dest - отсортирован Offset разряд
+{                                                                        //dest - отсортирован Offset разряд
     float* sp;
     unsigned char* bp;
     long s, c, i, * cp = count;
@@ -137,7 +150,7 @@ void RadixSort(float in[], float out[], long counters[])
     unsigned short int i;
     createCounters(in, counters);
 
-    for (i = 0; i < sizeof(float); i++)
+    for (i = 0; i < sizeof(float); i++)        //-1
     {
         count = counters + 256 * i;
         radixPass(i, in, out, count);
@@ -145,6 +158,7 @@ void RadixSort(float in[], float out[], long counters[])
             in[j] = out[j];
     }
     count = counters + 256 * i;
+    signedradixPass(in, out);
 }
 
 
@@ -154,7 +168,7 @@ void randomArr(float arr[], int size)       // генерация массива
     srand(time(0));
     for (t = 0; t < size; t++)
     {
-        arr[t] = rand() % 1001 + (rand() % 1000) / 1000.0;
+        arr[t] = pow(-1, rand() % 2) * (rand() % 1001 + (rand() % 1000) / 1000.0);
         printf("%f\t", arr[t]);
     }
     printf("\n");
