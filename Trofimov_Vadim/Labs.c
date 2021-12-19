@@ -2,31 +2,8 @@
 # include <stdlib.h>
 # include <time.h>
 #define uint  unsigned int
-int perm = 0, comp = 0, assign = 0;
+int perm = 0, comp = 0;
 
-/*double compare(const void* x1, const void* x2) {
-	return (*(double*)x1 - *(double *)x2);
-}
-
-void isSort(double a[], int size) {
-	int i;
-	double *b = NULL;
-	b = (double*)malloc(size * sizeof(double));
-	for (i = 0; i < size; i++) {
-		b[i] = a[i];
-	}
-	qsort(b, size, sizeof(double),compare );
-	for (i = 0; i < size; i++) {
-		if (a[i] != b[i]) {
-			print("Not sorted");
-			break;
-		}
-	}
-	for (i = 0; i < size; i++) {
-		print("%lf", a[i]);
-	}
-}
-*/
 double* Randomize(double a[], int size) {
 	int i;
 	srand(time(NULL));
@@ -36,8 +13,107 @@ double* Randomize(double a[], int size) {
 	return a;
 }
 
+void createCounters(double* data, long int* counters, long int N) {
+	unsigned char* bp = (unsigned char*)data;
+	unsigned char* dataEnd = (unsigned char*)(data + N);
+	unsigned short int i;
+
+	memset(counters, 0, 256*sizeof(double)*sizeof(long int)); //заполняем память нулями
+
+	while (bp != dataEnd) {
+		for (i = 0; i < sizeof(double); i++) {
+			counters[256 * i + *(bp++)]++; //считаем сколько встречается одинаковых цифр в кажд разряде
+		}
+	}
+}
+
+void radixPass(short int offset, long int N, double* source, double* dest, long int* count) {
+	double* sp;
+	long int s = 0, c, i, * cp = count;
+	unsigned char* bp;
+	for (i = 256; i > 0; --i, ++cp) {
+		c = *cp; // вспомогательный массив, где находим сколько цифр было перед взятой цифрой
+		*cp = s; // или с какой позиции начинаются числа с этой цифрой
+		s += c;
+	}
+	bp = (unsigned char*)source + offset;
+	sp = source;
+	for (i = N; i > 0; --i, bp = bp + sizeof(double), ++sp) { //сама сортировка подсчетом
+		cp = count + *bp; //взять адрес числа (позицию, на кот находится)
+		dest[*cp] = *sp; //положить само число по этой позиции в дест
+		(*cp)++; //прибавить 1 к текущему значению во вспомогательном массиве
+	}
+}
+
+void SignedRadixSort(short int offset, long int N, double* source, double* dest, long int* count) {
+	double* sp;
+	long int s = 0, c, i, * cp = count, NumNeg = 0;
+	unsigned char* bp;
+	for (i = 128; i < 256; i++) {
+		NumNeg = NumNeg + count[i];
+	}
+	s = NumNeg;
+	cp = count;
+	for (i = 0; i < 128; ++i, ++cp) {
+		c = *cp;
+		*cp = s;
+		s += c;
+	}
+	s = count[255] = 0; cp = count + 254;
+	for (i = 254; i >= 128; i--, cp--) {
+		*cp += s;
+		s = *cp;
+	}
+	bp = (unsigned char*)source + offset;
+	sp = source;
+	for (i = N; i > 0; i--, bp += sizeof(double), sp++) {
+		cp = count + *bp;
+		if (*bp < 128)
+		{
+			dest[*cp] = *sp;
+			(*cp)++;
+		}
+		else
+		{
+			(*cp)--;
+			dest[*cp] = *sp;
+		}
+	}
+}
+
+void RadixSort(double* in, double* out, long int* counters, long int N) {
+	long int* count;
+	unsigned char i;
+	createCounters(in, counters, N);
+
+	for (i = 0; i < sizeof(double) - 1; i++) {
+		count = counters + 256 * i;
+		radixPass(i, N, in, out, count);
+		for (long int j = 0; j < N; j++) {
+			in[j] = out[j];
+			perm++;
+		}
+	}
+
+	count = counters + 256 * i;
+	SignedRadixSort(i, N, in, out, count);
+	for (long int j = 0; j < N; j++) {
+		in[j] = out[j];
+		perm++;
+	}
+}
+
+void callradixsort(double* in, long int N) {
+	perm = 0; comp = 0;
+	double* out = (double*)malloc(N * sizeof(double));
+	long int* counters = (long*)malloc(sizeof(double) * 256 * sizeof(long int));
+	RadixSort(in, out, counters, N);
+	free(out);
+	free(counters);
+}
+
 void Selection(double a[],int size) {
-	int i,j, min, perm = 0,comp = 0;
+	int i,j, min;
 	double tmp;
 	for (i = 0; i < size - 1; i++) {
 		min = i;
@@ -55,18 +131,11 @@ void Selection(double a[],int size) {
 			perm++;
 		}
 	}
-	for (i = 0; i < size; i++) {
-		printf("%lf /", a[i]);
-	}
-	printf("Number of permition %d\n", perm);
-	printf("Number of comparisons %d\n", comp);
-	system("pause");
 }
 
 void Shell(double a[], int size) {
 	int s, i, j;
 	double tmp;
-	perm = 0; comp = 0;
 	for (s = size / 2; s > 0; s /= 2) {  //Выбираем шаг между элементами
 		for (i = s; i < size; i++) {
 			comp++;
@@ -78,13 +147,6 @@ void Shell(double a[], int size) {
 			}
 		}
 	}
-
-	for (i = 0; i < size; i++) {
-		printf("%lf /", a[i]);
-	}
-	printf("Number of permition %d\n", perm);
-	printf("Number of comparisons %d\n", comp);
-	system("pause");
 }
 
 void merge(double* a, int left, int right) {
@@ -99,11 +161,11 @@ void merge(double* a, int left, int right) {
 		comp += 3;
 		if ((j > right) || ((i <= mid) && (a[i] < a[j]))) { // сортируем элементы массива сравнением двух половин
 			c[step] = a[i++];
-			assign++;
+			perm++;
 		}
 		else {
 			c[step] = a[j++];
-			assign++;
+			perm++;
 		}
 	}
 	for (step = 0; step < right - left + 1; step++) {
@@ -111,21 +173,15 @@ void merge(double* a, int left, int right) {
 	}
 }
 
-int* createCounters(uint* data, int size) {
-	
-}
-
-void signedRadixSort(short Offset, long N, double in[], double out[], int size) {
-
-}
-
 void main() {
-	int size, variant,i;
+	int size, variant,i,step=1;
 	double *a = NULL;
 	printf("enter the size of the array\n");
 	scanf_s(" %d", &size);
-	a = (double*) malloc(size * sizeof(double));
+	a = (double*)malloc(size * sizeof(double));
 	Randomize(a, size);
+	printf("enter a step of passage\n");
+	scanf_s("%d", &step); 
 	do
 	{
 		system("cls");
@@ -141,22 +197,41 @@ void main() {
 			switch (variant)
 			{
 			case 1:
-				Selection(a, size); 
+				for (i = 2; i < size;i+=step) {
+					Randomize(a, i);
+					Selection(a, i);
+					printf("%d %d ", i-1 ,comp + perm);
+					comp = 0; perm = 0;
+
+				}
+				system("pause");
 				break;
 			case 2:
-				Shell(a, size);
+				for (i = 2; i < size; i += step) {
+					Randomize(a, i);
+					Shell(a, i);
+					printf("%d %d ",i-1, comp + perm);
+					comp = 0; perm = 0;
+				}
+				system("pause");
 				break;
 			case 3:
-				perm = 0; comp = 0;
-				merge(a,0,size-1);
-				printf("Number of permition %d\n", perm);
-				printf("Number of comparisons %d\n", comp);
-				for (i = 0; i < size; i++) {
-					printf("%lf /", a[i]);
+				for (i = 2; i < size; i += step) {
+					Randomize(a, i);
+					merge(a, 0, i - 1);
+					printf("%d %d ",i-1, comp + perm);
+					comp = 0; perm = 0;
 				}
 				system("pause");
 				break;
 			case 4:
+				for (i = 2; i < size; i += step) {
+					Randomize(a, i);
+					callradixsort(a, i);
+					printf("%d %d ",i, comp + perm);
+					comp = 0, perm = 0;
+				}
+				system("pause");
 				break;
 			case 5:
 				Randomize(a, size);
@@ -167,11 +242,14 @@ void main() {
 				scanf_s(" %d", &size);
 				a = (double*)malloc(size * sizeof(double));
 				Randomize(a, size);
+				printf("enter a step of passage\n");
+				scanf_s("%d", &step);
 				break;
 			case 0:
 				break;
 			default:
-				printf("incorrent choice"); // проверка на ошибочные вводы
+				printf("incorrent choice\n"); // проверка на ошибочные вводы
+				system("pause");
 				break;
 			}
 	} while (variant != 0);	
