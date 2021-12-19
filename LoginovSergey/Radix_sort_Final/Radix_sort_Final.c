@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <malloc.h>
@@ -11,7 +11,7 @@
 
 int assigning = 0, compare = 0;
 
-void feelMas(double* m, double* cm1, double* cm2)
+void massiv(double* m, double* cm1, double* cm2)
 {
 	int i;
 
@@ -27,17 +27,17 @@ void feelMas(double* m, double* cm1, double* cm2)
 	}
 }
 
-int cmp(const void* a, const void* b)
+int cmp(const void* z, const void* p)
 {
-	double fa = *(const double*)a;
-	double fb = *(const double*)b;
-	return (fa > fb) - (fa < fb);
+	double rch = *(const double*)z;
+	double rzl = *(const double*)p;
+	return (rch > rzl) - (rch < rzl);
 }
 
 int* createCounters(double* data, int N)
 {
-	uchar* bp = (uchar*)data;
-	uchar* dataEnd = (uchar*)(data + N);
+	uchar* zx = (uchar*)data;
+	uchar* finaldata = (uchar*)(data + N);
 
 	ushort i;
 
@@ -49,14 +49,14 @@ int* createCounters(double* data, int N)
 		counters[i] = 0;
 	}
 
-	while (bp != dataEnd)
+	while (zx != finaldata)
 	{
 		compare++;
 		for (i = 0; i < sizeof(ulonglong); i++)
 		{
 			compare++;
 			assigning++;
-			counters[256 * i + *(bp++)]++;
+			counters[256 * i + *(zx++)]++;
 		}
 	}
 
@@ -66,28 +66,28 @@ int* createCounters(double* data, int N)
 void radixPass(short Offset, int N, ulonglong* sourse, ulonglong* dest, int* count)
 {
 	ulonglong* sp;
-	int s = 0, c, i, * cp = count;
-	uchar* bp;
+	int s = 0, c, i, * k = count;
+	uchar* zx;
 
-	for (i = 256; i > 0; --i, ++cp)
+	for (i = 256; i > 0; --i, ++k)
 	{
-		c = *cp;
-		*cp = s;
+		c = *k;
+		*k = s;
 		s += c;
 		assigning += 3;
 		compare++;
 	}
 
-	bp = (uchar*)sourse + Offset;
+	zx = (uchar*)sourse + Offset;
 	sp = sourse;
 
-	for (i = N; i > 0; --i, bp += sizeof(ulonglong), ++sp)
+	for (i = N; i > 0; --i, zx += sizeof(ulonglong), ++sp)
 	{
 		compare++;
 		assigning += 4;
-		cp = count + *bp;
-		dest[*cp] = *sp;
-		(*cp)++;
+		k = count + *zx;
+		dest[*k] = *sp;
+		(*k)++;
 	}
 }
 
@@ -114,7 +114,7 @@ void signedRadixSort(double* data, double* sorted_data, int N)
 
 void main()
 {
-	int i, ident = 1, numNeg = 0;
+	int i, id = 1, numNeg = 0;
 	double mas[L], mas_copy1[L], mas_copy2[L];
 
 	srand(5737316473);
@@ -146,21 +146,20 @@ void main()
 	{
 		if (mas[i] != mas_copy1[i])
 		{
-			ident = 0;
+			id = 0;
 			break;
 		}
 	}
 
-	if (ident == 1)
+	if (id == 1)
 	{
-		printf("Vse pravilno\n");
+		printf("Vse verno\n");
 		printf("Dlinna - %d\nPrisvoeni - %d\nSravneni - %d\nPrisvoenia/slojnost - %lf\nSravnenia/slojnost - %lf\n", L, assigning, compare, assigning / (float)(8 * (L + 256)), compare / (float)(8 * (L + 256)));
 	}
 	else
 	{
-		printf("Sortirovka rabotaet nepravilno\n");
+		printf("Sortirovka ne rabotaet\n");
 	}
 }
-
 
 
