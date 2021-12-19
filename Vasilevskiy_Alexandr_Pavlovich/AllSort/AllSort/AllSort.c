@@ -173,15 +173,15 @@ int main()
 	do
 	{
 		printf("select the input method:\n");
-		printf("\tq - generate automatically\n");
+		printf("\tg - generate automatically\n");
 		printf("\te - enter yourself\n");
 		scanf_s("%c", &ans);
 		getchar();
-	} while (ans != 'q' && ans != 'e');
+	} while (ans != 'g' && ans != 'e');
 	
 	switch (ans)
 	{
-	case 'q':
+	case 'g':
 		srand(999);
 		for (i = 0; i < len; i++) {
 			arr1[i] = rand()%1000000 + rand()%1000000/1000000.0;
@@ -263,6 +263,6 @@ int main()
 			printf("array[%d] = %lf\n", i, arr1[i]);
 		printf("\n");
 	}
-
+	free(arr1);
 	return 0;
 }
