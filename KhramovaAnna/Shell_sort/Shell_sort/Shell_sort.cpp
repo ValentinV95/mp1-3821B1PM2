@@ -1,14 +1,19 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 int main() {
-	const int n = 10;
+	const int n = 20000;
 	double array[n];
 	int i = 0, j = 0,step = 0;
 	int comp = 0, swap = 0;
 	double tmp = 0;
+	//for (i = 0; i < n; i++) {
+	//	printf("a[%d] = ", i);
+	//	scanf_s("%lf", &array[i]);
+	//}
+	srand(777);
 	for (i = 0; i < n; i++) {
 		printf("a[%d] = ", i);
-		scanf_s("%lf", &array[i]);
+		array[i] = rand()%200;
 	}
 
 	for (step = n / 2; step > 0; step = step / 2) {
