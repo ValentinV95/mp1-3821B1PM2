@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{a0476b43-97e8-4a17-8d49-1c2c1d8d3005}</ProjectGuid>
+    <ProjectGuid>{bdc11fd0-fbd0-4eec-be65-8755e3f0c96d}</ProjectGuid>
     <RootNamespace>laba</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
