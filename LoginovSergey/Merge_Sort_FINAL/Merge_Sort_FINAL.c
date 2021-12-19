@@ -24,10 +24,10 @@ void massiv(double* m, double* cm)
 	}
 }
 
-int cmp(const void* a, const void* b)
+int cmp(const void* z, const void* p)
 {
-	double rch = *(const double*)a;
-	double rzl = *(const double*)b;
+	double rch = *(const double*)z;
+	double rzl = *(const double*)p;
 	return (rch > rzl) - (rch < rzl);
 }
 
