@@ -1,13 +1,15 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <malloc.h>
 #include <math.h>
 
 #define L 120
-int assigning = 0, compare = 0;
 
-void feelMas(double* m, double* cm)
+int assigning = 0, compare = 0;
+double c[L] = { 0.0 };
+
+void massiv(double* m, double* cm)
 {
 	int i;
 
@@ -24,17 +26,16 @@ void feelMas(double* m, double* cm)
 
 int cmp(const void* a, const void* b)
 {
-	double fa = *(const double*)a;
-	double fb = *(const double*)b;
-	return (fa > fb) - (fa < fb);
+	double rch = *(const double*)a;
+	double rzl = *(const double*)b;
+	return (rch > rzl) - (rch < rzl);
 }
 
-void merge(double* a, int left, int mid, int right)
+void merge(double* a, int levo, int center, int pravo)
 {
-	int i = left, j = mid + 1, l = 0;
-	double* c = malloc(sizeof(double) * (right - left + 1));
+	int i = levo, j = center + 1, l = 0;
 
-	while (i <= mid && j <= right)
+	while (i <= center && j <= pravo)
 	{
 		if (a[i] < a[j])
 		{
@@ -48,50 +49,48 @@ void merge(double* a, int left, int mid, int right)
 		assigning++;
 	}
 
-	for (; i <= mid; l++, i++)
+	for (; i <= center; l++, i++)
 	{
 		c[l] = a[i];
 		compare++;
 		assigning++;
 	}
 
-	for (; j <= right; l++, j++)
+	for (; j <= pravo; l++, j++)
 	{
 		c[l] = a[j];
 		compare++;
 		assigning++;
 	}
 
-	for (j = 0, i = left; i <= right; i++, j++)
+	for (j = 0, i = levo; i <= pravo; i++, j++)
 	{
 		a[i] = c[j];
 		compare++;
 		assigning++;
 	}
-
-	free(c);
 }
 
-void mergeSort(double* arr, double* second, int l, int r)
+void mergeSort(double* dmass, double* vtoroy, int l, int r)
 {
 	if (l < r)
 	{
-		int q = (l + r) / 2;
+		int z = (l + r) / 2;
 
-		mergeSort(arr, second, l, q);
-		mergeSort(arr, second, q + 1, r);
+		mergeSort(dmass, vtoroy, l, z);
+		mergeSort(dmass, vtoroy, z + 1, r);
 
-		merge(arr, l, q, r);
+		merge(dmass, l, z, r);
 	}
 }
 
 void main()
 {
-	int i = 0, ident = 1;
+	int i = 0, id = 1;
 	double mas[L], mas_copy[L];
 
 	srand(1195792);
-	feelMas(&mas, &mas_copy);
+	massiv(&mas, &mas_copy);
 
 	mergeSort(mas_copy, mas, 0, L - 1);
 	qsort(mas, L, sizeof(double), cmp);
@@ -100,12 +99,12 @@ void main()
 	{
 		if (mas[i] != mas_copy[i])
 		{
-			ident = 0;
+			id = 0;
 			break;
 		}
 	}
 
-	if (ident == 1)
+	if (id == 1)
 	{
 		printf_s("Sortiruet pravilno\n");
 		printf_s("Dlinna - %d\nAssigning = %d\nCompare = %d\nAssigning/slojnost - %lf\nCompare/slojnost - %lf\n", L, assigning, compare, assigning / (L * log((double)L)), compare / (L * log((double)L)));
