@@ -17,25 +17,25 @@ void check_array(double array[], int size) {
 	}
 }
 
-void createCounters(double *data, long int* counters, long int N) {
-	unsigned char *bp = (unsigned char*)data;
+void createCounters(double* data, long int* counters, long int N) {
+	unsigned char* bp = (unsigned char*)data;
 	unsigned char* dataEnd = (unsigned char*)(data + N);
 	unsigned short int i;
-	
-	memset(counters, 0, 256 * sizeof(double)*sizeof(long int)); //заполняем память нулями
+
+	memset(counters, 0, 256 * sizeof(double) * sizeof(long int)); //заполняем память нулями
 
 	while (bp != dataEnd) {
-		for (i = 0; i < sizeof(double); i++) {   
+		for (i = 0; i < sizeof(double); i++) {
 			counters[256 * i + *(bp++)]++;   //считаем сколько встречается одинаковых цифр в кажд разряде 
 		}
 	}
 }
 
-void radixPass(short int offset, long int N, double* source, double*dest, long int* count) {
-	double*sp;
-	long int s = 0, c, i, *cp = count;
-	unsigned char *bp;
-	for (i = 256; i > 0; --i, ++cp) { 
+void radixPass(short int offset, long int N, double* source, double* dest, long int* count) {
+	double* sp;
+	long int s = 0, c, i, * cp = count;
+	unsigned char* bp;
+	for (i = 256; i > 0; --i, ++cp) {
 		c = *cp;           // вспомогательный массив, где находим сколько цифр было перед взятой цифрой 
 		*cp = s;           // или с какой позиции начинаются числа с этой цифрой
 		s = s + c;
@@ -65,28 +65,28 @@ void SignedRadixSort(short int offset, long int N, double* source, double* dest,
 	}
 	s = count[255] = 0; cp = count + 254;
 	for (i = 254; i >= 128; i--, cp--) {
-          *cp += s;
-		   s = *cp;		
+		*cp += s;
+		s = *cp;
 	}
 	bp = (unsigned char*)source + offset;
 	sp = source;
-	for (i = N; i > 0; i--, bp += sizeof(double), sp++){
-			cp = count + *bp;
-			if (*bp < 128)
-			{
-				dest[*cp] = *sp;
-				(*cp)++;
-			}
-			else
-			{
-				(*cp)--;
-				dest[*cp] = *sp;
-			}
+	for (i = N; i > 0; i--, bp += sizeof(double), sp++) {
+		cp = count + *bp;
+		if (*bp < 128)
+		{
+			dest[*cp] = *sp;
+			(*cp)++;
+		}
+		else
+		{
+			(*cp)--;
+			dest[*cp] = *sp;
 		}
 	}
+}
 void RadixSort(double* in, double* out, long int* counters, long int N) {
 
-	long int * count;
+	long int* count;
 	unsigned char i;
 	createCounters(in, counters, N);
 
@@ -120,7 +120,7 @@ int main() {
 	int i = 0;
 	srand(0);
 	printf("source massive:\n");
-	for (i = 0; i < M; i++){
+	for (i = 0; i < M; i++) {
 		printf("a[%d] = ", i);
 		a[i] = (double)(rand()) / RAND_MAX * (2000) - 1000;
 		printf("%lf\n", a[i]);
@@ -128,7 +128,7 @@ int main() {
 	printf("sorted massive\n");
 	callradixsort(a, M);
 
-	for (i = 0; i < M; i++){
+	for (i = 0; i < M; i++) {
 		printf("a[%d] = %lf\n", i, a[i]);
 	}
 	printf("checking of correctness:\n");
