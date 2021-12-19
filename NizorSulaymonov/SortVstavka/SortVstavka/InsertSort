@@ -1,11 +1,62 @@
 ﻿// SortVstavka.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 
+#include<stdio.h>
+#include<stdlib.h>
 #include <iostream>
+using namespace std;
 
-void main()
+
+int main()
 {
-    std::cout << "Hello World!\n";
+    cout << "Massive: ";
+   
+    int perestanovka=0;//Счетчик количества перестановок
+    int sravnenia=0;//Счетчик количества сравнений
+    const int N = 10;//Размер массива
+    int i;
+    
+    //Генерация массива случайных чисел от 0 до 255
+    double massive[N];
+    srand(777);
+    for (i=0; i<N;i++) {
+        massive[i] = rand() % 256;
+        printf("%f\n", massive[i]);
+
+
+    }
+    
+    //Сортировка вставками
+    for (int i = 1; i < N; i++) {
+        sravnenia++;
+
+        for (int j = i; j > 0 && massive[j - 1] > massive[j]; j--){
+            sravnenia++;
+
+
+      
+            double tmp = massive[j - 1];
+            massive[j - 1] = massive[j];
+            massive[j] = tmp;
+            perestanovka++;
+
+        }
+    }
+    //Выводим отсортиро́ванный массив,кол-во перестановок и сравнений
+    cout << "Kol-vo perestanovok: ";
+    printf("%d\n", perestanovka);
+    cout << "Kol-vo sravneni: ";
+    printf("%d\n", sravnenia);
+    cout << "InsertSort result: ";
+    for (i = 0; i < N; i++) {
+
+        printf("%f\n", massive[i]);
+
+
+    }
+    
+
+    return 0;
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
