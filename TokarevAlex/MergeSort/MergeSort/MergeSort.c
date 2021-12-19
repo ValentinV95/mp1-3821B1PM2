@@ -1,9 +1,11 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
+
 #define N 10
 
-int cnt = 0;
+int comp = 0, swap = 0;
 
 void merge(float arr[], int l, int m, int r)
 {
@@ -11,60 +13,62 @@ void merge(float arr[], int l, int m, int r)
 	int n1 = m - l + 1;
 	int n2 = r - m;
 
-	float L[N/2+1], R[N/2+1];
+	float L[N / 2 + 1], R[N / 2 + 1];
 
 	for (i = 0; i < n1; i++) {
-		cnt++;
+		comp++;
 		L[i] = arr[l + i];
-		cnt++;
+		swap++;
 	}
 	for (j = 0; j < n2; j++) {
-		cnt++;
-	    R[j] = arr[m + 1 + j];
-		cnt++;
+		comp++;
+		R[j] = arr[m + 1 + j];
+		swap++;
 	}
-	i = 0; 
-	j = 0; 
+
+	i = 0;
+	j = 0;
 	k = l;
+
 	while (i < n1 && j < n2) {
-		cnt+=2;
+		comp += 2;
 		if (L[i] <= R[j]) {
-			cnt++;
+			comp++;
 			arr[k] = L[i];
-			cnt++;
+			swap++;
 			i++;
 		}
 		else {
 			arr[k] = R[j];
-			cnt++;
+			swap++;
 			j++;
 		}
 		k++;
 	}
 
 	while (i < n1) {
-		cnt++;
+		comp++;
 		arr[k] = L[i];
-		cnt++;
+		swap++;
 		i++;
 		k++;
 	}
 
 	while (j < n2) {
-		cnt++;
+		comp++;
 		arr[k] = R[j];
-		cnt++;
+		swap++;
 		j++;
 		k++;
 	}
-	
+
 }
 
 void MergeSort(float arr[], int l, int r)
 {
 	if (l < r) {
 
-		cnt++;
+		comp++;
 		int m = l + (r - l) / 2;
 
 		MergeSort(arr, l, m);
@@ -74,7 +78,7 @@ void MergeSort(float arr[], int l, int r)
 	}
 }
 
-void printArray(float arr[], int n)
+void PrintArr(float arr[], int n)
 {
 	int i;
 	for (i = 0; i < n; i++)
@@ -82,26 +86,39 @@ void printArray(float arr[], int n)
 
 }
 
+int compare(const void* a, const void* b)
+{
+	float fa = *(const float*)a;
+	float fb = *(const float*)b;
+	return (fa > fb) - (fa < fb);
+}
+
 int main()
-{   
+{
 	float arr[N];
-	int n = N, i=0;
+	float arr_dup[N];
+	int i, n = N;
 
 	srand(time(0));
 
-	for (i >= 0; i < N; i++) 
+	for (i = 0; i < n; i++)
 	{
-		arr[i] = rand() % 1000 / 100 + (rand() % 1000) / 1000.0;
+		arr[i] = pow(-1, i) * (rand() % 1000 / 100.0 + (rand() % 1000) / 1000.0);
+		arr_dup[i] = arr[i];
 	}
 	printf("Original array: ");
-	printArray(arr, n);
+	PrintArr(arr, n);
 
 	MergeSort(arr, 0, n - 1);
+	qsort(arr_dup, n, sizeof(float), compare);
 
-	printf("\nSorted array:");
-	printArray(arr, n);
+	printf("\nSorted array: ");
+	PrintArr(arr, n);
 
-	printf("\nComp and Mov: %i\n", cnt);
+	printf("\n qsort array: ");
+	PrintArr(arr_dup, n);
+
+	printf("\nnumber of swaps and compares: %i %i\n", swap, comp);
 
 	return 0;
 }

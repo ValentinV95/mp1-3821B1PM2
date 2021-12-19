@@ -9,52 +9,38 @@
 #define ufloat unsigned float
 #define L 10
 
-int cnt = 0;
+int comp = 0;
+int swap = 0;
 
-void signedRadixLastSort(int N, float* out, float* in)
-{    
-	int j,i= 0;
+void signedRadixLastSort(int N, float* in, float* out)
+{
+	int Numneg,j, i = 0;
 	float temp;
-	int id = L + 1;
+	int id = N;
+
 	for (i >= 0; i < N; i++)
 	{
-		cnt++;
+		comp++;
 		if (in[i] < 0)
 		{
-			cnt++;
+			comp++;
 			id = i;
 			break;
 		}
 	}
 
-	if (id < L) 
+	Numneg = N - id;
+	for (i = 0, j = N - 1; i < Numneg; i++, j--)
 	{
-		i = id;
-		j = N;
-		while (i < j)
-		{
-			cnt++;
-			temp = in[i];
-			in[i] = in[j - 1];
-			in[j - 1] = temp;
-			i++;
-			j--;
-			cnt++;
-		}
-
-		j = 0;
-		for (i = id; i < N; i++)
-		{
-			out[j++] = in[i];
-			cnt++;
-		}
-
-		j = 0;
-		for (i = N - id; i < N; i++)
-		{
-			out[i] = in[j++];
-			cnt++;
-		}
+		comp++;
+		in[i] = out[j];
+		swap++;
+	}
+	for (i = Numneg; i < N; i++) 
+	{
+		comp++;
+		in[i] = out[i - Numneg];
+		swap++;
 	}
 }
 void radixPass(short Offset, int N, float* sourse, float* dest, int* count)
@@ -65,52 +51,50 @@ void radixPass(short Offset, int N, float* sourse, float* dest, int* count)
 
 	for (i = 256; i > 0; --i, ++cp)
 	{
-		cnt++;
+		comp++;
 		c = *cp;
 		*cp = s;
 		s += c;
-		cnt++;
+		swap++;
 	}
 
 	bp = (uchar*)sourse + Offset;
 	sp = sourse;
-	cnt+=2;
 
 	for (i = N; i > 0; --i, bp += sizeof(float), ++sp)
 	{
-		cnt++;
+		comp++;
 		cp = count + *bp;
 		dest[*cp] = *sp;
 		(*cp)++;
-		cnt ++;
+		swap++;
 	}
 }
 
 int* createCounters(float* data, int N)
 {
-	uchar* bp = (uchar*)data;                               
-	uchar* dataEnd = (uchar*)(data + N);               
+	uchar* bp = (uchar*)data;
+	uchar* dataEnd = (uchar*)(data + N);
 
 	ushort i;
 
-	int* counters = malloc(256 * sizeof(float) * sizeof(int)); 
-	cnt++;
+	int* counters = malloc(256 * sizeof(float) * sizeof(int));
 
 	for (i = 0; i < 256 * sizeof(float); i++)
 	{
-		cnt++;
+		comp++;
 		counters[i] = 0;
-		cnt++;;
+		swap++;
 	}
 
-	while (bp != dataEnd)                                    
+	while (bp != dataEnd)
 	{
-		cnt++;
-		for (i = 0; i < sizeof(float); i++)                   
+		comp++;
+		for (i = 0; i < sizeof(float); i++)
 		{
-			cnt++;
+			comp++;
 			counters[256 * i + *(bp++)]++;
-			cnt++;
+			swap++;
 		}
 	}
 
@@ -124,57 +108,67 @@ void radixSort(float* in, float* out, int N)
 	int j;
 
 	int* counters = createCounters(in, N);
-	cnt++;
 
 	for (i = 0; i < sizeof(float); i++)
 	{
-		cnt++;
+		comp++;
 		count = counters + 256 * i;
-		cnt++;
 		radixPass(i, N, in, out, count);
 
 		for (j = 0; j < N; j++)
 		{
-			cnt++;
+			comp++;
 			in[j] = out[j];
-			cnt++;
+			swap++;
 		}
 	}
-	
-	signedRadixLastSort(N, out, in);
+
+	signedRadixLastSort(N, in, out);
 }
-void PrintArr(float mas[], float N) 
+int compare(const void* a, const void* b)
 {
-	
+	float fa = *(const float*)a;
+	float fb = *(const float*)b;
+	return (fa > fb) - (fa < fb);
+}
+void PrintArr(float mas[], float N)
+{
+
 	int i;
 	for (i = 0; i < N; i++)
 	{
-		printf_s("%.3f ", mas[i]);
+		printf_s("%.4f ", mas[i]);
 	}
 
 }
 void main()
 {
 	float mas[L];
-	float out_mas[L];
-	int N = L;
-    int i = 0;
+	float out_mas[L]; 
+	float mas_dup[L];
+	int i, N = L;
 
 	srand(time(0));
 
-	for (i = 0; i < L; i++) 
-	{
-		mas[i] = rand()%1000 / 100 + rand()/100.0;
-		out_mas[i] = mas[i];
-	}
+		for (i = 0; i < N; i++)
+		{
+			mas[i] = pow(-1,i)*(rand() % 1000 / 1000 + rand() / 10000.0);
+			out_mas[i] = mas[i];
+			mas_dup[i] = mas[i];
+		}
 
-	printf("Original array: ");
+	printf("\nOriginal array: ");
 	PrintArr(mas, N);
-	
+
 	radixSort(mas, out_mas, N);
+	qsort(mas_dup, N,sizeof(float),compare );
 
-	printf("\nSorted array: ");
+	printf("\n  Sorted array: ");
 	PrintArr(mas, N);
 
-	printf("\nOperations: %i", cnt);
+	printf("\n   qsort array: ");
+	PrintArr(mas_dup, N);
+
+	printf("\nNumber of swaps and compares: %i %i",swap, comp);
+	
 }
