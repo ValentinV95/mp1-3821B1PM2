@@ -4,7 +4,7 @@
 
 #define N 10
 
-void feelMas(double* m, double* cm)
+void massiv(double* m, double* cm)
 {
 	int i;
 
@@ -32,7 +32,7 @@ int main()
 	double mas[N], copymas[N], tmp = 0;
 
 	srand(777);
-	feelMas(&mas, &copymas);
+	massiv(&mas, &copymas);
 
 	for (i = 0; i < N; i++)
 	{
