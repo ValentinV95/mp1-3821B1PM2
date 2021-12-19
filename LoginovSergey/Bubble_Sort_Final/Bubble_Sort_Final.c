@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -19,16 +19,16 @@ void feelMas(double* m, double* cm)
 	}
 }
 
-int cmp(const void* a, const void* b)
+int com(const void* z, const void* p)
 {
-	double fa = *(const double*)a;
-	double fb = *(const double*)b;
-	return (fa > fb) - (fa < fb);
+	double rch = *(const double*)z;
+	double rzl = *(const double*)p;
+	return (rch > rzl) - (rch < rzl);
 }
 
 int main()
 {
-	int swap = 0, compare = 0, i = 0, j = 0, ident = 1;
+	int swap = 0, compare = 0, i = 0, j = 0, id = 1;
 	double mas[N], copymas[N], tmp = 0;
 
 	srand(777);
@@ -51,18 +51,18 @@ int main()
 		}
 	}
 
-	qsort(&copymas, N, sizeof(double), cmp);
+	qsort(&copymas, N, sizeof(double), com);
 
 	for (i = 0; i < N; i++)
 	{
 		if (mas[i] != copymas[i])
 		{
-			ident = 0;
+			id = 0;
 			break;
 		}
 	}
 
-	if (ident)
+	if (id)
 	{
 		printf_s("Sortiruet pravilno\n");
 		printf_s("Dlina - %d\nSwap = %d\nCompare = %d\nSwap/slojnost - %lf\nCompare/slojnost - %lf\n", N, swap, compare, swap / (float)(N * N), compare / (float)(N * N));
