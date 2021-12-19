@@ -1,11 +1,11 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
 #define N 10000
 int compare = 0, swap = 0;
 
-void feelMas(double* m, double* cm)
+void massiv(double* m, double* cm)
 {
 	int i;
 
@@ -20,37 +20,37 @@ void feelMas(double* m, double* cm)
 	}
 }
 
-int cmp(const void* a, const void* b)
+int cmp(const void* z, const void* p)
 {
-	double fa = *(const double*)a;
-	double fb = *(const double*)b;
-	return (fa > fb) - (fa < fb);
+	double rch = *(const double*)z;
+	double rzl = *(const double*)p;
+	return (rch > rzl) - (rch < rzl);
 }
 
 int main()
 {
-	int i = 0, j = 0, ident = 1, step = N - 1, flag = 1;
+	int i = 0, j = 0, id = 1, shag = N - 1, flag = 1;
 	double mas[N], copymas[N], tmp = 0, factor = 1.2473309;
 
 	srand(777);
-	feelMas(&mas, &copymas);
+	massiv(&mas, &copymas);
 
-	while (step >= 1)
+	while (shag >= 1)
 	{
 		compare++;
-		for (i = 0; i + step < N; i++)
+		for (i = 0; i + shag < N; i++)
 		{
 			compare++;
-			if (mas[i] > mas[i + step])
+			if (mas[i] > mas[i + shag])
 			{
 				compare++;
 				tmp = mas[i];
-				mas[i] = mas[i + step];
-				mas[i + step] = tmp;
+				mas[i] = mas[i + shag];
+				mas[i + shag] = tmp;
 				swap++;
 			}
 		}
-		step = step / factor;
+		shag = shag / factor;
 	}
 
 	for (i = 0; i < N - 1; i++)
@@ -82,13 +82,13 @@ int main()
 	{
 		if (mas[i] != copymas[i])
 		{
-			ident = 0;
+			id = 0;
 			printf("%d\n", i);
 			break;
 		}
 	}
 
-	if (ident == 1)
+	if (id == 1)
 	{
 		printf_s("Sortiruet pravilno\n");
 		printf_s("Dlina - %d\nPerestanovki = %d\nSravnenia = %d\nSravnenia/slojnost - %lf\nPerestanovki/slojnost - %lf\n", N, swap, compare, compare / (float)(N * N), swap / (float)(N * N));
