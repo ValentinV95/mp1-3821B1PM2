@@ -1,0 +1,95 @@
+﻿// SortVstavka.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define RazmerMassiva 10
+int sravnenia = 0;
+int perestanovka = 0;
+
+//Разделение массивов
+void Merge(double massive[], int left, int sredni, int right) {
+
+	int j = left;                 //Левая часть массива
+	int k = sredni + 1;          //Середина
+	int i = 0;                   //Правая часть массива
+	int count = 0;
+	double Second[RazmerMassiva] = { 0 };       
+
+	while (j <= sredni && k <= right) { 
+		sravnenia = sravnenia + 2;             
+		if (massive[j] < massive[k]) {             
+			perestanovka++;
+			Second[i] = massive[j];               
+			j++;                       
+		}
+		else {
+			perestanovka++;
+			Second[i] = massive[k];
+			k++;
+		}
+		i++;                     
+	}
+	while (j <= sredni) {         
+		perestanovka++;
+		Second[i] = massive[j];               
+		j++;
+		i++;
+	}
+	while (k <= right) {
+		perestanovka++;
+		Second[i] = massive[k];
+		k++;
+		i++;
+	}
+	//Элементы из массива Second переходят в massive
+	for (int i = left; i <= right; i++) { 
+		massive[i] = Second[i - left];    
+		perestanovka++;
+	}
+}
+//Основая функция сортировки слиянием
+void MergeSort(double massive[], int l, int r) {
+	if (l < r) {
+		int count = 0;
+		//Среднее значение
+		int q = l + (r - l) / 2;     
+		//Сортировка двух части массива
+		MergeSort(massive, l, q);      
+		MergeSort(massive, q + 1, r);  
+		Merge(massive, l, q, r);       
+	}
+}
+//Создание рандомного массива и вывод сортированного массива,кол-ва перестановок и сравнений
+int main() {
+	int i = 0;
+	double massive[RazmerMassiva];
+	printf("Random massive result:\n");
+	for (i = 0; i < RazmerMassiva; i++) {
+		printf("Massive[%d] = ", i);
+		massive[i] = (double)(rand()) / RAND_MAX * (2000) - 1000;
+		printf("%lf\n", massive[i]);
+	}
+
+	printf("Radixsort result:\n");
+	MergeSort(massive, 0, RazmerMassiva - 1);
+	for (int i = 0; i < RazmerMassiva; i++) {
+		printf("Massive[%d] = %lf\n", i, massive[i]);
+	}
+	printf("Kol-vo sravnenia: %d\n", sravnenia);
+	printf("Kol-vo perestanovok: %d\n", perestanovka);
+
+
+	return 0;
+}
+
+// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
+// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+
+// Советы по началу работы 
+//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
+//   2. В окне Team Explorer можно подключиться к системе управления версиями.
+//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
+//   4. В окне "Список ошибок" можно просматривать ошибки.
+//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
+//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
