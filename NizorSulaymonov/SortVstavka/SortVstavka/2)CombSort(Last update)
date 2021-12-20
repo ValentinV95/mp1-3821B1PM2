@@ -9,56 +9,56 @@ using namespace std;
 int main()
 {
     cout << "Massive: ";
-   
-    int perestanovka=0;//Счетчик количества перестановок
-    int sravnenia=0;//Счетчик количества сравнений
+
+    int perestanovka = 0;//Счетчик количества перестановок
+    int sravnenia = 0;//Счетчик количества сравнений
     const int N = 10;//Размер массива
     int i;
-    
+
     //Генерация массива случайных чисел от 0 до 255
     double massive[N];
     srand(777);
-    for (i=0; i<N;i++) {
+    for (i = 0; i < N; i++) {
         massive[i] = rand() % 256;
         printf("%f\n", massive[i]);
-
-
     }
-    
-    //Сортировка вставками
-    for (int i = 1; i < N; i++) {
-        sravnenia++;//1 сравнение
-        for (int j = i; j > 0 && massive[j - 1] > massive[j]; j--){
-            
-
-
-      
-            double tmp = massive[j - 1];
-            massive[j - 1] = massive[j];
-            massive[j] = tmp;
-            perestanovka = perestanovka + 3 ; //3 перестановки
-            sravnenia = sravnenia + 2;//2 сравнения
-
-        }
+    //Сортировка расческой
+    double factor = 1.2473309;
+    int step = N - 1;
+    while (step >= 1){
+        sravnenia++;
         
+        for (int i = 0; i + step < N; i++) {
+            sravnenia++;
+            
+            if (massive[i] > massive[i + step]) {
+                
+                int tmp = massive[i];
+                massive[i] = massive[i + step];
+                massive[i + step] = tmp;
+                perestanovka = perestanovka + 3;//3 Перестановки
+                sravnenia++;
+                
+            }
+            
+        }
+        step /= factor;
     }
+       
     //Выводим отсортиро́ванный массив,кол-во перестановок и сравнений
     cout << "Kol-vo perestanovok: ";
     printf("%d\n", perestanovka);
     cout << "Kol-vo sravneni: ";
     printf("%d\n", sravnenia);
-    cout << "InsertSort result: ";
+    cout << "CombSort result: ";
     for (i = 0; i < N; i++) {
 
         printf("%f\n", massive[i]);
 
 
     }
-    
-
     return 0;
 }
-
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
 
