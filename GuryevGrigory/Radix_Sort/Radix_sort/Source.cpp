@@ -101,12 +101,14 @@ int main()
 {
 	int lenght = 100;
 	float* arr = (float*)malloc(lenght * sizeof(float));
+	float* arr2;
+	float* arr3;
 	for (int i = 0; i < lenght; i++)
 	{
 		arr[i] = (rand() % 1001 + (rand() % 1000) / 1000.0f) * pow(-1.0, (rand() % 2));
 	}
-	float* arr2 = (float*)malloc(lenght * sizeof(float));
-	float* arr3 = (float*)malloc(lenght * sizeof(float));
+	arr2 = (float*)malloc(lenght * sizeof(float));
+	arr3 = (float*)malloc(lenght * sizeof(float));
 	radixSort(arr, arr2, lenght);
 	for (int i = 0; i < lenght; i++)
 	{
