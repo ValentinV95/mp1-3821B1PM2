@@ -6,8 +6,10 @@
 int Selection_Sort(float *Array,int size)
 {
 	int ng = 0;
+
 	for (int i = 0; i < size-1; i++)
 	{
+		float changevar;
 		int min_index = i;
 		for (int j = i + 1; j < size; j++)
 		{
@@ -17,7 +19,6 @@ int Selection_Sort(float *Array,int size)
 				min_index = j;
 			}
 		}
-		double change_var;
 		change_var = *(Array+min_index);
 		*(Array+min_index) = *(Array+i);
 		*(Array+i) = change_var;
