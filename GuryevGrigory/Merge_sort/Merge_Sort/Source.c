@@ -6,18 +6,25 @@
 
 float* mergeSort(float* arr, float* buff, unsigned int strt,unsigned int end)
 {
+	unsigned int mid;
+
+	float *buff_one;	
+	float *buff_two;
+	
+	float *arr2;
+	unsigned int s;
+	unsigned int m;
+	
 	if (strt == end)
 	{
 		buff[strt] = arr[strt];
 		return buff;
 	}
-	unsigned int mid = strt + ((end - strt)/ 2);
+	mid = strt + ((end - strt)/ 2);
 
-	float *buff_one = mergeSort(arr, buff, strt, mid);	
-	float *buff_two = mergeSort(arr, buff, mid + 1, end);
+	*buff_one = mergeSort(arr, buff, strt, mid);	
+	*buff_two = mergeSort(arr, buff, mid + 1, end);
 	
-
-	float *arr2;
 	if (buff_one == arr)
 	{
 		arr2 = buff;
@@ -26,8 +33,8 @@ float* mergeSort(float* arr, float* buff, unsigned int strt,unsigned int end)
 	{
 		arr2 = arr;
 	}
-	unsigned int s = strt;
-	unsigned int m = mid + 1;
+	s = strt;
+	m = mid + 1;
 	for (int i = s; i <= end; i++)
 	{
 		if (s <= mid && m <= end)
@@ -61,7 +68,7 @@ int main()
 {
 	int lenght = 1000;
 	float* m = (float*)malloc(lenght * sizeof(float));
-
+	float* xd;
 
 
 	srand(1005483580247);
@@ -74,7 +81,7 @@ int main()
 	{
 		arr[i] = m[i];
 	}
-	float* xd = mergeSort(m, arr, 0, lenght - 1);
+	xd = mergeSort(m, arr, 0, lenght - 1);
 	for (int j = 0; j < lenght; j++)
 	{
 		printf("%f,\n", xd[j]);
