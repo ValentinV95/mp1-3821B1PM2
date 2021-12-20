@@ -1,0 +1,142 @@
+﻿// SortVstavka.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define razmerMassiva 10 //Размер нашего рандом массива(Можно изменять его размер)
+int perestanovki = 0; //Счетчик перестановок
+void Counterscreate(double* data, long int* counters, long int N) {
+	unsigned char* bp = (unsigned char*)data;
+	unsigned char* dataEnd = (unsigned char*)(data + N);
+	unsigned short int i;
+
+	memset(counters, 0, 256 * sizeof(double) * sizeof(long int)); 
+
+	while (bp != dataEnd) {
+		for (i = 0; i < sizeof(double); i++) {
+			//Счетчик одинаковых цифр в каждом из разрядов
+			counters[256 * i + *(bp++)]++;   
+		}
+	}
+}
+
+void RadixPass(short int offset, long int N, double* source, double* dest, long int* count) {
+	double* sp;
+	long int s = 0, c, i, * cp = count;
+	unsigned char* bp;
+	for (i = 256; i > 0; --i, ++cp) {
+		c = *cp;           
+		*cp = s;           
+		s = s + c;
+	}
+	bp = (unsigned char*)source + offset;
+	sp = source;
+
+	//Использование сортировки подсчетом
+	for (i = N; i > 0; --i, bp = bp + sizeof(double), ++sp) { 
+		//Взятие адреса нашего числа
+		cp = count + *bp; 
+		 //Положим само  это число  в dest
+		dest[*cp] = *sp; 
+		 //+1 к текущему занчению
+		(*cp)++;          
+	}
+}
+void RadixSortsign(short int offset, long int N, double* source, double* dest, long int* count) {
+	double* sp;
+	long int s = 0, c, i, * cp = count, NumNeg = 0;
+	unsigned char* bp;
+	for (i = 128; i < 256; i++) {
+		NumNeg = NumNeg + count[i];
+	}
+	s = NumNeg;
+	cp = count;
+	for (i = 0; i < 128; ++i, ++cp) {
+		c = *cp;
+		*cp = s;
+		s = s + c;
+	}
+	s = count[255] = 0; cp = count + 254;
+	for (i = 254; i >= 128; i--, cp--) {
+		*cp += s;
+		s = *cp;
+	}
+	bp = (unsigned char*)source + offset;
+	sp = source;
+	for (i = N; i > 0; i--, bp += sizeof(double), sp++) {
+		cp = count + *bp;
+		if (*bp < 128)
+		{
+			dest[*cp] = *sp;
+			(*cp)++;
+		}
+		else
+		{
+			(*cp)--;
+			dest[*cp] = *sp;
+		}
+	}
+}
+void RadixSort(double* in, double* out, long int* counters, long int N) {
+
+	long int* count;
+	unsigned char i;
+	Counterscreate(in, counters, N);
+
+	for (i = 0; i < sizeof(double) - 1; i++) {
+		count = counters + 256 * i;
+		RadixPass(i, N, in, out, count);
+		for (long int j = 0; j < N; j++) {
+			in[j] = out[j];
+			perestanovki++;
+		}
+	}
+	count = counters + 256 * i;
+	RadixSortsign(i, N, in, out, count);
+	for (long int j = 0; j < N; j++) {
+		in[j] = out[j];
+		perestanovki++;
+	}
+}
+//Функция вызова порязрядной сортирвоки
+void RadixSortVizov(double* in, long int N) {
+	double* out = (double*)malloc(N * sizeof(double));
+	long int* counters = (long*)malloc(sizeof(double) * 256 * sizeof(long int));
+	RadixSort(in, out, counters, N);
+	free(out);
+	free(counters);
+}
+
+int main() {
+	double Massive[razmerMassiva];//Размер массива
+	int i = 0;
+	srand(0);
+	printf("Random massive result:\n");
+	//Создание рандомного массива
+	for (i = 0; i < razmerMassiva; i++) {
+		printf("Massive[%d] = ", i);
+		Massive[i] = (double)(rand()) / RAND_MAX * (2000) - 1000;
+		printf("%lf\n", Massive[i]);
+	}
+	printf("RadixSort result:\n");
+	RadixSortVizov(Massive, razmerMassiva);
+
+	for (i = 0; i < razmerMassiva; i++) {
+		//Вывод массива
+		printf("Massive[%d] = %lf\n", i, Massive[i]);
+	}
+	//Выводим количество перестановок(в порязрядной сортировке нет используятся сравнения)
+	printf("Kol-vo perestanovok = %d", perestanovki);
+	return 0;
+}
+
+// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
+// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+
+// Советы по началу работы 
+//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
+//   2. В окне Team Explorer можно подключиться к системе управления версиями.
+//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
+//   4. В окне "Список ошибок" можно просматривать ошибки.
+//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
+//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
