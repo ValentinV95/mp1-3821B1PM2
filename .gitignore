@@ -35,3 +35,4 @@
 *.vcxproj.user
 Debug/
 .vs/
+Release/

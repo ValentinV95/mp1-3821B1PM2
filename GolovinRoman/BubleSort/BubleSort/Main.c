@@ -77,14 +77,14 @@ void bubleSort(float* data,int length,int* compare,int* swap)
 
 int main()
 {
-	int length = 50;
+	int length = 15005;
 	int swap = 0, compare = 0, i;
 	float *mas = createMas(length),complexity;
 	float* mas_copy =(float*)malloc(sizeof(float)*length);
 
 	srand(1005483580247);
 
-	while (length <= 10000)
+	while (length <= 20000)
 	{
 		for (i = 0; i < length; i++)
 		{
