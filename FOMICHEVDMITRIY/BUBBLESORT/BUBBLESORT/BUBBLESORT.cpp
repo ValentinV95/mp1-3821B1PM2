@@ -5,7 +5,7 @@
 int main()
 {
     float c[max_numbers], swap, k, m = 0.548;
-    int j, i, n = 0, flag = 0, t = 0;
+    int j, i, n = 0, flag, t = 0;
     setlocale(LC_ALL, "Russian");
 
     printf("Сгенерированный массив: \n");
@@ -23,6 +23,7 @@ int main()
     {
         for (j = 0; j < max_numbers - i - 1; j++)
         {
+            flag = 0;
             if (c[j] > c[j + 1])
             {
                 swap = c[j];
