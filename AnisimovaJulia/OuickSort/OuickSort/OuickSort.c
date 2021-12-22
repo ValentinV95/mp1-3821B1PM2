@@ -4,6 +4,12 @@
 #include <locale.h>
 #define SIZE 10
 int sravn = 0, perest = 0;
+int flag = 0;
+int checkflag = 0;
+int compare(const void* x1, const void* x2)
+{
+    return (*(double*)x1 - *(double*)x2);
+}
 //Сортировка 
 void quickSort(double* arr, int first, int last)
 {
@@ -37,7 +43,20 @@ void quickSort(double* arr, int first, int last)
         quickSort(arr, left, last);
     }
 }
-
+void checking(double* arr, double* check, int n)
+{
+    qsort(check, n, sizeof(double), compare);
+    for (int i = 0; i < n; i++) {
+        if (arr[i] != check[i])
+        {
+            checkflag = 1;
+            break;
+        }
+        else {
+            checkflag = 0;
+        }
+    }
+}
 int main()
 {
     double a[SIZE];
@@ -56,6 +75,13 @@ int main()
     for (int i = 0; i < SIZE; i++) 
     {
         printf ("%.5lf \n", a[i]);
+    }
+    if (flag == 1)
+    {
+        printf("Sorting was performed incorrectly\n");
+    }
+    else {
+        printf("Sorting was performed correctly\n");
     }
     printf("\n Number of sravneny = %d", sravn);
     printf("\n Number of perestanovok = %d", perest);
