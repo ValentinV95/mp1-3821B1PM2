@@ -6,7 +6,12 @@
 #include <string.h>
 #include<time.h>
 int perest = 0;
-
+int flag = 0;
+int checkflag = 0;
+int compare(const void* x1, const void* x2)
+{
+    return (*(double*)x1 - *(double*)x2);
+}
 void createCounters(double* in, long* count, long N) {
     unsigned char* bp = (unsigned char*)in;
     unsigned char* end = (unsigned char*)(in + N);
@@ -14,12 +19,9 @@ void createCounters(double* in, long* count, long N) {
     while (bp != end) {
         for (int i = 0; i < sizeof(double); i++) {
             count[256 * i + *(bp++)]++;
-
         }
     }
-
 }
-
 void radixPass(short Offset, long N, double* in, double* out, long* count) {
     double* sp;
     long s, c, * cp;
@@ -39,7 +41,6 @@ void radixPass(short Offset, long N, double* in, double* out, long* count) {
         (*cp)++;
         perest++;
     }
-
 }
 void signedradixLastPass(short Offset, long N, double* in, double* out, long* count) {
     double* sp;
@@ -73,7 +74,6 @@ void signedradixLastPass(short Offset, long N, double* in, double* out, long* co
         }
         perest++;
     }
-
 }
 void radixSort(double* in, double* out, int N) {
     int i;
@@ -89,9 +89,22 @@ void radixSort(double* in, double* out, int N) {
     }
     count = counters + 256 * (i);
     signedradixLastPass(i, N, in, out, count);
-
 }
-void main()
+void checking(double* arr, double* check, int n)
+{
+    qsort(check, n, sizeof(double), compare);
+    for (int i = 0; i < n; i++) {
+        if (arr[i] != check[i])
+        {
+            checkflag = 1;
+            break;
+        }
+        else {
+            checkflag = 0;
+        }
+    }
+}
+int main()
 {
     double mas[] = { 1.021564, 36.12546, 36.56467, -78.312546, -96.3121546, 0, -78.897646, 45.213446, 12.12433, 8976.78699};
     double out_mas[10] = { 1.021564, 36.12546, 36.56467, -78.312546, -96.3121546, 0, -78.897646, 45.213446, 12.12433, 8976.78699 };
@@ -103,19 +116,22 @@ void main()
     { 
         printf_s("%.5lf \n", mas[i]);
     }
-
     radixSort(mas, out_mas, N);
-
     printf("\n");
-
     i = 0;
     printf("\n Sorted array: \n");
     for (i; i < N; i++)
-    {
-        
+    {   
         printf_s("%.5lf \n ", mas[i]);
+    }
+    if (flag == 1)
+    {
+        printf("Sorting was performed incorrectly\n");
+    }
+    else {
+        printf("Sorting was performed correctly\n");
     }
     printf("Number of permutations: ");
     printf("%d\n ", perest);
-
+    return 0;
 }
