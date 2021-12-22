@@ -4,6 +4,12 @@
 #define SIZE 10
 int sravn = 0;
 int perest = 0;
+int flag = 0;
+int checkflag = 0;
+int compare(const void* x1, const void* x2)
+{
+    return (*(double*)x1 - *(double*)x2);
+}
 void merge(double* arr, double* second, int p, int q, int t)
 {
     int f, i, s, k;
@@ -54,6 +60,20 @@ void mergeSort(double* arr, double* second, int p, int t) {
         merge(arr, second, p, q, t);
     }
 }
+void checking(double* arr, double* check, int n)
+{
+    qsort(check, n, sizeof(double), compare);
+    for (int i = 0; i < n; i++) {
+        if (arr[i] != check[i])
+        {
+            checkflag = 1;
+            break;
+        }
+        else {
+            checkflag = 0;
+        }
+    }
+}
 int main()
 {
     double a[SIZE];
@@ -74,6 +94,13 @@ int main()
    // Выводим отсортированный массив
     for (int i = 0; i < SIZE; i++)
         printf(" %.5lf \n ", a[i]);
+    if (flag == 1)
+    {
+        printf("Sorting was performed incorrectly\n");
+    }
+    else {
+        printf("Sorting was performed correctly\n");
+    }
     printf("Number of comparisons: ");
     printf("%d\n ", sravn);
     printf("Number of permutations: ");
