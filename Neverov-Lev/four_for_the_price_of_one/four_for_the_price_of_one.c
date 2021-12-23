@@ -2,6 +2,8 @@
 #include <time.h>
 #include <stdbool.h>
 #include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
 unsigned int count = 0;
 const int BUBBLE_SORT = 1, QUICK_SORT = 2, MERGE_SORT = 3, RADIX_SORT = 4;
@@ -11,7 +13,7 @@ int choose() {
 	do {
 		printf("Select sort type. Enter one of the following number.\n");
 		printf("\t1. bubble sort\n\t2. quick sort\n\t3. merge sort\n\t4. radix sort\n");
-		scanf_s("%d", &choice);
+		scanf("%d", &choice);
 	} while (choice < 1 || choice > 4);
 	return choice;
 }
@@ -39,7 +41,7 @@ int bubble_sort(double* array, int size) {
 	return count;
 }
 
-int partition(double * array, int left_iterator, int right_iterator) {
+int partition(double* array, int left_iterator, int right_iterator) {
 	double q = array[right_iterator];
 	int i = left_iterator - 1;
 	for (int j = left_iterator; j < right_iterator; ++j) {
@@ -54,22 +56,22 @@ int partition(double * array, int left_iterator, int right_iterator) {
 	return (i + 1);
 }
 
-int quick_sort(double * array, int  left_iterator, int right_iterator) {
+int quick_sort(double* array, int  left_iterator, int right_iterator) {
 	if (left_iterator < right_iterator) {
 		int q = partition(array, left_iterator, right_iterator);
-		quick_sort(array, left_iterator,q - 1);
-		quick_sort(array, q + 1,right_iterator);
+		quick_sort(array, left_iterator, q - 1);
+		quick_sort(array, q + 1, right_iterator);
 	}
 	return count;
 }
 
 
-int merge_sort(double* array,int size) {
-	
+int merge_sort(double* array, int size) {
+
 	if (size > 1) {
 		merge_sort(array, size / 2);
 		merge_sort(&array[size / 2], size - size / 2);
-		double* temp_array = (double*) malloc(size * sizeof(double));
+		double* temp_array = (double*)malloc(size * sizeof(double));
 		int left_iterator = 0, right_iterator = 0;;
 		for (int i = 0; i < size; ++i) {
 			if (array[left_iterator] < array[size / 2 + right_iterator]) {
@@ -100,18 +102,18 @@ int merge_sort(double* array,int size) {
 	}
 	return count;
 }
-void create_counters(double* data,long* counters, long N) {
+void create_counters(double* data, long* counters, long N) {
 	unsigned char* bp = (unsigned char*)data;
 	unsigned char* dataEnd = (unsigned char*)(data + N);
 	unsigned short i;
-	memset(counters, 0, 256 * sizeof(double) * sizeof(long));	
+	memset(counters, 0, 256 * sizeof(double) * sizeof(long));
 	while (bp != dataEnd) {
 		++count;
 		for (i = 0; i < sizeof(double); ++i) {
 			++count;
 			++counters[256 * i + *(bp++)];
 		}
-	}		
+	}
 }
 
 void radix_pass(short Offset, long N, double* source, double* dest, long* Count) {
@@ -170,19 +172,19 @@ int main() {
 	int i, choice;
 	int size;
 	printf("Enter size of array: ");
-	scanf_s("%d", &size);
+	scanf("%d", &size);
 	srand(time(NULL));
-	double* nums = (double*) malloc(size * sizeof(double));
-    printf("Generated array:\n");
+	double* nums = (double*)malloc(size * sizeof(double));
+	printf("Generated array:\n");
 	for (i = 0; i < size; ++i) {
-		(double)nums[i] = pow((double)(-1.0), rand() % 2) * ((rand() % 1000) + ((rand() % 100000) / 100000.0));
-		printf_s("%f ", nums[i]);
+		nums[i] = pow((double)(-1.0), rand() % 2) * ((rand() % 1000) + ((rand() % 100000) / 100000.0));
+		printf("%f ", nums[i]);
 	}
 	putchar('\n');
 	choice = choose();
 	if (choice == BUBBLE_SORT) {
 		count = bubble_sort(nums, size);
-	   
+
 	}
 	else if (choice == QUICK_SORT) {
 		count = quick_sort(nums, 0, size);
@@ -191,7 +193,7 @@ int main() {
 		count = merge_sort(nums, size);
 	}
 	else {
-		double* temp = (double*) malloc(size * sizeof(double));
+		double* temp = (double*)malloc(size * sizeof(double));
 		long counters[sizeof(double) * 256];
 		long size2 = (long)size;
 		radix_sort(nums, temp, counters, size2);
@@ -200,7 +202,7 @@ int main() {
 		printf("%f ", nums[i]);
 	}
 	putchar('\n');
-	
+
 	for (int i = 0; i < size - 1; ++i) {
 		if (nums[i] > nums[i + 1]) {
 			printf("ERROR: Array is not sorted");
