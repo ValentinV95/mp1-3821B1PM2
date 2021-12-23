@@ -33,13 +33,13 @@ void signedRadixLastSort(int N, float* in, float* out)
 	for (i = 0, j = N - 1; i < Numneg; i++, j--)
 	{
 		comp++;
-		in[i] = out[j];
+		out[i] = in[j];
 		swap++;
 	}
 	for (i = Numneg; i < N; i++) 
 	{
 		comp++;
-		in[i] = out[i - Numneg];
+		out[i] = in[i - Numneg];
 		swap++;
 	}
 }
@@ -139,7 +139,6 @@ void PrintArr(float mas[], float N)
 	{
 		printf_s("%.4f ", mas[i]);
 	}
-
 }
 void main()
 {
@@ -158,13 +157,13 @@ void main()
 		}
 
 	printf("\nOriginal array: ");
-	PrintArr(mas, N);
+	PrintArr(out_mas, N);
 
 	radixSort(mas, out_mas, N);
 	qsort(mas_dup, N,sizeof(float),compare );
 
 	printf("\n  Sorted array: ");
-	PrintArr(mas, N);
+	PrintArr(out_mas, N);
 
 	printf("\n   qsort array: ");
 	PrintArr(mas_dup, N);
