@@ -67,11 +67,11 @@ void SelectionSort(float arr[], int size, int* swaping, int* check)
         *check += 1;
         index = j;
         for (i = j + 1; i < size; i++)                  //нахождение минимального элемента
-        {
             if (arr[index] > arr[i])
+            {
                 *check += 1;
-            index = i;
-        }
+                index = i;
+            }
         *swaping += 1;
         swap(&arr[j], &arr[index]);
     }
