@@ -6,6 +6,7 @@
 int Selection_Sort(float *Array,int size)
 {
 	int ng = 0;
+	float change_var;
 
 	for (int i = 0; i < size-1; i++)
 	{
