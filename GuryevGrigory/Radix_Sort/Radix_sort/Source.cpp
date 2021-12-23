@@ -97,6 +97,25 @@ void radixSort(float *Array,float* sorted_arr,int n)
 		sorted_arr[num + i] = Array[i];
 	}
 }
+void signedsort(float* MainArr, float* Out, int sz)
+{
+	int i = sz-1;
+	int j = 0;
+	while (MainArr[i] < 0)
+	{
+		Out[j] = MainArr[i];
+		i--;
+		j++;
+	}
+	i = 0;
+	while (MainArr[i] >= 0)
+	{
+		Out[j] = MainArr[i];
+		i++;
+		j++;
+	}
+	
+}
 int main()
 {
 	int lenght = 100;
@@ -110,8 +129,9 @@ int main()
 	arr2 = (float*)malloc(lenght * sizeof(float));
 	arr3 = (float*)malloc(lenght * sizeof(float));
 	radixSort(arr, arr2, lenght);
+	signedsort(arr, arr3, lenght);
 	for (int i = 0; i < lenght; i++)
 	{
-		printf("%f,\n", arr[i]);
+		printf("%f,\n", arr4[i]);
 	}
 }
