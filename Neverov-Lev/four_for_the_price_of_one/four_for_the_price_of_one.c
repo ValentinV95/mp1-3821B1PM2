@@ -69,7 +69,7 @@ int merge_sort(double* array,int size) {
 	if (size > 1) {
 		merge_sort(array, size / 2);
 		merge_sort(&array[size / 2], size - size / 2);
-		double* temp_array = malloc(size * sizeof(double));
+		double* temp_array = (double*) malloc(size * sizeof(double));
 		int left_iterator = 0, right_iterator = 0;;
 		for (int i = 0; i < size; ++i) {
 			if (array[left_iterator] < array[size / 2 + right_iterator]) {
@@ -172,7 +172,7 @@ int main() {
 	printf("Enter size of array: ");
 	scanf_s("%d", &size);
 	srand(time(NULL));
-	double* nums = malloc(size * sizeof(double));
+	double* nums = (double*) malloc(size * sizeof(double));
     printf("Generated array:\n");
 	for (i = 0; i < size; ++i) {
 		(double)nums[i] = pow((double)(-1.0), rand() % 2) * ((rand() % 1000) + ((rand() % 100000) / 100000.0));
@@ -191,7 +191,7 @@ int main() {
 		count = merge_sort(nums, size);
 	}
 	else {
-		double* temp = malloc(size * sizeof(double));
+		double* temp = (double*) malloc(size * sizeof(double));
 		long counters[sizeof(double) * 256];
 		long size2 = (long)size;
 		radix_sort(nums, temp, counters, size2);
