@@ -22,8 +22,8 @@ float* mergeSort(float* arr, float* buff, unsigned int strt,unsigned int end)
 	}
 	mid = strt + ((end - strt)/ 2);
 
-	*buff_one = mergeSort(arr, buff, strt, mid);	
-	*buff_two = mergeSort(arr, buff, mid + 1, end);
+	buff_one = mergeSort(arr, buff, strt, mid);	
+	buff_two = mergeSort(arr, buff, mid + 1, end);
 	
 	if (buff_one == arr)
 	{
