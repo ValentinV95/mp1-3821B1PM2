@@ -13,13 +13,15 @@ uint transfers = 0;
 
 void inserts_Sort(float* array_1, uint size_inserts)
 {
-	for (int i = 1; ++comparisons && i < size_inserts; i++)
+	float tmp;
+	int i, j;
+	for (i = 1; ++comparisons && i < size_inserts; i++)
 	{
-		for (int j = i; ++comparisons && j > 0; j--)
+		for (j = i; ++comparisons && j > 0; j--)
 		{
 			if (++comparisons && array_1[j - 1] > array_1[j])
 			{
-				float tmp = array_1[j - 1];
+				tmp = array_1[j - 1];
 				array_1[j - 1] = array_1[j];
 				array_1[j] = tmp;
 				transfers += 2;
@@ -49,19 +51,17 @@ void Shell_Sort(float* array_2, uint size_Shell)
 
 void merge_Sort(float* array_3, int first, int end, uint size_merge)
 {
+	int sep = (first + end) / 2;
+	int i = first;
+	int j = sep + 1;
+	int step;
+	float* add = (float*)malloc(size_merge * sizeof(float));
 	if (++comparisons && first < end)
 	{
-		int sep = (first + end) / 2;
-
 		merge_Sort(array_3, first, sep, size_merge);
 		merge_Sort(array_3, sep + 1, end, size_merge);
 
-		int i = first;
-		int j = sep + 1;
-
-		float* add = malloc(size_merge * sizeof(float));
-
-		for (int step = 0; ++comparisons && step < end - first + 1; step++)
+		for (step = 0; ++comparisons && step < end - first + 1; step++)
 		{
 			if (++comparisons && (j > end) || (++comparisons && (i <= sep)) && (++comparisons && (array_3[i] < array_3[j])))
 			{
@@ -78,7 +78,7 @@ void merge_Sort(float* array_3, int first, int end, uint size_merge)
 			}
 		}
 
-		for (int step = 0;  ++comparisons && step < end - first + 1; step++)
+		for (step = 0;  ++comparisons && step < end - first + 1; step++)
 		{
 			array_3[first + step] = add[step];
 			transfers++;
@@ -115,7 +115,6 @@ int* createCounters(float* data, int* counters, uint size_CC)
 {
 	uchar* bp = (uchar*)data;
 	uchar* dataEnd = (uchar*)(data + size_CC);
-
 	ushort i;
 
 	memset(counters, 0, 256 * sizeof(float) * sizeof(int));
@@ -169,7 +168,7 @@ void radix_Sort(float* array_4, float* out_array_4, int* in_counters, uint size_
 	int* count;
 	ushort i;
 	int j;
-
+	
 	int* counters = createCounters(array_4, in_counters, size_radix);
 
 	for (i = 0; ++comparisons && i < sizeof(float); i++)
@@ -201,24 +200,26 @@ void check(float* array_check, uint size_check)
 
 int main()
 {
+	uint size = 10000;
+	ushort select;
+	ushort count_check = 0;
+	int z, cha, i, checkk;
+	float* array = (float*)malloc(size * sizeof(float));
+	float* check_array = (float*)malloc(size * sizeof(float));
+	float* out_array = (float*)malloc(size * sizeof(float));
+	int* main_counters = (int*)malloc(256 * sizeof(float) * sizeof(int));
+	
 	setlocale(LC_ALL, "Russian");
 
 	srand(time(NULL));
 
-	uint size;
-
-	printf("Количество элементов в массиве: ");
-	scanf_s("%d", &size);
-
-	float* array = malloc(size * sizeof(float));       
-
-	for (int z = 0; z < size; z++)   
+	for (z = 0; z < size; z++)   
 	{
 		array[z] = ((float)rand()) / 100;
 
 	}
 
-	for (int z = 0; z < size; z++)
+	for (z = 0; z < size; z++)
 	{
 		if (z % 2 != 0 && array[z] > 0.00f)
 		{
@@ -226,9 +227,7 @@ int main()
 		}
 	}
 
-
-	float* check_array = malloc(size * sizeof(float));
-	for (int cha = 0; cha < size; cha++)
+	for (cha = 0; cha < size; cha++)
 	{
 		check_array[cha] = array[cha];
 	}
@@ -236,7 +235,6 @@ int main()
 
 	printf("\n\nВыбор сортировки:\n\n1. Inserts\n2. Shell\n3. Merge\n4. Radix\n\nНомер сортировки: ");
 
-	ushort select;
 	scanf_s("%hu", &select);  
 
 	switch (select)
@@ -252,14 +250,10 @@ int main()
 
 	case 4:
 	{
-		float* out_array = malloc(size * sizeof(float));
-
-		for (int i = 0; i < size; i++)
+		for (i = 0; i < size; i++)
 		{
 			out_array[i] = 0;
 		}
-		int* main_counters = malloc(256 * sizeof(float) * sizeof(int));
-
 		radix_Sort(array, out_array, main_counters, size);
 	}
 	break;
@@ -274,10 +268,10 @@ int main()
 
 	printf("\n\nКоличество сравнений: %d\n\nКоличество присваиваний: %d", comparisons, transfers);
 
-	ushort count_check = 0;
-	for (int check = 0; check < size; check++)
+	
+	for (checkk = 0; checkk < size; checkk++)
 	{
-		if (check_array[check] != array[check])
+		if (check_array[checkk] != array[checkk])
 		{
 			count_check++;
 			break;
