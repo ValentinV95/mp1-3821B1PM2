@@ -11,38 +11,28 @@ int compare(const void* x1, const void* x2)
     return (*(double*)x1 - *(double*)x2);
 }
 //Сортировка 
-void quickSort(double* arr, int first, int last)
+void quicksort(double* a, int L, int R)
 {
-    if (first < last)
-    {
-        int left = first, right = last;
-        double medium = arr[(left + right) / 2];
-        do
+    int i = L, j = R;
+    double q = a[(L + R) / 2];
+    do {
+        while (a[i] < q) { i++; sravn++; }
+        while (a[j] > q) { j--; perest++; }
+        if (i <= j)
         {
-            while (arr[left] < medium)
-                left++;
-            sravn++;
-                while (arr[right] > medium)
-                right--;
-                sravn++;
-                if (left <= right)
-                    sravn++;
-                  
-            {
-                double tmp = arr[left];
-                arr[left] = arr[right];
-                arr[right] = tmp;
-                left++;
-                right--;
-                perest++;
-
-            }
-        } while (left <= right);
-        
-        quickSort(arr, first, right);
-        quickSort(arr, left, last);
-    }
+            double w = a[i];
+            a[i] = a[j];
+            a[j] = w;
+            i++; j--; sravn++; perest++;
+        }
+    } while (i <= j);
+    if (L < j)
+        quicksort(a, L, j);
+    if (i < R)
+        quicksort(a, i, R);
 }
+
+
 void checking(double* arr, double* check, int n)
 {
     qsort(check, n, sizeof(double), compare);
@@ -57,6 +47,8 @@ void checking(double* arr, double* check, int n)
         }
     }
 }
+
+
 int main()
 {
     double a[SIZE];
@@ -70,7 +62,7 @@ int main()
     }
     printf("\n Sorted array: \n");
    
-    quickSort(a, 0, SIZE - 1); // Вызов функции сортировки
+    quicksort(a, 0, SIZE - 1); // Вызов функции сортировки
               // Вывод элементов массива после сортировки
     for (int i = 0; i < SIZE; i++) 
     {
