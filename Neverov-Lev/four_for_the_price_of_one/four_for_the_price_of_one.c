@@ -1,11 +1,17 @@
-﻿#include <stdio.h>
+﻿#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
+  #define _CRT_SECURE_NO_WARNINGS
+  #pragma warning(disable:4996)
+#endif
+
+#include <stdio.h>
 #include <time.h>
 #include <stdbool.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
-unsigned int count = 0;
+unsigned int comparisons = 0; // счётчик сравнений
+unsigned int appropriations = 0; // счётчик присвоений
 const int BUBBLE_SORT = 1, QUICK_SORT = 2, MERGE_SORT = 3, RADIX_SORT = 4;
 
 int choose() {
@@ -25,82 +31,100 @@ int swap(double* a, double* b) {
 	return 0;
 }
 
-int bubble_sort(double* array, int size) {
+void bubble_sort(double* array, int size) {
 	bool flag;
 	do {
 		flag = false;
+		++appropriations;
 		for (int j = 0; j < size - 1; ++j) {
+			++comparisons;
+			++appropriations;
 			if (array[j] > array[j + 1]) {
 				swap(&array[j], &array[j + 1]);
-				++count;
 				flag = true;
+				appropriations += 4;
 			}
+			++comparisons;
 		}
 	} while (flag == true);
-
-	return count;
 }
 
 int partition(double* array, int left_iterator, int right_iterator) {
 	double q = array[right_iterator];
 	int i = left_iterator - 1;
+	++appropriations;
 	for (int j = left_iterator; j < right_iterator; ++j) {
+		++comparisons;
 		if (array[j] <= q) {
 			++i;
 			swap(&array[i], &array[j]);
-			++count;
+			appropriations += 3;
 		}
+		++comparisons;
 	}
 	swap(&array[i + 1], &array[right_iterator]);
-	++count;
+	++appropriations;
+	appropriations += 3;
 	return (i + 1);
 }
 
-int quick_sort(double* array, int  left_iterator, int right_iterator) {
+void quick_sort(double* array, int  left_iterator, int right_iterator) {
 	if (left_iterator < right_iterator) {
+		++comparisons;
 		int q = partition(array, left_iterator, right_iterator);
+		++appropriations;
 		quick_sort(array, left_iterator, q - 1);
 		quick_sort(array, q + 1, right_iterator);
 	}
-	return count;
+	++comparisons;
 }
 
 
-int merge_sort(double* array, int size) {
+void merge_sort(double* array, int size) {
 
 	if (size > 1) {
+		++comparisons;
 		merge_sort(array, size / 2);
 		merge_sort(&array[size / 2], size - size / 2);
 		double* temp_array = (double*)malloc(size * sizeof(double));
-		int left_iterator = 0, right_iterator = 0;;
+		int left_iterator = 0, right_iterator = 0;
 		for (int i = 0; i < size; ++i) {
+			++comparisons;
 			if (array[left_iterator] < array[size / 2 + right_iterator]) {
+				--comparisons;
 				temp_array[i] = array[left_iterator++];
-				++count;
+				appropriations += 2;
 			}
 			else {
 				temp_array[i] = array[size / 2 + right_iterator++];
-				++count;
+				appropriations += 2;
 			}
+			comparisons += 2;
 			if (left_iterator == size / 2) {
+				--comparisons;
 				while (right_iterator < size - size / 2) {
+					++comparisons;
 					temp_array[++i] = array[size / 2 + right_iterator++];
-					++count;
+					++appropriations;
 				}
 			}
 			else if (right_iterator == size - size / 2) {
 				while (left_iterator < size / 2) {
+					++comparisons;
 					temp_array[++i] = array[left_iterator++];
-					++count;
+					++appropriations;
 				}
+				++comparisons;
 			}
+			comparisons += 2;
 		}
 
 		for (int i = 0; i < size; i++) {
+			++comparisons;
 			array[i] = temp_array[i];
+			++appropriations;
 		}
 	}
-	return count;
 }
 void create_counters(double* data, long* counters, long N) {
 	unsigned char* bp = (unsigned char*)data;
@@ -108,62 +132,66 @@ void create_counters(double* data, long* counters, long N) {
 	unsigned short i;
 	memset(counters, 0, 256 * sizeof(double) * sizeof(long));
 	while (bp != dataEnd) {
-		++count;
+		++comparisons;
 		for (i = 0; i < sizeof(double); ++i) {
-			++count;
+			++comparisons;
 			++counters[256 * i + *(bp++)];
+			appropriations += 2;
 		}
 	}
+	++comparisons;
 }
 
-void radix_pass(short Offset, long N, double* source, double* dest, long* Count) {
+void radix_pass(short Offset, long N, double* source, double* dest, long* count) {
 	double* sp;
-	long s = 0, c, i, * cp = Count;
+	long s = 0, c, i, * cp = count;
+	appropriations += 2;
 	unsigned char* bp;
 	for (i = 256; i > 0; --i, ++cp) {
+		++comparisons;
 		c = *cp;
 		*cp = s;
 		s += c;
-		++count;
+		appropriations += 3;
 	}
 	bp = (unsigned char*)source + Offset;
 	sp = source;
 	for (i = N; i > 0; --i, bp += sizeof(double), ++sp) {
-		cp = Count + *bp;
+		cp = count + *bp;
 		dest[*cp] = *sp;
 		++(*cp);
-		++count;
+		++appropriations;
 	}
 }
 
 void radix_sort(double* data, double* sorted_data, long* counters, long N) {
-	long* Count;
-	int numNeg = 0, negCount = 0;
+	long* count;
+	int numNeg = 0, neg_count = 0;
 	unsigned short i;
 	create_counters(data, counters, N);
 	for (i = 0; i < sizeof(double); ++i) {
-		++count;
-		Count = counters + 256 * i;
-		radix_pass(i, N, data, sorted_data, Count);
+		++appropriations;
+		count = counters + 256 * i;
+		radix_pass(i, N, data, sorted_data, count);
 		for (long j = 0; j < N; ++j) {
-			++count;
+			++appropriations;
 			data[j] = sorted_data[j];
 		}
 	}
 	i = N - 1;
 	while (data[i] < 0) {
-		sorted_data[negCount++] = data[i--];
-		++count;
+		sorted_data[neg_count++] = data[i--];
+		++appropriations;
 		++numNeg;
 	}
 
 	for (i = 0; i < N - numNeg; ++i) {
-		sorted_data[negCount++] = data[i];
-		++count;
+		sorted_data[neg_count++] = data[i];
+		++appropriations;
 	}
 	for (long j = 0; j < N; ++j) {
 		data[j] = sorted_data[j];
-		++count;
+		++appropriations;
 	}
 }
 
@@ -183,14 +211,13 @@ int main() {
 	putchar('\n');
 	choice = choose();
 	if (choice == BUBBLE_SORT) {
-		count = bubble_sort(nums, size);
-
+		bubble_sort(nums, size);
 	}
 	else if (choice == QUICK_SORT) {
-		count = quick_sort(nums, 0, size);
+		quick_sort(nums, 0, size);
 	}
 	else if (choice == MERGE_SORT) {
-		count = merge_sort(nums, size);
+		merge_sort(nums, size);
 	}
 	else {
 		double* temp = (double*)malloc(size * sizeof(double));
@@ -210,6 +237,7 @@ int main() {
 		}
 	}
 	putchar('\n');
-	printf("%u permutations were made\n", count);
+	printf("%u comparisons were made\n", comparisons);
+	printf("%u appropriations were made\n", appropriations);
 	return 0;
 }

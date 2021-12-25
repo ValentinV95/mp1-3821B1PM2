@@ -1,5 +1,0 @@
-﻿  four_for_the_price_of_one.c
-C:\Users\levsn\Desktop\лабораторная\four_for_the_price_of_one\four_for_the_price_of_one\four_for_the_price_of_one.c(16,3): error C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\levsn\Desktop\лабораторная\four_for_the_price_of_one\four_for_the_price_of_one\four_for_the_price_of_one.c(153,11): warning C4244: =: преобразование "long" в "unsigned short", возможна потеря данных
-C:\Users\levsn\Desktop\лабораторная\four_for_the_price_of_one\four_for_the_price_of_one\four_for_the_price_of_one.c(176,18): warning C4244: функция: преобразование "time_t" в "unsigned int", возможна потеря данных
-C:\Users\levsn\Desktop\лабораторная\four_for_the_price_of_one\four_for_the_price_of_one\four_for_the_price_of_one.c(175,2): error C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
