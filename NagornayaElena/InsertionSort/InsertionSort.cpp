@@ -5,8 +5,8 @@
 
 void main()
 {
-	int i,j,k = 0;
-	const int n = 25;
+	int i,j,k = 0, sravn=0, perest=0;
+	const int n = 50;
 	float A[n], B[n], tmp;
 	srand(1000);
 	for (i = 0; i < n; i++) {
@@ -14,12 +14,17 @@ void main()
 							B[i] = A[i];
 							printf("%.0f  ", A[i]);
                              }
-	for (i = 1; i < n; i++)  
-		for (j = i; (j > 0) && (A[j - 1] > A[j]); j--) {
-			                                           tmp = A[j - 1];
-			                                           A[j - 1] = A[j];
-			                                           A[j] = tmp;
-		                                               }
+	for (i = 1; i < n; i++)
+	{
+		sravn++;
+		for (j = i; (j > 0) && (A[j - 1] > A[j]); j--)
+		{
+			perest++;
+			tmp = A[j - 1];
+			A[j - 1] = A[j];
+			A[j] = tmp;
+		}
+	}
 	printf("\n");
 	for (i = 0; i < n; i++) { printf("%.0f  ", A[i]); }
 	printf("\n");
@@ -37,4 +42,6 @@ void main()
 	printf("\n ");
 	if (k == n) { printf("Correct"); }
 	else {printf("No correct"); }
+	printf("\n");
+	printf("%i  %i  %i", n, sravn, perest);
 }

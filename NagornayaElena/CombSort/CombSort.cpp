@@ -5,10 +5,10 @@
 int main()
 {
 	int i,j, k = 0;
-	const int n = 30;
+	const int n = 50;
 	float A[n], B[n], tmp;
 	double factor = 1.2473309;
-	int step = n - 1;
+	int step = n - 1, sravn=0, perest=0;
 	srand(1000);
 	for (i = 0; i < n; i++) {
 		                    A[i] = -100+rand() % 1000;
@@ -17,13 +17,16 @@ int main()
 	                        }
 
 	while (step >= 1) {
-		              for (i = 0; i + step < n; i++) {
-						                             if (A[i] > A[i + step]) {
-														                      tmp = A[i];
-																			  A[i] = A[i + step];
-																			  A[i + step] = tmp;
-													                          }
-					                                 }	
+		for (i = 0; i + step < n; i++) 
+		{
+			sravn++;
+			if (A[i] > A[i + step]) {
+									tmp = A[i];
+									A[i] = A[i + step];
+									A[i + step] = tmp;
+									perest++;
+									}
+	    }	
 					  step /= factor;
 	                   }
 	printf("\n");
@@ -44,5 +47,7 @@ int main()
 	printf("\n");
 	if (k == n) { printf("Correct"); }
 	else { printf("No correct"); }
+	printf("\n");
+	printf("%i  %i   %i", n, sravn, perest);
 	return 0;
 }

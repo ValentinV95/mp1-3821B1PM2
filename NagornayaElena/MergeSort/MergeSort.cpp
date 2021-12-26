@@ -7,7 +7,7 @@ void merge (float A[], int p, int q, int r)
 {
 	const int n1 = q - p + 1;
 	const int n2 = r - q;
-	int i, j, k;
+	int i, j, k, sravn=0, perest=0;
 	float L[1000], M[1000];
 	for (i = 0; i < n1; i++) L[i] = A[p + i];
 	for (j = 0; j < n2; j++) M[j] = A[q + 1 + j];
