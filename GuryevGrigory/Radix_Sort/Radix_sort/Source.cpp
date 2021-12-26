@@ -132,6 +132,6 @@ int main()
 	signedsort(arr, arr3, lenght);
 	for (int i = 0; i < lenght; i++)
 	{
-		printf("%f,\n", arr4[i]);
+		printf("%f,\n", arr3[i]);
 	}
 }
