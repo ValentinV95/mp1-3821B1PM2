@@ -13,7 +13,6 @@ void Selection_Sort(float *Array,int size)
 		int min_index = i;
 		for (int j = i + 1; j < size; j++)
 		{
-			ng=ng + 1;
 			if (*(Array+min_index) > *(Array+j))
 			{
 				min_index = j;
