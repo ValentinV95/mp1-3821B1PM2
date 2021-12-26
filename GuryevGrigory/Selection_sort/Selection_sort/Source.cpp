@@ -3,9 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-int Selection_Sort(float *Array,int size)
+void Selection_Sort(float *Array,int size)
 {
-	int ng = 0;
 	float change_var;
 
 	for (int i = 0; i < size-1; i++)
@@ -25,7 +24,6 @@ int Selection_Sort(float *Array,int size)
 		*(Array+i) = change_var;
 
 	}
-	return ng;
 }
 
 int main()
@@ -40,36 +38,17 @@ int main()
 		float f =  a/ 100.0f;
 		Array[i] = f;
 	}
-	/*
-	for (int i = 0; i < 9; i++)
-	{
-		int min_index = i;
-
-		for (int j = i+1; j < 10; j++)
-		{
-			if (Array[min_index] > Array[j])
-			{
-				//min = Array[j];
-				min_index = j;
-			}
-		}
-		int change_var;
-		change_var = Array[min_index];
-		Array[min_index] = Array[i];
-		Array[i] = change_var;
-	}*/
 	for (int z = 0; z < 100; z++)
 	{
 		printf("%f, ", Array[z]);
 	}
 	printf("\n");
-	n = Selection_Sort(Array,size);
+	Selection_Sort(Array,size);
 	for (int z = 0; z < 100; z++)
 	{
 		printf("%f, ", Array[z]);
 	}
 	printf("\n");
 	printf("%i", n);
-	//printf("%f Number of iterations:", n);
 	return 0;
 }
