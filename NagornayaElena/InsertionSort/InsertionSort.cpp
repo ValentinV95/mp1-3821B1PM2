@@ -6,7 +6,7 @@
 void main()
 {
 	int i,j,k = 0, sravn=0, perest=0;
-	const int n = 50;
+	const int n = 195;
 	float A[n], B[n], tmp;
 	srand(1000);
 	for (i = 0; i < n; i++) {

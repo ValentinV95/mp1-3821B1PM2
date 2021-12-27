@@ -5,7 +5,7 @@
 int main()
 {
 	int i,j, k = 0;
-	const int n = 50;
+	const int n = 195;
 	float A[n], B[n], tmp;
 	double factor = 1.2473309;
 	int step = n - 1, sravn=0, perest=0;
@@ -41,8 +41,8 @@ int main()
 			}
 	printf("\n");
 	for (i = 0; i < n; i++) {
-		if (A[i] == B[i]) { k = k + 1; };
-		printf("%.0f  ", B[i]);
+		if (A[i] == B[i]) { k = k + 1; } 
+		printf("%.0f  ", B[i]); 
 	}
 	printf("\n");
 	if (k == n) { printf("Correct"); }
