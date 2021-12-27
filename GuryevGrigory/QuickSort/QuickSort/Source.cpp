@@ -51,11 +51,6 @@ int main()
 		float f = a / 100.0f;
 		Array[i] = f;
 	}
-	
-	for (int z = 0; z < 100; z++)
-	{
-		printf("%f, ", Array[z]);
-	}
 	for (int i = 0; i < 100; i++)
 	{
 		A_d[i] = Array[i];
