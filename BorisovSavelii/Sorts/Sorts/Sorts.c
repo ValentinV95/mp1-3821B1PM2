@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <malloc.h>
-#include <locale.h>
+#include <string.h>
 
 #define uchar unsigned char
 #define ushort unsigned short
@@ -155,12 +155,6 @@ void signedRadixLastPass(float* sourse, float* dest, uint size_RLP)
 		dest[i + numNeg] = sourse[i];
 		transfers++;
 	}
-
-	for (i = 0; ++comparisons && i < size_RLP; i++)
-	{
-		sourse[i] = dest[i];
-		transfers++;
-	}
 }
 
 void radix_Sort(float* array_4, float* out_array_4, int* in_counters, uint size_radix)
@@ -208,8 +202,6 @@ int main()
 	float* check_array = (float*)malloc(size * sizeof(float));
 	float* out_array = (float*)malloc(size * sizeof(float));
 	int* main_counters = (int*)malloc(256 * sizeof(float) * sizeof(int));
-	
-	setlocale(LC_ALL, "Russian");
 
 	srand(time(NULL));
 
@@ -233,7 +225,7 @@ int main()
 	}
 	check(check_array, size);
 
-	printf("\n\nВыбор сортировки:\n\n1. Inserts\n2. Shell\n3. Merge\n4. Radix\n\nНомер сортировки: ");
+	printf("\n\nSort selection:\n\n1. Inserts\n2. Shell\n3. Merge\n4. Radix\n\nSort number: ");
 
 	scanf_s("%hu", &select);  
 
@@ -266,24 +258,36 @@ int main()
 	break;
 	}
 
-	printf("\n\nКоличество сравнений: %d\n\nКоличество присваиваний: %d", comparisons, transfers);
+	printf("\n\nNumber of comparisons: %d\n\nNumber of transfers: %d", comparisons, transfers);
 
-	
-	for (checkk = 0; checkk < size; checkk++)
+	if (select == 4)
 	{
-		if (check_array[checkk] != array[checkk])
+		for (checkk = 0; checkk < size; checkk++)
 		{
-			count_check++;
-			break;
+			if (check_array[checkk] != out_array[checkk])
+			{
+				count_check++;
+				break;
+			}
 		}
 	}
-
-	printf("\n\nПроверка сортировки: ");
+	else
+	{
+		for (checkk = 0; checkk < size; checkk++)
+		{
+			if (check_array[checkk] != array[checkk])
+			{
+				count_check++;
+				break;
+			}
+		}
+	}
+	printf("\n\nSort check: ");
 
 	if (count_check != 0)
-		printf("Сортировка НЕкорректна\n");
+		printf("Sorting is incorrect\n");
 	else
-		printf("Сортировка корректна\n");
+		printf("Sorting is correct\n");
 
 	return 0;
 }
