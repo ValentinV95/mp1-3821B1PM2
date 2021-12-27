@@ -75,6 +75,7 @@ int comp(const void* a, const void* b)
 int main()
 {
 	int lenght = 1000;
+	int counter_sort = 0;
 	float* m = (float*)malloc(lenght * sizeof(float));
 	float* m_d = (float*)malloc(lenght * sizeof(float));
 	float* arr = (float*)malloc(lenght * sizeof(float));
