@@ -116,22 +116,52 @@ void signedsort(float* MainArr, float* Out, int sz)
 	}
 	
 }
+int comp(const void* a, const void* b)
+{
+	float fa = *(const float*)a;
+	float fb = *(const float*)b;
+	return (fa > fb) - (fa < fb);
+}
 int main()
 {
 	int lenght = 100;
+	int counter_sort = 0;
 	float* arr = (float*)malloc(lenght * sizeof(float));
 	float* arr2;
 	float* arr3;
+	float* a_d = (float*)malloc(lenght * sizeof(float));
 	for (int i = 0; i < lenght; i++)
 	{
 		arr[i] = (rand() % 1001 + (rand() % 1000) / 1000.0f) * pow(-1.0, (rand() % 2));
+	}
+	for (int i = 0; i < lenght; i++)
+	{
+		a_d[i] = arr[i];
 	}
 	arr2 = (float*)malloc(lenght * sizeof(float));
 	arr3 = (float*)malloc(lenght * sizeof(float));
 	radixSort(arr, arr2, lenght);
 	signedsort(arr, arr3, lenght);
+	qsort(a_d, lenght, sizeof(float), comp);
 	for (int i = 0; i < lenght; i++)
 	{
-		printf("%f,\n", arr3[i]);
+		if (a_d[i] == arr3[i])
+		{
+			counter_sort++;
+		}
 	}
+	if (counter_sort == lenght)
+	{
+		printf("correct");
+	}
+	else
+	{
+		printf("not correct");
+		printf("%i", counter_sort);
+	}
+	/*for (int i = 0; i < lenght; i++)
+	{
+		printf("%f,\n", arr3[i]);
+	}*/
 }
+
