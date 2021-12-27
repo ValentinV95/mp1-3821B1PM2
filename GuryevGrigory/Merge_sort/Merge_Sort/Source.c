@@ -64,10 +64,20 @@ float* mergeSort(float* arr, float* buff, unsigned int strt,unsigned int end)
 	return arr2;
 }
 
+int comp(const void* a, const void* b)
+{
+	float fa = *(const float*)a;
+	float fb = *(const float*)b;
+	return (fa > fb) - (fa < fb);
+}
+
+
 int main()
 {
 	int lenght = 1000;
 	float* m = (float*)malloc(lenght * sizeof(float));
+	float* m_d = (float*)malloc(lenght * sizeof(float));
+	float* arr = (float*)malloc(lenght * sizeof(float));
 	float* xd;
 
 
@@ -76,14 +86,30 @@ int main()
 	{
 		m[i] = (rand() % 1001 + (rand() % 1000) / 1000.0f) * pow(-1.0, (rand() % 2));
 	}
-	float* arr = (float*)malloc(lenght * sizeof(float));
+		for (int i = 0; i < lenght; i++)
+	{
+		m_d[i] = m[i];
+	}
 	for (int i = 0; i < lenght; i++)
 	{
 		arr[i] = m[i];
 	}
+	qsort(m_d, lenght, sizeof(float), comp);
 	xd = mergeSort(m, arr, 0, lenght - 1);
-	for (int j = 0; j < lenght; j++)
+		for (int i = 0; i < lenght; i++)
 	{
-		printf("%f,\n", xd[j]);
+		if (m_d[i] == xd[i])
+		{
+			counter_sort++;
+		}
+	}
+	if (counter_sort == lenght)
+	{
+		printf("correct");
+	}
+	else
+	{
+		printf("not correct");
+		printf("%i",counter_sort);
 	}
 }
