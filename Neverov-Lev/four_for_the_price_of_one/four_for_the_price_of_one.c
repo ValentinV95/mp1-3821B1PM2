@@ -24,6 +24,13 @@ int choose() {
 	return choice;
 }
 
+int compare_doubles(const void* a, const void* b) //  вспомогательная фуекция для qsort
+{
+	double arg1 = *(const double*)a;
+	double arg2 = *(const double*)b;
+	return (arg1 > arg2) - (arg1 < arg2);
+}
+
 int swap(double* a, double* b) {
 	double temp = *a;
 	*a = *b;
@@ -203,11 +210,13 @@ int main() {
 	scanf("%d", &size);
 	srand(time(NULL));
 	double* nums = (double*)malloc(size * sizeof(double));
+	double* nums_test = (double*)malloc(size * sizeof(double)); // копия исходного массива для проверки корректности сортировки
 	printf("Generated array:\n");
 	for (i = 0; i < size; ++i) {
 		nums[i] = pow((double)(-1.0), rand() % 2) * ((rand() % 1000) + ((rand() % 100000) / 100000.0));
 		printf("%f ", nums[i]);
 	}
+	nums_test = nums;
 	putchar('\n');
 	choice = choose();
 	if (choice == BUBBLE_SORT) {
@@ -236,6 +245,13 @@ int main() {
 			break;
 		}
 	}
+	qsort(nums_test, size, sizeof(double), compare_doubles); // сортирование копии массива с помощью qsort
+	for (int i = 0; i < size; ++i) { //проверка равенства после сортирования исходного массива и его копии
+			if (nums[i] != nums_test[i]) {
+				printf("ERROR: Array is not sorted");
+				break;
+			}
+		}
 	putchar('\n');
 	printf("%u comparisons were made\n", comparisons);
 	printf("%u appropriations were made\n", appropriations);
