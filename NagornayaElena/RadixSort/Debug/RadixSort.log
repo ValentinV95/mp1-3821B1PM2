@@ -1,0 +1,7 @@
+﻿  RadixSort.c
+D:\Nagornaya_Elena\mp1-3821B1PM2\NagornayaElena\RadixSort\RadixSort.c(81,22): warning C4133: функция: несовместимые типы - из "float *" в "unsigned int *"
+D:\Nagornaya_Elena\mp1-3821B1PM2\NagornayaElena\RadixSort\RadixSort.c(81,31): warning C4133: функция: несовместимые типы - из "float *" в "unsigned int *"
+D:\Nagornaya_Elena\mp1-3821B1PM2\NagornayaElena\RadixSort\RadixSort.c(100,16): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Nagornaya_Elena\mp1-3821B1PM2\NagornayaElena\RadixSort\RadixSort.c(112,15): warning C4244: функция: преобразование "time_t" в "unsigned int", возможна потеря данных
+D:\Nagornaya_Elena\mp1-3821B1PM2\NagornayaElena\RadixSort\RadixSort.c(115,29): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+  RadixSort.vcxproj -> D:\Nagornaya_Elena\mp1-3821B1PM2\NagornayaElena\RadixSort\Debug\RadixSort.exe
