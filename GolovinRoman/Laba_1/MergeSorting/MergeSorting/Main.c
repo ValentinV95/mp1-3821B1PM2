@@ -110,14 +110,14 @@ void mergeSort(float* arr, float* second, int l, int r)
 
 void main()
 {
-	int length = 50, i = 0;
+	int length = 100000000, i = 0;
 	float complexity = 0;
 	float* mas = createMas(length);
 	float* mas_copy = malloc(sizeof(float) * length);
 
 	srand(114536171247);
 
-	while (length <= 40000)
+	while (length <= 10000000)
 	{
 		for (i = 0; i < length; i++)
 		{
