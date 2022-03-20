@@ -77,7 +77,7 @@ void create_array(double *array, int n, function res, double param)
 void correct_check(double res, double(*original)(double x), double x) 
 {
 	printf("\nabsolute error is: %.16lf", fabs(original(x) - res));
-	printf("\nrelative error is: %.16lf %%", fabs(((original(x) - res) / res))*100);
+	printf("\nrelative error is: %.16lf %%", fabs(((original(x) - res) / original(x)) * 100.0));
 }
 
 void main() 
@@ -85,7 +85,7 @@ void main()
 	double *array = NULL;
 	double x;
 	int choose;
-	int i,n = 100;   
+	int n = 100;   
 	double summ = 0;
 
 	printf("Choose function:\n");
