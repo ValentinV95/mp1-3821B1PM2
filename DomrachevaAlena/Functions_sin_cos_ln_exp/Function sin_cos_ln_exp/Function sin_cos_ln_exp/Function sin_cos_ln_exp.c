@@ -6,19 +6,21 @@
 double exp_back(double x)
 {
 	double exp_res = 0;
+	double sled;
+	int i;
 	const int size = 100;
 	double mas[100];
 	double n = 1.0;
 	double pred = 1.0;
 	mas[0] = 1.0;
-	for (int i = 1; i < size; i++)
+	for (i = 1; i < size; i++)
 	{
-		double sled = x / n;
+		sled = x / n;
 		mas[i] = pred * sled;
 		pred *= sled;
 		n += 1.0;
 	}
-	for (int i = size - 1; i >= 0; i--)
+	for (i = size - 1; i >= 0; i--)
 	{
 		exp_res += mas[i];
 	}
@@ -27,19 +29,21 @@ double exp_back(double x)
 double exp_str(double x)
 {
 	double exp_res = 0;
+	double sled;
+	int i;
 	const int size = 100;
 	double mas[100];
 	double n = 1.0;
 	double pred = 1.0;
 	mas[0] = 1.0;
-	for (int i = 1; i < size; i++)
+	for (i = 1; i < size; i++)
 	{
-		double sled = x / n;
+		sled = x / n;
 		mas[i] = pred * sled;
 		pred *= sled;
 		n += 1.0;
 	}
-	for (int i = 0; i < size; i++)
+	for (i = 0; i < size; i++)
 	{
 		exp_res += mas[i];
 	}
@@ -49,19 +53,21 @@ double exp_str(double x)
 double ln_back(double x)
 {
 	double ln_res = 0;
+	double sled;
+	int i;
 	const int size = 100;
 	double mas[100];
 	double n = 1.0;
 	double pred = x;
 	mas[0] = x;
-	for (int i = 1; i < size; i++)
+	for (i = 1; i < size; i++)
 	{
-		double sled = x / (n + 1);
+		sled = x / (n + 1);
 		mas[i] = pow(-1, i) * pred * sled;
 		pred *= x;
 		n += 1.0;
 	}
-	for (int i = size - 1; i >= 0; i--)
+	for (i = size - 1; i >= 0; i--)
 	{
 		ln_res += mas[i];
 	}
@@ -70,19 +76,21 @@ double ln_back(double x)
 double ln_str(double x)
 {
 	double ln_res = 0;
+	double sled;
+	int i;
 	const int size = 100;
 	double mas[100];
 	double n = 1.0;
 	double pred = x;
 	mas[0] = x;
-	for (int i = 1; i < size; i++)
+	for (i = 1; i < size; i++)
 	{
-		double sled = x / (n + 1);
+		sled = x / (n + 1);
 		mas[i] = pow(-1, i) * pred * sled;
 		pred *= x;
 		n += 1.0;
 	}
-	for (int i = 0; i < size; i++)
+	for (i = 0; i < size; i++)
 	{
 		ln_res += mas[i];
 	}
@@ -93,27 +101,30 @@ double cos_back(double x)
 {
 	const double PI = 3.141592653589793238462643383279502884;
 	const int size = 100;
+	double a, sled;
+	int i;
 	double mas[100];
 	double cos_res = 0;
-	for (double i = 2.0 * PI; x < 0.0;)
-	{
-		x += i;
-	}
-	for (double i = 2.0 * PI; x > i;)
-	{
-		x -= i;
-	}
 	mas[0] = 1.0;
 	double n = 1.0;
 	double pred = 1.0;
-	for (int i = 1; i < size; i++)
+	for (a = 2.0 * PI; x < 0.0;)
 	{
-		double sled = (x * x) / (n * (n + 1.0));
+		x += a;
+	}
+	for (a = 2.0 * PI; x > a;)
+	{
+		x -= a;
+	}
+	
+	for (i = 1; i < size; i++)
+	{
+		sled = (x * x) / (n * (n + 1.0));
 		mas[i] = pow(-1, i) * pred * sled;
 		pred *= sled;
 		n += 2.0;
 	}
-	for (int i = size - 1; i >= 0; i--)
+	for (i = size - 1; i >= 0; i--)
 	{
 		cos_res += mas[i];
 	}
@@ -123,27 +134,30 @@ double cos_str(double x)
 {
 	const double PI = 3.141592653589793238462643383279502884;
 	const int size = 100;
+	double a, sled;
+	int i;
 	double mas[100];
 	double cos_res = 0;
-	for (double i = 2.0 * PI; x < 0.0;)
-	{
-		x += i;
-	}
-	for (double i = 2.0 * PI; x > i;)
-	{
-		x -= i;
-	}
 	mas[0] = 1.0;
 	double n = 1.0;
 	double pred = 1.0;
-	for (int i = 1; i < size; i++)
+	for (a = 2.0 * PI; x < 0.0;)
 	{
-		double sled = (x * x) / (n * (n + 1.0));
+		x += a;
+	}
+	for (a = 2.0 * PI; x > a;)
+	{
+		x -= a;
+	}
+	
+	for (i = 1; i < size; i++)
+	{
+		sled = (x * x) / (n * (n + 1.0));
 		mas[i] = pow(-1, i) * pred * sled;
 		pred *= sled;
 		n += 2.0;
 	}
-	for (int i = size - 1; i >= 0; i--)
+	for (i = size - 1; i >= 0; i--)
 	{
 		cos_res += mas[i];
 	}
@@ -154,27 +168,30 @@ double sin_back(double x)
 {
 	const double PI = 3.141592653589793238462643383279502884;
 	const int size = 100;
+	double a, sled;
+	int i;
 	double mas[100];
 	double sin_res = 0;
-	for (double i = 2.0 * PI; x < 0.0;)
-	{
-		x += i;
-	}
-	for (double i = 2.0 * PI; x > i;)
-	{
-		x -= i;
-	}
 	mas[0] = x;
 	double n = 1.0;
 	double pred = x;
-	for (int i = 1; i < size; i++)
+	for (a = 2.0 * PI; x < 0.0;)
 	{
-		double sled = (x * x) / ((n + 1.0) * (n + 2.0));
+		x += a;
+	}
+	for (a = 2.0 * PI; x > a;)
+	{
+		x -= a;
+	}
+	
+	for (i = 1; i < size; i++)
+	{
+		sled = (x * x) / ((n + 1.0) * (n + 2.0));
 		mas[i] = pow(-1, i) * pred * sled;
 		pred *= sled;
 		n += 2.0;
 	}
-	for (int i = size - 1; i >= 0; i--)
+	for (i = size - 1; i >= 0; i--)
 	{
 		sin_res += mas[i];
 	}
@@ -184,27 +201,30 @@ double sin_str(double x)
 {
 	const double PI = 3.141592653589793238462643383279502884;
 	const int size = 100;
+	double a, sled;
+	int i;
 	double mas[100];
 	double sin_res = 0;
-	for (double i = 2.0 * PI; x < 0.0;)
-	{
-		x += i;
-	}
-	for (double i = 2.0 * PI; x > i;)
-	{
-		x -= i;
-	}
 	mas[0] = x;
 	double n = 1.0;
 	double pred = x;
-	for (int i = 1; i < size; i++)
+	for (a = 2.0 * PI; x < 0.0;)
 	{
-		double sled = (x * x) / ((n + 1.0) * (n + 2.0));
+		x += a;
+	}
+	for (a = 2.0 * PI; x > a;)
+	{
+		x -= a;
+	}
+	
+	for (i = 1; i < size; i++)
+	{
+		sled = (x * x) / ((n + 1.0) * (n + 2.0));
 		mas[i] = pow(-1, i) * pred * sled;
 		pred *= sled;
 		n += 2.0;
 	}
-	for (int i = size - 1; i >= 0; i--)
+	for (i = size - 1; i >= 0; i--)
 	{
 		sin_res += mas[i];
 	}
