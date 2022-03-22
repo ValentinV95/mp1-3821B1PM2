@@ -1,0 +1,4 @@
+﻿  radixsort.c
+C:\Users\mrkir\Программы\mp1-3821B1PM2\DerevyankinKirill\radixsort\radixsort\radixsort.c(17,8): warning C4013: memset: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\mrkir\Программы\mp1-3821B1PM2\DerevyankinKirill\radixsort\radixsort\radixsort.c(112,15): warning C4244: функция: преобразование "time_t" в "unsigned int", возможна потеря данных
+  radixsort.vcxproj -> C:\Users\mrkir\Программы\mp1-3821B1PM2\DerevyankinKirill\radixsort\x64\Debug\radixsort.exe
