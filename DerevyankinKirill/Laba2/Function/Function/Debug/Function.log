@@ -1,0 +1,6 @@
+﻿  Function.c
+C:\Users\mrkir\Documents\Лабораторная\Function\Function\Function.c(40,19): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+C:\Users\mrkir\Documents\Лабораторная\Function\Function\Function.c(70,19): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+C:\Users\mrkir\Documents\Лабораторная\Function\Function\Function.c(99,19): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+C:\Users\mrkir\Documents\Лабораторная\Function\Function\Function.c(128,19): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+  Function.vcxproj -> C:\Users\mrkir\Documents\Лабораторная\Function\Debug\Function.exe
