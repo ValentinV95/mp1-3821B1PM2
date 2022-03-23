@@ -31,27 +31,48 @@ void quickSort(float *array, int first, int last)
 		quickSort(array, l, last);
 }
 
+int comp(const void* a, const void* b)
+{
+	float fa = *(const float*)a;
+	float fb = *(const float*)b;
+	return (fa > fb) - (fa < fb);
+}
+
 int main()
 {
 	srand(time(NULL));
+	int counter_sort = 0;
 	int size = 10;
 	float Array[100];
+	float A_d[100];
 	for (int i = 0; i < 100; i++)
 	{
 		int a = rand() % 10000;
 		float f = a / 100.0f;
 		Array[i] = f;
 	}
-	
-	for (int z = 0; z < 100; z++)
+	for (int i = 0; i < 100; i++)
 	{
-		printf("%f, ", Array[z]);
+		A_d[i] = Array[i];
 	}
 	printf("\n");
 	quickSort(Array,0, 99);
-	for (int z = 0; z < 100; z++)
+	qsort(A_d, 100, sizeof(float), comp);
+	for (int i = 0; i < 100; i++)
 	{
-		printf("%f, ", Array[z]);
+		if (A_d[i] == Array[i])
+		{
+			counter_sort++;
+		}
+	}
+	if (counter_sort == 100)
+	{
+		printf("correct");
+	}
+	else
+	{
+		printf("not correct");
+		printf("%i", counter_sort);
 	}
 	printf("\n");
 	//printf("%i", n);
