@@ -13,7 +13,7 @@ double revSum(double (*nextEl)(double x, double pref, int i), double first, doub
 static double recSum(double (*nextEl)(double x, double pref, int i), double x, double pref, int i)
 {
 	double next = nextEl(x, pref, i);
-	if (fabs(next) > 0.0000000000000001)
+	if (i < 200)
 		return next + recSum(nextEl, x, next, i + 1);
 	else
 		return  next;
@@ -25,7 +25,7 @@ double straightSum(double (*nextEl)(double x, double pref, int i), double first,
 	double  next = first,sum =next;
 	int i = 1;
 
-	while (fabs(next) > 0.0000000000000001)
+	while (i < 100)
 	{
 		next = nextEl(x, next, i);
 		sum += next;
@@ -38,15 +38,18 @@ double straightSum(double (*nextEl)(double x, double pref, int i), double first,
 //Сумма соседних элементов
 double nearbySum(double (*nextEl)(double x, double pref, int i), double first, double x)
 {
-	double sum = 0, next;
+	double sum = 0.0, next = first,a;
 	int i = 1;
 
-	next = first;
-	while (fabs(next) > 0.0000000000000001)
+	next = nextEl(x,first, i);
+	sum += (first + next);
+	while (i < 100)
 	{
-		sum += next + nextEl(x, next, i + 1);
-		i ++;
-		next = nextEl(x, nextEl(x, next, i), i+1);
+		next = nextEl(x, next, ++i);
+		a = next;
+		next = nextEl(x, next, ++i);
+		a += next;
+		sum += a;
 	}
 
 	return sum;
@@ -54,7 +57,7 @@ double nearbySum(double (*nextEl)(double x, double pref, int i), double first, d
 
 double nextSin(double x, double pref, int i)
 {
-	return ((-1) * pref * x * x) / (double)(2*i * (2*i + 1));
+	return ((-1) * pref * x * x) / (double)(2*i * (2*i + 1.0));
 }
 
 double nextCos(double x, double pref, int i)
@@ -69,5 +72,5 @@ double nextExp(double x, double pref, int i)
 
 double nextLn(double x, double pref, int i)
 {
-	return (-1) * pref * x / (double)i;
+	return (-1) * pref*i / (double)(i+1.0);
 }
