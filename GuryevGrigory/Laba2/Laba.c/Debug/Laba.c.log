@@ -1,0 +1,6 @@
+﻿  Source.c
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(26,10): warning C4473: "scanf_s": передано недостаточно аргументов для строки формата
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(26,10): message : заполнители и их параметры ожидают переменное число аргументов в количестве 2, но было предоставлено 1
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(26,10): message : отсутствующий вариативный аргумент "2" требуется для строки форматирования "%c"
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(26,10): message : этот аргумент используется в качестве размера буфера
+  Laba.c.vcxproj -> C:\Users\ggury\source\repos\Laba.c\Debug\Laba.c.exe
