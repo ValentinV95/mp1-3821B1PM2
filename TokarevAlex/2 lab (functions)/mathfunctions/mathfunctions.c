@@ -2,69 +2,72 @@
 #include <stdlib.h>
 #include<math.h>
 
-#define summ_type simple_summ(array,n);
+#define summ_type pairwise_summ(array, n);
 
-typedef double(*function)(double, double, int);
+typedef float(*function)(float, float, int);
 
-double sin_next(double prev, double x, int i)
+float sin_next(float prev, float x, int i)
 {
 	i = 2 * i + 1;
-	return (prev * (-1.0) * x * x) / (i * (i - 1.0));
+	return (prev * (-1.f) * x * x) / (i * (i - 1.f));
 }
 
-double cos_next(double prev, double x, int i)
+float cos_next(float prev, float x, int i)
 {
 	i = 2 * i;
-	return (prev * (-1.0) * x * x) / (i * (i - 1.0));
+	return (prev * (-1.f) * x * x) / (i * (i - 1.f));
 }
 
-double exp_next(double prev, double x, int i)
+float exp_next(float prev, float x, int i)
 {
-	return (prev * x) / ((double)i);
+	return (prev * x) / ((float)i);
 }
 
-double ln_next(double prev, double x, int i) 
+float ln_next(float prev, float x, int i)
 {
-	return (prev * (-1.0) * x * i) / (i + 1.0);
+	return (prev * (-1.f) * x * i) / (i + 1.f);
 }
 
-double simple_summ(double *array, int n)
+float simple_summ(float* array, int n)
 {
-	double summ = 0;
+	float summ = 0;
 	int i;
-	for (i=0; i<n; i++) 
+	for (i = 0; i < n; i++)
 	{
 		summ += array[i];
 	}
 	return summ;
 }
 
-double inverse_summ(double* array, int n)
+float inverse_summ(float* array, int n)
 {
-	double summ = 0;
+	float summ = 0;
 	int i;
-	for (i=1; i <= n; i++)
+	for (i = 1; i <= n; i++)
 	{
-		summ += array[n-i];
+		summ += array[n - i];
 	}
 	return summ;
 }
 
-double pairwise_summ(double* array, int n)
+float pairwise_summ(float* array, int n)
 {
-	int i, j;
-	while (n > 1) 
-	{
-		for (i = 1, j = 0; i < n; i += 2, ++j) 
-		{
-			array[j] = array[i] + array[i - 1];
-		}
-		n /= 2;
-	}
-	return array[0];
+	int i;
+	float summ = 0;
+
+	for (i = 0; i < n - 1; i += 2)
+		array[i] += array[i+1];
+
+	if (n % 2 == 1)
+		summ += array[i + 2];
+
+	for (i = 0; i < n; i += 2)
+		summ += array[i];
+
+	return summ;
 }
 
-void create_array(double *array, int n, function res, double param)
+void create_array(float* array, int n, function res, float param)
 {
 	int i;
 
@@ -74,19 +77,19 @@ void create_array(double *array, int n, function res, double param)
 	}
 }
 
-void correct_check(double res, double(*original)(double x), double x) 
+void correct_check(float res, double(*original)(double x), float x)
 {
-	printf("\nabsolute error is: %.16lf", fabs(original(x) - res));
-	printf("\nrelative error is: %.16lf %%", fabs(((original(x) - res) / res))*100);
+	printf("\nabsolute error is: %.8f", fabsf( (float)original(x) - res) );
+	printf("\nrelative error is: %.8f %%", fabsf( ( ( (float)original(x) - res) / (float)original(x)) * 100.f));
 }
 
-void main() 
+void main()
 {
-	double *array = NULL;
+	float* array;
 	double x;
 	int choose;
-	int i,n = 100;   
-	double summ = 0;
+	int n = 100;
+	float summ = 0;
 
 	printf("Choose function:\n");
 	printf("Enter: 1 for sin(x), 2 for cos(x), 3 for exp(x), 4 for ln(1+x)\n");
@@ -94,34 +97,34 @@ void main()
 	printf("Enter x:\n");
 	scanf_s("%lf", &x);
 
-	array = (double*)malloc(n * sizeof(double));
+	array = (float*)malloc(n * sizeof(float));
 
-	switch(choose)
-	{	
+	switch (choose)
+	{
 	case(1):
 
 		array[0] = x;
 		create_array(array, n, sin_next, x);
 		summ = summ_type;
-		printf("\nsin(%.3lf) = %.16lf", x, summ);
+		printf("\nsin(%.3f) = %.8f", x, summ);
 		correct_check(summ, sin, x);
 		break;
 
 	case(2):
 
-		array[0] = 1;
-		create_array(array, n, cos_next, x);
+		array[0] = 1.f;
+		create_array(array, n, cos_next,(float)x);
 		summ = summ_type;
-		printf("\ncos(%lf) = %lf", x, summ);
+		printf("\ncos(%f) = %.8f", x, summ);
 		correct_check(summ, cos, x);
 		break;
 
 	case(3):
 
-		array[0] = 1;
+		array[0] = 1.f;
 		create_array(array, n, exp_next, x);
 		summ = summ_type;
-		printf("\nexp(%lf) = %lf", x, summ);
+		printf("\nexp(%f) = %.8f", x, summ);
 		correct_check(summ, exp, x);
 		break;
 
@@ -130,8 +133,8 @@ void main()
 		array[0] = x;
 		create_array(array, n, ln_next, x);
 		summ = summ_type;
-		printf("\nln(1 + %lf) = %lf", x, summ);
-		correct_check(summ, log, x+1);
+		printf("\nln(1 + %f) = %.8f", x, summ);
+		correct_check(summ, log, x + 1);
 		break;
 	}
 }
