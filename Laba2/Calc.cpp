@@ -4,13 +4,13 @@
 
 int main()
 {
-	int i; const int n = 100;
-	double A[100], j, sinus1, sinus2, sinus3, cosinus1, cosinus2, cosinus3, expon1, expon2, expon3, ln1, ln2, ln3, k, x, prov;
+	int i; const int n = 100; double j, _x;
+	float A[100], sinus1, sinus2, sinus3, cosinus1, cosinus2, cosinus3, expon1, expon2, expon3, ln1, ln2, ln3, k, prov, x;
 
-	for (j = -10; j < 10; j += 0.1)
+	for (j = -10; j < 10; j += 0.5)
 	{
-		x = j; k = 1;
-		printf("%.1lf \n", x);
+		_x = j; k = 1; x = (float)_x;
+		printf("%.1f; ", x);
 
 		//sin(x)
 		A[0] = x;
@@ -41,10 +41,10 @@ int main()
 			sinus3 += (A[i] + A[i + 1]);
 		}
 
-		prov = sin(x);
-		printf("%.30lf; %.30lf; ", (sinus1 - prov), fabs(((sinus1 - prov) / prov)*100));
-		printf("%.30lf; %.30lf; ", (sinus2 - prov), fabs(((sinus2 - prov) / prov)*100));
-		printf("%.30lf; %.30lf \n",(sinus3 - prov), fabs(((sinus3 - prov) / prov)*100));
+		prov = sin(_x);
+		printf("%.30f; %.30f; ", sinus1 - prov, fabs((sinus1 - prov) / prov) * 100);
+		printf("%.30f; %.30f; ", sinus2 - prov, fabs((sinus2 - prov) / prov) * 100);
+		printf("%.30f; %.30f;\n",sinus3 - prov, fabs((sinus3 - prov) / prov) * 100);
 		
 
 		//cos(x)
@@ -77,11 +77,10 @@ int main()
 			cosinus3 += (A[i] + A[i + 1]);
 		}
 
-		prov = cos(x);
-		printf("%.30lf; %.30lf; ", (cosinus1 - prov), fabs(((cosinus1 - prov) / prov)*100));
-		printf("%.30lf; %.30lf; ", (cosinus2 - prov), fabs(((cosinus2 - prov) / prov)*100));
-		printf("%.30lf; %.30lf \n",(cosinus3 - prov), fabs(((cosinus3 - prov) / prov)*100));
-
+		prov = cos(_x);
+		printf("%.30lf; %.30lf; ", cosinus1 - prov, fabs((cosinus1 - prov) / prov) * 100);
+		printf("%.30lf; %.30lf; ", cosinus2 - prov, fabs((cosinus2 - prov) / prov) * 100);
+		printf("%.30lf; %.30lf;\n",cosinus3 - prov, fabs((cosinus3 - prov) / prov) * 100);
 
 		//exp(x)
 		A[0] = 1;
@@ -112,10 +111,10 @@ int main()
 		{
 			expon3 += (A[i] + A[i + 1]);
 		}
-		prov = exp(x);
-		printf("%.30lf; %.30lf; ", (expon1 - prov), fabs(((expon1 - prov) / prov)*100));
-		printf("%.30lf; %.30lf; ", (expon2 - prov), fabs(((expon2 - prov) / prov)*100));
-		printf("%.30lf; %.30lf \n",(expon3 - prov), fabs(((expon3 - prov) / prov)*100));
+		prov = exp(_x);
+		printf("%.30f; %.30f; ", expon1 - prov, fabs((expon1 - prov) / prov) * 100);
+		printf("%.30f; %.30f; ", expon2 - prov, fabs((expon2 - prov) / prov) * 100);
+		printf("%.30f; %.30f;\n",expon3 - prov, fabs((expon3 - prov) / prov) * 100);
 
 
 		//ln(x+1)
@@ -149,10 +148,10 @@ int main()
 			{
 				ln3 += (A[i] + A[i + 1]);
 			}
-			prov = log(x + 1);
-			printf("%.30lf; %.30lf; ", (ln1 - prov), fabs(((ln1 - prov) / prov)*100));
-			printf("%.30lf; %.30lf; ", (ln2 - prov), fabs(((ln2 - prov) / prov)*100));
-			printf("%.30lf; %.30lf \n",(ln3 - prov), fabs(((ln3 - prov) / prov)*100));
+			prov = log(_x + 1);
+			printf("%.30f; %.30f; ", ln1 - prov, fabs((ln1 - prov) / prov) * 100);
+			printf("%.30f; %.30f; ", ln2 - prov, fabs((ln2 - prov) / prov) * 100);
+			printf("%.30f; %.30f;\n",ln3 - prov, fabs((ln3 - prov) / prov) * 100);
 
 		}
 	}
