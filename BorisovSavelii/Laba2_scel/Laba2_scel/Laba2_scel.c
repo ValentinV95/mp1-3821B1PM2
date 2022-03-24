@@ -3,37 +3,36 @@
 #include <math.h>
 
 #define uint unsigned int
-#define accuracy 50
+#define accuracy 8
 
-double straight_summ(double function(double, uint), double x_sum, double first_summand)
+float straight_summ(float function(float, uint), float x_sum, float first_summand)
 {
 	uint i;
-	double sum = 0;
-	double result = first_summand;
+	float sum = 0;
+	float result = first_summand;
 
-	for (i = 1; i < accuracy; i++)
+	for (i = 1; i < accuracy + 1; i++)
 	{
 		sum += result;
 		result *= function(x_sum, i);
 	}
-
 	return sum;
 }
 
-double reverse_summ(double function(double, uint), double x_sum, double first_summand)
+float reverse_summ(float function(float, uint), float x_sum, float first_summand)
 {
 	uint i;
-	double sum = 0;
-	double result = first_summand;
+	float sum = 0;
+	float result = first_summand;
 
-	for (i = 1; i < accuracy; i++)
+	for (i = 1; i < accuracy + 1; i++)
 	{
 		result *= function(x_sum, i);
 	}
 
 	if (x_sum != 0)
 	{
-		for (i = accuracy - 1; i > 0; i--)
+		for (i = accuracy; i > 0; i--)
 		{
 			sum += result;
 			result /= function(x_sum, i);
@@ -44,59 +43,92 @@ double reverse_summ(double function(double, uint), double x_sum, double first_su
 	return sum;
 }
 
-double sinx(double x, uint i)
+float pairwise_summ(float function(float, uint), float x_sum, float first_summand)
 {
-	return -1 * x * x / ((2.0 * i) * (2.0 * i + 1.0));
+	uint i;
+	float sum = 0;
+	float result = first_summand;
+	
+	if (accuracy % 2 == 0)
+	{
+		result *= function(x_sum, 1);
+		sum += (first_summand + result);
+		i = 2;
+	}
+	else
+	{
+		sum += first_summand;
+		i = 1;
+	}
+
+	for (i; i < accuracy - 1; i++)
+	{
+		result *= function(x_sum, i);
+		i++;
+		sum += (result + result * function(x_sum, i));
+		result *= function(x_sum, i);
+	}
+	
+	return sum;
 }
 
-double cosx(double x, uint i)
+float sinx(float x, uint i)
 {
-	return -1 * x * x / ((2.0 * i) * (2.0 * i - 1.0));
+	return (-1 * x * x) / ((2.0 * i) * (2.0 * i + 1.0));
 }
 
-double expx(double x, uint i)
+float cosx(float x, uint i)
+{
+	return (-1 * x * x) / ((2.0 * i) * (2.0 * i - 1.0));
+}
+
+float expx(float x, uint i)
 {
 	return x / i;
 }
 
-double ln_1_plus_x(double x, uint i)
+float ln_1_plus_x(float x, uint i)
 {
-	return -1 * x * i / (i + 1.0);
+	return (-1 * x * i) / (i + 1.0);
 }
 
-double absolute_error(double built_in(double), double result, double x)
+float absolute_error(double built_in, float result)
 {
-	return fabs(built_in(x) - result);
+	return fabs((float)built_in - result);
 }
 
-double relative_error(double built_in(double), double result, double x)
+float relative_error(double built_in, float result)
 {
-	double variant = built_in(x);
-	if (result == 0.0 && variant == 0.0)
+	if (result == 0.0 && built_in == 0.0)
 		return 0;
-	else if ((result == 0.0 && variant != 0.0) || (result != 0.0 && variant == 0.0))
+	else if ((result == 0.0 && built_in != 0.0) || (result != 0.0 && built_in == 0.0))
 		return 100;
 	else
-		return fabs((variant - result) / result) * 100;
+		return fabs(((float)built_in - result) / (float)built_in) * 100;
 }
 
-void output(double built_in(double), double answer_1, double answer_2, double x)
+void output(double built_in, float answer_1, float answer_2, float answer_3)
 {
 	printf("\nFor straight sum:");
-	printf("\nFunction result: %.16lf", answer_1);
-	printf("\nAbsolute error: %.16lf", absolute_error(built_in, answer_1, x));
-	printf("\nRelative error: %.16lf%%\n", relative_error(built_in, answer_1, x));
+	printf("\nFunction result: %.8f", answer_1);
+	printf("\nAbsolute error: %.8f", absolute_error(built_in, answer_1));
+	printf("\nRelative error: %.8f%%\n", relative_error(built_in, answer_1));
 
 	printf("\nFor reverse sum:");
-	printf("\nFunction result: %.16lf", answer_2);
-	printf("\nAbsolute error: %.16lf", absolute_error(built_in, answer_2, x));
-	printf("\nRelative error: %.16lf%%\n", relative_error(built_in, answer_2, x));
+	printf("\nFunction result: %.8f", answer_2);
+	printf("\nAbsolute error: %.8f", absolute_error(built_in, answer_2));
+	printf("\nRelative error: %.8f%%\n", relative_error(built_in, answer_2));
+
+	printf("\nFor pairwise sum:");
+	printf("\nFunction result: %.8f", answer_3);
+	printf("\nAbsolute error: %.8f", absolute_error(built_in, answer_3));
+	printf("\nRelative error: %.8f%%\n", relative_error(built_in, answer_3));
 }
 
 int main()
 {
 	unsigned char select;
-	double x;
+	float x;
 
 	printf("\nFunction selection: \n\n\
 	1 - sin(x) \n\
@@ -106,24 +138,24 @@ int main()
 	scanf_s("%hhd", &select);
 
 	printf("\nThe value of x: ");
-	scanf_s("%lf", &x);
+	scanf_s("%f", &x);
 
 	switch (select)
 	{
 	case 1:
-		output(sin, straight_summ(sinx, x, x), reverse_summ(sinx, x, x), x);
+		output(sin(x), straight_summ(sinx, x, x), reverse_summ(sinx, x, x), pairwise_summ(sinx, x, x));
 		break;
 
 	case 2:
-		output(cos, straight_summ(cosx, x, 1), reverse_summ(cosx, x, 1), x);
+		output(cos(x), straight_summ(cosx, x, 1), reverse_summ(cosx, x, 1), pairwise_summ(cosx, x, 1));
 		break;
 
 	case 3:
-		output(exp, straight_summ(expx, x, 1), reverse_summ(expx, x, 1), x);
+		output(exp(x), straight_summ(expx, x, 1), reverse_summ(expx, x, 1), pairwise_summ(expx, x, 1));
 		break;
 
 	case 4:
-		output(log, straight_summ(ln_1_plus_x, x, x), reverse_summ(ln_1_plus_x, x, x), x + 1);
+		output(log(x + 1), straight_summ(ln_1_plus_x, x, x), reverse_summ(ln_1_plus_x, x, x), pairwise_summ(ln_1_plus_x, x, x));
 		break;
 
 	default:
