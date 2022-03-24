@@ -8,7 +8,7 @@
 float straight_summ(float function(float, uint), float x_sum, float first_summand)
 {
 	uint i;
-	float sum = 0;
+	float sum = 0.f;
 	float result = first_summand;
 
 	for (i = 1; i < accuracy + 1; i++)
@@ -22,7 +22,7 @@ float straight_summ(float function(float, uint), float x_sum, float first_summan
 float reverse_summ(float function(float, uint), float x_sum, float first_summand)
 {
 	uint i;
-	float sum = 0;
+	float sum = 0.f;
 	float result = first_summand;
 
 	for (i = 1; i < accuracy + 1; i++)
@@ -46,7 +46,7 @@ float reverse_summ(float function(float, uint), float x_sum, float first_summand
 float pairwise_summ(float function(float, uint), float x_sum, float first_summand)
 {
 	uint i;
-	float sum = 0;
+	float sum = 0.f;
 	float result = first_summand;
 	
 	if (accuracy % 2 == 0)
@@ -74,12 +74,12 @@ float pairwise_summ(float function(float, uint), float x_sum, float first_summan
 
 float sinx(float x, uint i)
 {
-	return (-1 * x * x) / ((2.0 * i) * (2.0 * i + 1.0));
+	return (-1.f * x * x) / ((2.f * i) * (2.f * i + 1.f));
 }
 
 float cosx(float x, uint i)
 {
-	return (-1 * x * x) / ((2.0 * i) * (2.0 * i - 1.0));
+	return (-1.f * x * x) / ((2.f * i) * (2.f * i - 1.f));
 }
 
 float expx(float x, uint i)
@@ -89,7 +89,7 @@ float expx(float x, uint i)
 
 float ln_1_plus_x(float x, uint i)
 {
-	return (-1 * x * i) / (i + 1.0);
+	return (-1.f * x * i) / (i + 1.f);
 }
 
 float absolute_error(double built_in, float result)
@@ -99,12 +99,12 @@ float absolute_error(double built_in, float result)
 
 float relative_error(double built_in, float result)
 {
-	if (result == 0.0 && built_in == 0.0)
+	if (result == 0.f && built_in == 0.0)
 		return 0;
-	else if ((result == 0.0 && built_in != 0.0) || (result != 0.0 && built_in == 0.0))
+	else if ((result == 0.f && built_in != 0.0) || (result != 0.f && built_in == 0.0))
 		return 100;
 	else
-		return fabs(((float)built_in - result) / (float)built_in) * 100;
+		return fabs(((float)built_in - result) / (float)built_in) * 100.f;
 }
 
 void output(double built_in, float answer_1, float answer_2, float answer_3)
@@ -147,15 +147,15 @@ int main()
 		break;
 
 	case 2:
-		output(cos(x), straight_summ(cosx, x, 1), reverse_summ(cosx, x, 1), pairwise_summ(cosx, x, 1));
+		output(cos(x), straight_summ(cosx, x, 1.f), reverse_summ(cosx, x, 1.f), pairwise_summ(cosx, x, 1.f));
 		break;
 
 	case 3:
-		output(exp(x), straight_summ(expx, x, 1), reverse_summ(expx, x, 1), pairwise_summ(expx, x, 1));
+		output(exp(x), straight_summ(expx, x, 1.f), reverse_summ(expx, x, 1.f), pairwise_summ(expx, x, 1.f));
 		break;
 
 	case 4:
-		output(log(x + 1), straight_summ(ln_1_plus_x, x, x), reverse_summ(ln_1_plus_x, x, x), pairwise_summ(ln_1_plus_x, x, x));
+		output(log(x + 1.0), straight_summ(ln_1_plus_x, x, x), reverse_summ(ln_1_plus_x, x, x), pairwise_summ(ln_1_plus_x, x, x));
 		break;
 
 	default:
