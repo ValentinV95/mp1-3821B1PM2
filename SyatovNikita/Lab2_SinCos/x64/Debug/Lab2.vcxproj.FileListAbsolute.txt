@@ -1,1 +1,2 @@
 C:\Users\syato\source\repos\Lab2\x64\Debug\Lab2.exe
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab2_SinCos\x64\Debug\Lab2.exe
