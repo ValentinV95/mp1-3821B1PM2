@@ -56,7 +56,7 @@ float pairwise_summ(float* array, int n)
 	float summ = 0;
 
 	for (i = 0; i < n - 1; i += 2)
-		array[i] += array[i+1];
+		array[i] += array[i + 1];
 
 	if (n % 2 == 1)
 		summ += array[i + 2];
@@ -77,10 +77,10 @@ void create_array(float* array, int n, function res, float param)
 	}
 }
 
-void correct_check(float res, double(*original)(double x), float x)
+void correct_check(float res, double(*original)(double x), double x)
 {
-	printf("\nabsolute error is: %.8f", fabsf( (float)original(x) - res) );
-	printf("\nrelative error is: %.8f %%", fabsf( ( ( (float)original(x) - res) / (float)original(x)) * 100.f));
+	printf("\nabsolute error is: %.8f", fabsf((float)original(x) - res));
+	printf("\nrelative error is: %.8f %%", fabsf((((float)original(x) - res) / (float)original(x)) * 100.f));
 }
 
 void main()
@@ -103,8 +103,8 @@ void main()
 	{
 	case(1):
 
-		array[0] = x;
-		create_array(array, n, sin_next, x);
+		array[0] = (float)x;
+		create_array(array, n, sin_next,(float)x);
 		summ = summ_type;
 		printf("\nsin(%.3f) = %.8f", x, summ);
 		correct_check(summ, sin, x);
@@ -113,28 +113,28 @@ void main()
 	case(2):
 
 		array[0] = 1.f;
-		create_array(array, n, cos_next,(float)x);
+		create_array(array, n, cos_next, (float)x);
 		summ = summ_type;
-		printf("\ncos(%f) = %.8f", x, summ);
+		printf("\ncos(%.3f) = %.8f", x, summ);
 		correct_check(summ, cos, x);
 		break;
 
 	case(3):
 
 		array[0] = 1.f;
-		create_array(array, n, exp_next, x);
+		create_array(array, n, exp_next,(float)x);
 		summ = summ_type;
-		printf("\nexp(%f) = %.8f", x, summ);
+		printf("\nexp(%.3f) = %.8f", x, summ);
 		correct_check(summ, exp, x);
 		break;
 
 	case(4):
 
-		array[0] = x;
-		create_array(array, n, ln_next, x);
+		array[0] =(float)x;
+		create_array(array, n, ln_next, (float)x);
 		summ = summ_type;
-		printf("\nln(1 + %f) = %.8f", x, summ);
-		correct_check(summ, log, x + 1);
+		printf("\nln(1 + %.3f) = %.8f", x, summ);
+		correct_check(summ, log, x + 1.0);
 		break;
 	}
 }
