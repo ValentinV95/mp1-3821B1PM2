@@ -3,4 +3,16 @@ C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(26,10): warning C4473: "scanf
 C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(26,10): message : заполнители и их параметры ожидают переменное число аргументов в количестве 2, но было предоставлено 1
 C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(26,10): message : отсутствующий вариативный аргумент "2" требуется для строки форматирования "%c"
 C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(26,10): message : этот аргумент используется в качестве размера буфера
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(30,48): warning C4305: +=: усечение из "double" в "float"
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(45,48): warning C4305: +=: усечение из "double" в "float"
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(59,51): warning C4305: +=: усечение из "double" в "float"
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(73,51): warning C4305: +=: усечение из "double" в "float"
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(30,1): warning C4305: инициализация: усечение из "double" в "float"
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(32,1): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(45,1): warning C4305: инициализация: усечение из "double" в "float"
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(47,1): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(59,1): warning C4305: инициализация: усечение из "double" в "float"
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(61,1): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(73,1): warning C4305: инициализация: усечение из "double" в "float"
+C:\Users\ggury\source\repos\Laba.c\Laba.c\Source.c(75,1): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
   Laba.c.vcxproj -> C:\Users\ggury\source\repos\Laba.c\Debug\Laba.c.exe
