@@ -40,11 +40,6 @@ float next_element_sin(float prevElement, float x, int i)
 	else return 0.0;
 }
 
-float next_element_lnx(float prevElement, float x, int i)
-{
-	return i * prevElement * x / (i + 1.0);
-}
-
 float next_element_cos(float prevElement, float x, int i)
 {
 	return prevElement * x * x / (2.0 * i - 1) / (2.0 * i);
@@ -55,6 +50,10 @@ float next_element_exp(float prevElement, float x, int i)
 	return prevElement * x / (i + 0.0);
 }
 
+float next_element_lnx(float prevElement, float x, int i)
+{
+	return i * prevElement * x / (i + 1.0);
+}
 
 //--------------------------------------------------------------------------------------------
 
@@ -85,26 +84,33 @@ float recursive_cos(float x, float xconst, int i)
 
 float recursive_exp(float x, float xconst, int i)
 {
-	if (x > FLT_EPSILON && i < 4000)                                        // Если будет больше 4161, то ОШИБКА!
-		return x + recursive_exp(x * xconst / (i + 1.0), xconst, i + 1);
-	else return x;
+	if (x < 9999999999999999.0)
+	{
+		if (x > FLT_EPSILON && i < 4000)                                        // Если будет больше 4161, то ОШИБКА!
+			return x + recursive_exp(x / (i + 1.0) * xconst, xconst, i + 1);
+		else return x;
+	}
+	else return 9999999999999999.0;
 }
 
 float recursive_ln(float x, float xconst, int i)
 {
-	if ((x <= 1 && x > -1) && (i < 4000 && xconst != 1))
-	{
-		if (x > FLT_EPSILON)
+
+		if ((x <= 1 && x > -1) && (i < 4000 && xconst != 1))
 		{
-			if (i % 2 == 0)
-				return -x + recursive_ln(x * xconst * i / (i + 1.0), xconst, i + 1);
-			else
-				return x + recursive_ln(x * xconst * i / (i + 1.0), xconst, i + 1);
+			if (x > FLT_EPSILON)
+			{
+				if (i % 2 == 0)
+					return -x + recursive_ln(x * xconst * i / (i + 1.0), xconst, i + 1);
+				else
+					return x + recursive_ln(x * xconst * i / (i + 1.0), xconst, i + 1);
+			}
+			else return x;
 		}
-		else return x;
-	}
-	else
-		return 0.0;      // показывает ошибку!
+		else
+			return 0.0;      // показывает ошибку!
+
+
 }
 
 

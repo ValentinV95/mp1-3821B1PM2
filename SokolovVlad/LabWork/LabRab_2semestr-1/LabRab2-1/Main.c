@@ -25,10 +25,22 @@ void main()
 
 	badX = x;
 	double strangeX = x;
-	while (x - 2 * PI > 0)
+
+	if (x > 0)
 	{
-		x -= 2 * PI;
+		while (x - 2 * PI > 0)
+		{
+			x -= 2 * PI;
+		}
 	}
+	else if (x < 0)
+	{
+		while (x  < 0)
+		{
+			x += 2 * PI;
+		}
+	}
+
 
 	system("cls");
 
@@ -103,17 +115,27 @@ void main()
 
 	//--------------------- Поиск ошибок --------------------------------------------------------------------- Поиск ошибок ----------------------------------------------------------------------- Поиск ошибок ------------------------------------
 
-	errorFactSin = ((sin(strangeX) - sinx) / sin(strangeX)) * 100;			recursiveErrorFactSin = ((sin(strangeX) - recursiveSin) / sin(strangeX)) * 100;				pairErrorFactSin = ((sin(strangeX) - pairSin) / sin(strangeX)) * 100;
+	errorFactSin = ((sin(strangeX) - sinx) / sin(strangeX)) * 100;			recursiveErrorFactSin = ((sin(strangeX) - recursiveSin) / sin(strangeX)) * 100;					pairErrorFactSin = ((sin(strangeX) - pairSin) / sin(strangeX)) * 100;
 	errorAbsSin = sinx - sin(strangeX);										recursiveErrorAbsSin = recursiveSin - sin(strangeX);											pairErrorAbsSin = pairSin - sin(strangeX);
+	if (errorFactSin < 0) { errorFactSin *= (-1); }							if (recursiveErrorFactSin < 0) { recursiveErrorFactSin *= (-1); }								if (pairErrorFactSin < 0) { pairErrorFactSin *= (-1); }
+
+
 			
-	errorFactCos = ((cos(strangeX) - cosx) / cos(strangeX)) * 100;			recursiveErrorFactCos = ((cos(strangeX) - recursiveCos) / cos(strangeX)) * 100;				pairErrorFactCos = ((cos(strangeX) - pairCos) / cos(strangeX)) * 100;
+	errorFactCos = ((cos(strangeX) - cosx) / cos(strangeX)) * 100;			recursiveErrorFactCos = ((cos(strangeX) - recursiveCos) / cos(strangeX)) * 100;					pairErrorFactCos = ((cos(strangeX) - pairCos) / cos(strangeX)) * 100;
 	errorAbsCos = cosx - cos(strangeX);										recursiveErrorAbsCos = recursiveCos - cos(strangeX);											pairErrorAbsCos = pairCos - cos(strangeX);
+	if (errorFactCos < 0) { errorFactCos *= (-1); }							if (recursiveErrorFactCos < 0) { recursiveErrorFactCos *= (-1); }								if (pairErrorFactCos < 0) { pairErrorFactCos *= (-1); }
 
-	errorFactExp = ((exp(strangeX) - expx) / exp(strangeX)) * 100;			recursiveErrorFactExp = ((exp(strangeX) - recursiveExp) / exp(strangeX)) * 100;				pairErrorFactExp = ((exp(strangeX) - pairExp) / exp(strangeX)) * 100;
+
+	errorFactExp = ((exp(strangeX) - expx) / exp(strangeX)) * 100;			recursiveErrorFactExp = ((exp(strangeX) - recursiveExp) / exp(strangeX)) * 100;					pairErrorFactExp = ((exp(strangeX) - pairExp) / exp(strangeX)) * 100;
 	errorAbsExp = expx - exp(strangeX);										recursiveErrorAbsExp = recursiveExp - exp(strangeX);											pairErrorAbsExp = pairExp - exp(strangeX);
+	if (errorFactExp < 0) { errorFactExp *= (-1); }							if (recursiveErrorFactExp < 0) { recursiveErrorFactExp *= (-1); }								if (pairErrorFactExp < 0) { pairErrorFactExp *= (-1); }
 
-	errorFactLn = ((log(strangeX + 1) - lnx) / log(strangeX + 1)) * 100;		recursiveErrorFactLn = ((log(strangeX + 1) - recursiveLn) / log(strangeX + 1)) * 100;			pairErrorFactLn = ((log(strangeX + 1) - pairLn) / log(strangeX + 1)) * 100;
-	errorAbsLn = lnx - log(strangeX + 1);									recursiveErrorAbsLn = recursiveLn - log(strangeX + 1);										pairErrorAbsLn = pairLn - log(strangeX + 1);
+
+	errorFactLn = ((log(strangeX + 1) - lnx) / log(strangeX + 1)) * 100;	recursiveErrorFactLn = ((log(strangeX + 1) - recursiveLn) / log(strangeX + 1)) * 100;			pairErrorFactLn = ((log(strangeX + 1) - pairLn) / log(strangeX + 1)) * 100;
+	errorAbsLn = lnx - log(strangeX + 1);									recursiveErrorAbsLn = recursiveLn - log(strangeX + 1);											pairErrorAbsLn = pairLn - log(strangeX + 1);
+	if (errorFactLn < 0) { errorFactLn *= (-1); }							if (recursiveErrorFactLn < 0) { recursiveErrorFactLn *= (-1); }									if (pairErrorFactLn < 0) { pairErrorFactLn *= (-1); }
+
+
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	//	printf("                                                                                                ");
@@ -122,7 +144,7 @@ void main()
 	printf("\n");
 	printf("\n");
 	printf(" Получившийся sinx = %f         Настоящий sinx = %f \n", sinx, sin(strangeX));
-	printf(" ( Фактическая ошибка = %f          Абсолютная ошибка = %.8f )\n", errorFactSin, errorAbsSin);
+	printf(" ( Фактическая ошибка = %f         Абсолютная ошибка = %.8f )\n", errorFactSin, errorAbsSin);
 	printf("\n");
 	printf(" Получившийся cosx = %f          Настоящий cosx = %f \n", cosx, cos(strangeX));
 	printf(" ( Фактическая ошибка = %f          Абсолютная ошибка = %.8f )\n", errorFactCos, errorAbsCos);
@@ -140,13 +162,13 @@ void main()
 	printf("\n");
 	printf("\n");
 	printf(" Получившийся sinx = %f         Настоящий sinx = %f \n", recursiveSin, sin(strangeX));
-	printf(" ( Фактическая ошибка = %f          Абсолютная ошибка = %.8f )\n", recursiveErrorFactSin, recursiveErrorAbsSin);
+	printf(" ( Фактическая ошибка = %f         Абсолютная ошибка = %.8f )\n", recursiveErrorFactSin, recursiveErrorAbsSin);
 	printf("\n");
 	printf(" Получившийся cosx = %f         Настоящий cosx = %f\n", recursiveCos, cos(strangeX));
 	printf(" ( Фактическая ошибка = %f          Абсолютная ошибка = %.8f )\n", recursiveErrorFactCos, recursiveErrorAbsCos);
 	printf("\n");
 	printf(" Получившийся expx = %f         Настоящий expx = %f\n", recursiveExp, exp(strangeX));
-	printf(" ( Фактическая ошибка = %f          Абсолютная ошибка = %.8f )\n", recursiveErrorFactExp, recursiveErrorAbsExp);
+	printf(" ( Фактическая ошибка = %f         Абсолютная ошибка = %.8f )\n", recursiveErrorFactExp, recursiveErrorAbsExp);
 	printf("\n");
 	printf(" Получившийся ln(1+x)= %f         Настоящий ln(1+x)= %f \n", recursiveLn, log(strangeX + 1));
 	printf(" ( Фактическая ошибка = %f          Абсолютная ошибка = %.8f )\n", recursiveErrorFactLn, recursiveErrorAbsLn);
