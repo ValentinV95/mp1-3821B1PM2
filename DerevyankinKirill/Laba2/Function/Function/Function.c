@@ -2,7 +2,7 @@
 #include <locale.h>
 #include <math.h>
 
-double factorial(double number)
+float factorial(float number)
 {
 	if (number == 0 || number == 1)
 	{
@@ -16,13 +16,13 @@ double factorial(double number)
 
 int main()
 {
-	double x, lastresult = 0, num = 20, sum = 0, number = 1;
-	int i, j = 1, choose;
+	float x, lastresult = 0, num = 40, sum = 0, number = 1, sum1 = 0, sum2 = 0, i;
+	int j = 1, choose;
 	setlocale(LC_ALL, "Russian");
 	printf("Выберите операцию:\n1.sinx\n2.cosx\n3.exp\n4.ln(1+x)\n");
 	scanf_s("%d", &choose);
 	printf("Введите x:\n");
-	scanf_s("%lf", &x);
+	scanf_s("%f", &x);
 	switch (choose)
 	{
 	case 1:
@@ -35,7 +35,7 @@ int main()
 			number += 2;
 			j = j * (-1);
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, sin(x), fabs(sin(x) - sum), fabs((sin(x) - sum) / sin(x)) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, sin(x), fabs(sin(x) - sum), fabs((sin(x) - sum) / sin(x)) * 100);
 		printf("Обратное суммирование\n");
 		for (i = num - 1; i > 0; i--)
 		{
@@ -44,15 +44,16 @@ int main()
 			number += 2;
 			j = j * (-1);
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, sin(x), fabs(sin(x) - sum), fabs(((sin(x) - sum) / sin(x))) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, sin(x), fabs(sin(x) - sum), fabs(((sin(x) - sum) / sin(x))) * 100);
 		printf("Попарное суммирование\n");
 		for (i = 0; i < (num / 2); i++)
 		{
-			lastresult = ((pow(x, number)) / factorial(number)) + ((pow(x, number + 2) * (-1)) / factorial(number + 2));
-			sum += lastresult;
-			number += 4;
+			sum1 = ((pow(x, number)) / factorial(number) - ((pow(x, number + 2)) / factorial(number + 2)));
+			sum2 = ((pow(x, number + 4)) / factorial(number + 4) - ((pow(x, number + 6)) / factorial(number + 6)));
+			sum = sum1 + sum2 + sum;
+			number += 8;
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, sin(x), fabs(sin(x) - sum), fabs(((sin(x) - sum) / sin(x))) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, sin(x), fabs(sin(x) - sum), fabs(((sin(x) - sum) / sin(x))) * 100);
 		break;
 	case 2:
 		printf("Прямое суммирование\n");
@@ -65,7 +66,7 @@ int main()
 			number += 2;
 			j = j * (-1);
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, cos(x), fabs(cos(x) - sum), fabs(((cos(x) - sum) / cos(x))) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, cos(x), fabs(cos(x) - sum), fabs(((cos(x) - sum) / cos(x))) * 100);
 		printf("Обратное суммирование\n");
 		for (i = num - 1; i > 0; i--)
 		{
@@ -74,15 +75,16 @@ int main()
 			number += 2;
 			j = j * (-1);
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, cos(x), fabs(cos(x) - sum), fabs(((cos(x) - sum) / cos(x))) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, cos(x), fabs(cos(x) - sum), fabs(((cos(x) - sum) / cos(x))) * 100);
 		printf("Попарное суммирование\n");
 		for (i = 0; i < (num / 2); i++)
 		{
-			lastresult = ((pow(x, number)) / factorial(number)) + ((pow(x, number + 2) * (-1)) / factorial(number + 2));
-			sum += lastresult;
-			number += 4;
+			sum1 = ((pow(x, number)) / factorial(number)) - ((pow(x, number + 2)) / factorial(number + 2));
+			sum2 = ((pow(x, number + 4)) / factorial(number + 4)) - ((pow(x, number + 6)) / factorial(number + 6));
+			sum = sum1 + sum2 + sum;
+			number += 8;
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, cos(x), fabs(cos(x) - sum), fabs(((cos(x) - sum) / cos(x))) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, cos(x), fabs(cos(x) - sum), fabs(((cos(x) - sum) / cos(x))) * 100);
 		break;
 	case 3:
 		printf("Прямое суммирование\n");
@@ -94,7 +96,7 @@ int main()
 			sum += lastresult;
 			number++;
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, exp(x), fabs(exp(x) - sum), fabs(((exp(x) - sum) / exp(x))) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, exp(x), fabs(exp(x) - sum), fabs(((exp(x) - sum) / exp(x))) * 100);
 		printf("Обратное суммирование\n");
 		for (i = num - 1; i > 0; i--)
 		{
@@ -102,15 +104,16 @@ int main()
 			sum += lastresult;
 			number++;
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, exp(x), fabs(exp(x) - sum), fabs(((exp(x) - sum) / exp(x))) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, exp(x), fabs(exp(x) - sum), fabs(((exp(x) - sum) / exp(x))) * 100);
 		printf("Попарное суммирование\n");
 		for (i = 0; i < (num / 2); i++)
 		{
-			lastresult = ((pow(x, number)) / factorial(number)) + ((pow(x, number + 1)) / factorial(number + 1));
-			sum += lastresult;
-			number += 2;
+			sum1 = ((pow(x, number)) / factorial(number)) + ((pow(x, number + 1)) / factorial(number + 1));
+			sum2 = ((pow(x, number + 2)) / factorial(number + 2)) + ((pow(x, number + 3)) / factorial(number + 3));
+			sum = sum1 + sum2 + sum;
+			number += 4;
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, exp(x), fabs(exp(x) - sum), fabs(((exp(x) - sum) / exp(x))) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, exp(x), fabs(exp(x) - sum), fabs(((exp(x) - sum) / exp(x))) * 100);
 		break;
 	case 4:
 		printf("Прямое суммирование\n");
@@ -123,7 +126,7 @@ int main()
 			number++;
 			j = j * (-1);
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, log(1 + x), fabs(log(1 + x) - sum), fabs(((log(1 + x) - sum) / log(1 + x))) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, log(1 + x), fabs(log(1 + x) - sum), fabs(((log(1 + x) - sum) / log(1 + x))) * 100);
 		printf("Обратное суммирование\n");
 		for (i = num - 1; i > 0; i--)
 		{
@@ -132,17 +135,18 @@ int main()
 			number++;
 			j = j * (-1);
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, log(1 + x), fabs(log(1 + x) - sum), fabs(((log(1 + x) - sum) / log(1 + x))) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, log(1 + x), fabs(log(1 + x) - sum), fabs(((log(1 + x) - sum) / log(1 + x))) * 100);
 		printf("Попарное суммирование\n");
 		for (i = 0; i < (num / 2); i++)
 		{
-			lastresult = (pow(x, number) / number) + ((pow(x, number + 1) * (-1)) / (number + 1));
-			sum += lastresult;
-			number += 2;
+			sum1 = (pow(x, number) / number) - (pow(x, (number + 1)) / ((number + 1)));
+			sum2 = (pow(x, (number + 2)) / (number + 2)) - (pow(x, (number + 3)) / ((number + 3)));
+			sum = sum1 + sum2 + sum;
+			number += 4;
 		}
-		printf("|   %5.2f    | %16.22f |     %10.22lf     |     %10.22lf     |     %10.22lf     |\n", x, sum, log(1 + x), fabs(log(1 + x) - sum), fabs(((log(1 + x) - sum) / log(1 + x))) * 100);
+		printf("|   %5.2f    | %16.8f |     %10.8f     |     %10.8f     |     %10.8f     |\n", x, sum, log(1 + x), fabs(log(1 + x) - sum), fabs(((log(1 + x) - sum) / log(1 + x))) * 100);
 		break;
 	default:
-		printf("Ошибка");
+		printf("Ошибка в выборе операции");
 	}
 }
