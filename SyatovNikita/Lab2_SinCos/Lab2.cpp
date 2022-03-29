@@ -314,7 +314,7 @@ int main()
             printf("Результат: %lf\n", res);
             printf("должно быть: %lf\n", exp(x));
             printf("абсолютная погрешность: %.16lf\n", fabs(exp(x) - res));
-            printf("относительная погрешность: %.16lf %%", fabs(((exp(x) - res) / fabs(exp(x))) * 100));
+            printf("относительная погрешность: %.16lf %%", fabs(((exp(x) - res) / exp(x)) * 100));
             break;
         }
         case(2):
@@ -323,7 +323,7 @@ int main()
             printf("Результат: %lf\n", res);
             printf("должно быть: %lf\n", sin(x));
             printf("абсолютная погрешность: %.16lf\n", fabs(sin(x) - res));
-            printf("относительная погрешность: %.16lf %%", fabs(((sin(x) - res) / fabs(sin(x))) * 100));
+            printf("относительная погрешность: %.16lf %%", fabs(((sin(x) - res) / sin(x)) * 100));
             break;
         }
         case(3):
@@ -332,7 +332,7 @@ int main()
             printf("Результат: %lf\n", res);
             printf("должно быть: %lf\n", cos(x));
             printf("абсолютная погрешность: %.16lf\n", fabs(cos(x) - res));
-            printf("относительная погрешность: %.16lf %%", fabs(((cos(x) - res) / fabs(cos(x))) * 100));
+            printf("относительная погрешность: %.16lf %%", fabs(((cos(x) - res) / cos(x)) * 100));
             break;
         }
         case(4):
@@ -341,7 +341,7 @@ int main()
             printf("Результат: %lf\n", res);
             printf("должно быть: %lf\n", log(1 + x));
             printf("абсолютная погрешность: %.16lf\n", fabs(log(1 + x) - res));
-            printf("относительная погрешность: %.16lf %%", fabs(((log(1 + x) - res) / fabs(log(1 + x))) * 100));
+            printf("относительная погрешность: %.16lf %%", fabs(((log(1 + x) - res) / log(1 + x)) * 100));
             break;
         }
         default:
