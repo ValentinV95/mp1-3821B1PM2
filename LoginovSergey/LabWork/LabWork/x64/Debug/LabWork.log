@@ -1,6 +1,0 @@
-﻿  LabWork.c
-C:\Users\Сережа (Seriya)\source\repos\LabWork\LabWork\LabWork.c(105,32): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
-C:\Users\Сережа (Seriya)\source\repos\LabWork\LabWork\LabWork.c(114,32): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
-C:\Users\Сережа (Seriya)\source\repos\LabWork\LabWork\LabWork.c(123,32): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
-C:\Users\Сережа (Seriya)\source\repos\LabWork\LabWork\LabWork.c(132,31): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
-  LabWork.vcxproj -> C:\Users\Сережа (Seriya)\source\repos\LabWork\x64\Debug\LabWork.exe
