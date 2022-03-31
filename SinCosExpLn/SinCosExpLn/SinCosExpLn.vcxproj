@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{fa8a8ec3-3fd6-4255-8e66-77f84cb59cdb}</ProjectGuid>
-    <RootNamespace>SinCosExp</RootNamespace>
+    <ProjectGuid>{0fbc54d7-03d8-4b25-9afe-14f640666f46}</ProjectGuid>
+    <RootNamespace>SinCosExpLn</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,7 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SinCosExp.c" />
+    <ClCompile Include="SinCosExpLn.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="error.h" />
+    <ClInclude Include="forward.h" />
+    <ClInclude Include="in_pairs.h" />
+    <ClInclude Include="Print.h" />
+    <ClInclude Include="reverse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
