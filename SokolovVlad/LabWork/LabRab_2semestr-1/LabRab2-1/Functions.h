@@ -29,7 +29,35 @@
   */
 
 
+float x_period(float x)
+{
+
+	float PI = 3.1415926535897932384626433832795028841971693993751058209749445923078;
+	if (x > 0)
+	{
+		while (x - 2 * PI > 0)
+		{
+			x -= 2 * PI;
+		}
+	}
+	else if (x < 0)
+	{
+		while (x < 0)
+		{
+			x += 2 * PI;
+		}
+	}
+
+	return x;
+}
+
+
+
  //--------------------------------------------------------------------------------------------
+
+//					<[ Прямое суммирование ]>
+
+
 
 
 float next_element_sin(float prevElement, float x, int i)
@@ -55,63 +83,46 @@ float next_element_lnx(float prevElement, float x, int i)
 	return i * prevElement * x / (i + 1.0);
 }
 
-//--------------------------------------------------------------------------------------------
 
-
-float recursive_sin(float x, float xconst, int i)
-{
-	if (x > FLT_EPSILON)
-	{
-		if (i % 2 != 0)
-			return -x + recursive_sin(x * xconst * xconst / ((2.0 * (i + 1.0)) * (2.0 * (i + 1.0) + 1)), xconst, i + 1);
-		else
-			return x + recursive_sin(x * xconst * xconst / ((2.0 * (i + 1.0)) * (2.0 * (i + 1.0) + 1)), xconst, i + 1);
-	}
-	else return x;
-}
-
-float recursive_cos(float x, float xconst, int i)
-{
-	if (x > FLT_EPSILON)
-	{
-		if (i % 2 != 0)
-			return -x + recursive_cos(x * xconst * xconst / ((2.0 * (i + 1.0)) * (2.0 * (i + 1.0) - 1)), xconst, i + 1);
-		else
-			return x + recursive_cos(x * xconst * xconst / ((2.0 * (i + 1.0)) * (2.0 * (i + 1.0) - 1)), xconst, i + 1);
-	}
-	else return x;
-}
-
-float recursive_exp(float x, float xconst, int i)
-{
-	if (x < 9999999999999999.0)
-	{
-		if (x > FLT_EPSILON && i < 4000)                                        // Если будет больше 4161, то ОШИБКА!
-			return x + recursive_exp(x / (i + 1.0) * xconst, xconst, i + 1);
-		else return x;
-	}
-	else return 9999999999999999.0;
-}
-
-float recursive_ln(float x, float xconst, int i)
-{
-
-		if ((x <= 1 && x > -1) && (i < 4000 && xconst != 1))
-		{
-			if (x > FLT_EPSILON)
-			{
-				if (i % 2 == 0)
-					return -x + recursive_ln(x * xconst * i / (i + 1.0), xconst, i + 1);
-				else
-					return x + recursive_ln(x * xconst * i / (i + 1.0), xconst, i + 1);
-			}
-			else return x;
-		}
-		else
-			return 0.0;      // показывает ошибку!
-
-
-}
 
 
 //--------------------------------------------------------------------------------------------
+
+
+
+float direct_summ(float* mas)
+{
+	float summ = 0;
+	int i;
+	for (i = 0; i < 100; i++)
+	{
+		summ += mas[i];
+	}
+	return summ;
+}
+
+
+
+float reverse_summ(float* mas)
+{
+	float summ = 0;
+	int i;
+	for (i = 99; i >=0; i--)
+	{
+		summ += mas[i];
+	}
+	return summ;
+}
+
+
+
+float pair_summ(float* mas)
+{
+	float summ = 0;
+	int i;
+	for (i = 99; i > 0; i-=2)
+	{
+		summ = summ + (mas[i]+mas[i-1]);
+	}
+	return summ;
+}
