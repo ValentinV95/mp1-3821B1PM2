@@ -27,6 +27,53 @@ long long int fct(int a)
 	}
 }
 
+float sum(float* array, int size)
+{
+	int i;
+	float p = 0;
+
+	for (i = 0; i < size; i++)
+	{
+		p += array[i];
+	}
+
+	return p;
+
+}
+
+float reverse_sum(float* array, int size)
+{
+	int i;
+	float p = 0;
+
+	for (i = size; i > -1; i--)
+	{
+		p += array[i];
+	}
+
+	return p;
+}
+
+float duo_sum(float* array, int size)
+{
+	float p = 0;
+	float* brray = (float*)calloc(size / 2, sizeof(float));
+	int i, m = 0;
+
+	for (i = 0; i < size; i += 2)
+	{
+		brray[m] = array[i] + array[i + 1];
+		m++;
+	}
+
+	for (i = 0; i < m; i++)
+	{
+		p += brray[i];
+	}
+
+	return p;
+}
+
 float sign(int i, int status)
 {
 	if (status == 1)
@@ -137,248 +184,7 @@ float tr_sign(int status)
 			return -1;
 		}
 	}
-}
 
-float exponent(float a)
-{
-	int i;
-	float result = 1.0;
-
-	for (i = 1; i < 21; i++)
-	{
-		result += powf(a, i) / fct(i);
-	}
-
-	return result;
-}
-
-float r_exponent(float a)
-{
-	int i;
-	float p = 0;
-
-	for (i = 19; i > -1; i--)
-	{
-		p += powf(a, i) / fct(i);
-	}
-
-	return p;
-}
-
-float ln(float a)
-{
-	int i;
-	float t = (a - 1) / (a + 1);
-	float p = 0;
-
-	if (a == 1)
-	{
-		return p;
-	}
-
-	else
-	{
-		for (i = 1; i < 23; i += 2)
-		{
-			p += powf(t, i) / i;
-		    //printf("%lf\n", pow(t, i) / i);
-		}
-    }
-
-	p *= 2;
-
-	return p;
-}
-
-float r_ln(float a)
-{
-	int i;
-	float t = (a - 1) / (a + 1);
-	float p = 0;
-
-	if (a == 1)
-	{
-		return p;
-	}
-
-	else
-	{
-		for (i = 21; i > 0; i -= 2)
-		{
-			p += powf(t, i) / i;
-			//printf("%lf\n", pow(t, i) / i);
-		}
-	}
-
-	p *= 2;
-
-	return p;
-}
-
-float duo_sinus(float a)
-{
-	float Brray[5];
-	float Array[10];
-	float p = 0;
-	int i, m = 0;
-
-	a = dtr(a);
-
-	(float)a;
-
-	for (i = 1; i < 20; i += 2)
-	{
-		Array[m] = (float)sign(i, 1) * (float)powf(a, i) / fct(i);
-		//printf("%f\n", Array[m]);
-		m++;
-	}
-
-	m = 0;
-
-	for (i = 0; i < 10; i += 2)
-	{
-		Brray[m] = Array[i] + Array[i + 1];
-		m++;
-	}
-
-	for (i = 0; i < 5; i++)
-	{
-		p += Brray[i];
-	}
-
-	p *= (float)tr_sign(1);
-
-	return p;
-
-}
-
-float sinus(float a)
-{
-	int i;
-	float p = 0;
-
-	a = dtr(a);
-
-	//printf("\n\n\n%lf\n", a);
-
-	for (i = 1; i < 20; i += 2)
-	{
-		p += sign(i, 1) * powf(a, i) / fct(i);
-		//printf("%lf\n", sign(i) * pow(a, i) / fct(i));
-	}
-
-	p *= tr_sign(1);
-
-	return p;
-}
-
-float r_sinus(float a)
-{
-	int i;
-	float p = 0;
-
-	a = dtr(a);
-
-	for (i = 19; i > 0; i -= 2)
-	{
-		p += sign(i, 1) * powf(a, i) / fct(i);
-		//printf("%lf\n", sign(i) * pow(a, i) / fct(i));
-	}
-
-	p *= tr_sign(1);
-
-	return p;
-}
-
-float cosinus(float a)
-{
-	int i;
-	float p = 0;
-
-	a = dtr(a);
-
-	//printf("\n\n\n%lf\n", a);
-
-	for (i = 0; i < 20; i += 2)
-	{
-		p += sign(i, 2) * powf(a, i) / fct(i);
-		//printf("%lf\n", sign(i, 2) * pow(a, i) / fct(i));
-		//printf("p = %lf\n", p);
-	}
-
-	//printf("SIGN   ++++ %lf\n", tr_sign(2));
-	p *= tr_sign(2);
-
-
-	return p;
-}
-
-float r_cosinus(float a)
-{
-	int i;
-	float p = 0;
-
-	a = dtr(a);
-
-	//printf("\n\n\n%lf\n", a);
-
-	for (i = 18; i > -1; i -= 2)
-	{
-		p += sign(i, 2) * powf(a, i) / fct(i);
-		//printf("%lf\n", sign(i, 2) * pow(a, i) / fct(i));
-		//printf("p = %lf\n", p);
-	}
-
-	//printf("SIGN   ++++ %lf\n", tr_sign(2));
-	p *= tr_sign(2);
-
-
-	return p;
-}
-
-float duo_cosinus(float a)
-{
-	float Brray[5];
-	float Array[10];
-	float p = 0;
-	int i, m = 0;
-
-	a = dtr(a);
-
-	(float)a;
-
-	for (i = 0; i < 20; i += 2)
-	{
-		Array[m] = (float)sign(i, 2) * (float)powf(a, i) / fct(i);
-		//printf("%f\n", Array[m]);
-		m++;
-	}
-
-	m = 0;
-
-	for (i = 0; i < 10; i += 2)
-	{
-		Brray[m] = Array[i] + Array[i + 1];
-		m++;
-	}
-
-	for (i = 0; i < 5; i++)
-	{
-		p += Brray[i];
-	}
-
-	p *= (float)tr_sign(1);
-
-	return p;
-
-}
-
-void warning(int status)
-{
-	if (status == 4)
-	{
-		printf("(Помните, логарифм не может быть от 0 или от отрицательного числа)");
-	}
 }
 
 void error(float a, float b)
@@ -390,6 +196,117 @@ void error(float a, float b)
 
 	printf("Абсолютная погрешность:                      %.20f\n", c);
 	printf("Относительная погрешность:                   %.20f%%\n\n", d);
+}
+
+void exponent(float a)
+{
+	int i;
+	float sum1, sum2;
+	float* array = (float*)calloc(20, sizeof(float));
+
+	for (i = 1; i < 21; i ++)
+	{
+		array[i] = powf(a, i) / fct(i);
+	}
+
+	sum1 = sum(array, 20) + 1;
+	sum2 = reverse_sum(array, 19) + 1;
+
+	printf("\nЭкспонента из библиотеки:                    %.20f\n\n", expf(a));
+	printf("Экспонента, прямое суммирование:             %.20f\n", sum1);
+	error(expf(a), sum1);
+	printf("Экспонента, обратное суммирование:           %.20f\n", sum2);
+	error(expf(a), sum2);
+}
+
+void ln(float a)
+{
+	int i;
+	float t = (a - 1) / (a + 1);
+	float* array = (float*)calloc(20, sizeof(float));
+	float sum1, sum2;
+
+	for (i = 1; i < 21; i += 2)
+	{
+		array[i] = powf(t, i) / i;
+	}
+
+	sum1 = 2 * sum(array, 20);
+	sum2 = 2 * reverse_sum(array, 19);
+
+	printf("\nНатуральный логарифм из библиотеки:          %.20f\n\n", logf(a));
+	printf("Натуральный логарифм, прямое суммирование:   %.20f\n", sum1);
+	error(logf(a), sum1);
+	printf("Натуральный логарифм, обратное суммирование: %.20f\n", sum2);
+	error(logf(a), sum2);
+
+}
+
+void sinus(float a)
+{
+	int i, m = 0;
+	float* array = (float*)calloc(10, sizeof(float));
+	float sum1, sum2, sum3, lib;
+
+	a = dtr(a);
+
+	for (i = 1; i < 21; i += 2)
+	{
+		array[m] = sign(i, 1) * powf(a, i) / fct(i);
+		m++;
+	}
+
+	sum1 = tr_sign(1) * sum(array, 10);
+	sum2 = tr_sign(1) * reverse_sum(array, 9);
+	sum3 = tr_sign(1) * duo_sum(array, 10);
+	lib = tr_sign(1) * sinf(a);
+
+	printf("\nСинус из библиотеки:                         %.20f\n\n", lib);
+	printf("Синус, прямое суммирование:                  %.20f\n", sum1);
+	error(lib, sum1);
+	printf("Синус, обратное суммирование:                %.20f\n", sum2);
+	error(lib, sum2);
+	printf("Синус, парное суммирование:                  %.20f\n", sum3);
+	error(lib, sum3);
+
+}
+
+void cosinus(float a)
+{
+	int i, m = 0;
+	float* array = (float*)calloc(10, sizeof(float));
+	float sum1, sum2, sum3, lib;
+
+
+	a = dtr(a);
+
+	for (i = 0; i < 19; i += 2)
+	{
+		array[m] = sign(i, 2) * powf(a, i) / fct(i);
+		m++;
+	}
+
+	sum1 = tr_sign(2) * sum(array, 10);
+	sum2 = tr_sign(2) * reverse_sum(array, 9);
+	sum3 = tr_sign(2) * duo_sum(array, 10);
+	lib = tr_sign(2) * cosf(a);
+
+	printf("\nКосинус из библиотеки:                       %.20f\n\n", lib);
+	printf("Косинус, прямое суммирование:                %.20f\n", sum1);
+	error(lib, sum1);
+	printf("Косинус, обратное суммирование:              %.20f\n", sum2);
+	error(lib, sum2);
+	printf("Косинус, парное суммирование:                %.20f\n", sum3);
+	error(lib, sum3);
+
+}
+
+void warning(int status)
+{
+	if (status == 4)
+	{
+		printf("(Помните, логарифм не может быть от 0 или от отрицательного числа)");
+	}
 }
 
 void main()
@@ -423,48 +340,25 @@ void main()
 			switch (choice) {
 			case 1:
 			{
-				printf("\nСинус из библиотеки:                         %.20f\n\n", sinf(argument));
-				printf("Синус, прямое суммирование:                  %.20f\n", sinus(argument));
-				error(sinf(argument), sinus(argument));
-				printf("Синус, обратное суммирование:                %.20f\n", r_sinus(argument));
-				error(sinf(argument), r_sinus(argument));
-				printf("Синус, парное суммирование:                  %.20f\n", duo_sinus(argument));
-				error(sinf(argument), duo_sinus(argument));
-
-
+				sinus(argument);
 				break;
 			}
 
 			case 2:
 			{
-				printf("\nКосинус из библиотеки:                       %.20f\n\n", cosf(argument));
-				printf("Косинус, прямое суммирование:                %.20f\n", cosinus(argument));
-				error(cosf(argument), cosinus(argument));
-				printf("Косинус, обратное суммирование:              %.20f\n", r_cosinus(argument));
-				error(cosf(argument), r_cosinus(argument));
-				printf("Косинус, парное суммирование:                %.20f\n", duo_cosinus(argument));
-				error(cosf(argument), duo_cosinus(argument));
-
+				cosinus(argument);
 				break;
 			}
 
 			case 3:
 			{
-				printf("\nЭкспонента из библиотеки:                    %.20f\n\n", expf(argument));
-				printf("Экспонента, прямое суммирование:             %.20f\n", exponent(argument));
-				error(expf(argument), exponent(argument));
-				printf("Экспонента, обратное суммирование:           %.20f\n", r_exponent(argument));
-				error(expf(argument), r_exponent(argument));
+				exponent(argument);
 				break;
 			}
 
 			case 4:
 			{
-				printf("\nНатуральный логарифм из библиотеки:          %.20f\n\n", logf(argument));
-				printf("Натуральный логарифм, прямое суммирование:   %.20f\n", ln(argument));
-				error(logf(argument), ln(argument));
-				printf("Натуральный логарифм, обратное суммирование: %.20f\n", r_ln(argument));
-				error(logf(argument), r_ln(argument));
+				ln(argument);
 				break;
 			}
 
