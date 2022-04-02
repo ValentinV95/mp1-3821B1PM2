@@ -28,16 +28,22 @@ double deg(double* x, int i)
 
 double PrevExp(double element, double* x, double i)
 {
+    if (*x == 0)
+        return 0;
     return element * i / *x;
 }
 
 double PrevSinCos(double element, double* x, double i)
 {
+    if (*x == 0)
+        return 0;
     return element * i * (i - 1) / (*x * *x);
 }
 
 double PrevLog(double element, double* x, double i)
 {
+    if (*x == 0)
+        return 0;
     return element * i / (i - 1) / *x;
 }
 
