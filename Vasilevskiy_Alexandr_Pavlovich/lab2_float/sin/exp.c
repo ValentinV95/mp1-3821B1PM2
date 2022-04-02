@@ -1,67 +1,29 @@
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "next.h"
 
-#define N 150 //elements in the Maclaurin series
-
-float _1exp(float x)
+float* arr_exp(float x, int len)
 {
-	float EXP = 1, pred = 1;
-	int i;
-	for (i = 1; i < N; i++)
+	float* arr;
+	float pred = 1;
+	arr = (float*)malloc(len * sizeof(float));
+	if (arr)
 	{
-		pred = next(pred, i, x);
-		EXP += pred;
-	}
-	return EXP;
-}
-
-float _2exp(float x)
-{
-	float EXP = 0, pred = 1, a[N];
-	int i;
-	for (i = 1; i < N; i++)
-	{
-		pred = next(pred, i, x);
-		a[i] = pred;
-	}
-	i--;
-	for (; i > 0; i--)
-	{
-		EXP += a[i];
-	}
-	return 1+EXP;
-}
-
-
-float _3exp(float x)
-{
-	float EXP = 0, pred = 1, a1 = 0, a2 = 0, b = 0;
-	int i, j = 0;
-	for (i = 1; i < N; i++)
-	{
-		pred = next(pred, i, x);
-		a2 = a1;
-		a1 = pred;
-		j++;
-		if (j == 2)
+		arr[0] = 1;
+		for (int i = 1; i < len; i++)
 		{
-			b = a1 + a2;
-			EXP += b;
-			j = 0;
+			pred = next(pred, i, x);
+			arr[i] = pred;
 		}
 	}
-	if (j != 0)
-	{
-		b = a1 + a2;
-		EXP += b;
-	}
-	return 1 + EXP;
+	return arr;
 }
+
 FILE* fl;
 void expchoose()
 {
-	float num = 0.0, _exp_ = 0.0, x, step,s[3];
+	float num = 0.0, _exp_ = 0.0, x, step,s[3], exp_order, exp_end, exp_pair;
 	int sp = 0, print = 1, err;
 	printf("choose the summation method:\n\t1 - summation in order\n\t2 - summing from the end with an array\n\t3 - summation in pairs\n\t4 - print\n");
 	scanf_s("%d", &sp);
@@ -70,13 +32,13 @@ void expchoose()
 	switch (sp)
 	{
 	case 1:
-		_exp_ = _1exp(num);
+		_exp_ = sum_in_order(arr_exp(num, 150), 150);
 		break;
 	case 2:
-		_exp_ = _2exp(num);
+		_exp_ = sum_from_the_end(arr_exp(num, 150), 150);
 		break;
 	case 3:
-		_exp_ = _3exp(num);
+		_exp_ = sum_in_pairs(arr_exp(num, 150), 150);
 		break;
 	case 4:
 		print = 0;
@@ -93,20 +55,26 @@ void expchoose()
 		{
 			for (num = -x; num < x; num += step)
 			{
-				fprintf_s(fl, "%.8f\t%.8f\t%.8f\t%.8f\n",num, fabsf(expf(num) - _1exp(num)), fabsf(expf(num) - _2exp(num)), fabsf(expf(num) - _3exp(num)));
-				s[0] += fabsf(expf(num) - _1exp(num));
-				s[1] += fabsf(expf(num) - _2exp(num));
-				s[2] += fabsf(expf(num) - _3exp(num));
+				exp_order = sum_in_order(arr_exp(num, 150), 150);
+				exp_end = sum_from_the_end(arr_exp(num, 150), 150);
+				exp_pair = sum_in_pairs(arr_exp(num, 150), 150);
+				fprintf_s(fl, "%.8f\t%.8f\t%.8f\t%.8f\n", num, fabsf(expf(num) - exp_order), fabsf(expf(num) - exp_end), fabsf(expf(num) - exp_pair));
+				s[0] += fabsf(expf(num) - exp_order);
+				s[1] += fabsf(expf(num) - exp_end);
+				s[2] += fabsf(expf(num) - exp_pair);
 			}
 		}
 		else if (err == 2)
 		{
 			for (num = -x; num < x; num += step)
 			{
-				fprintf_s(fl, "%.8f\t%.8f\t%.8f\t%.8f\n",num, fabsf((expf(num) - _1exp(num)) / num), fabsf((expf(num) - _2exp(num)) / num), fabsf((expf(num) - _3exp(num)) / num));
-				s[0] += fabsf((expf(num) - _1exp(num)) / num);
-				s[1] += fabsf((expf(num) - _2exp(num)) / num);
-				s[2] += fabsf((expf(num) - _3exp(num)) / num);
+				exp_order = sum_in_order(arr_exp(num, 150), 150);
+				exp_end = sum_from_the_end(arr_exp(num, 150), 150);
+				exp_pair = sum_in_pairs(arr_exp(num, 150), 150);
+				fprintf_s(fl, "%.8f\t%.8f\t%.8f\t%.8f\n", num, fabsf((expf(num) - exp_order) / num), fabsf((expf(num) - exp_end) / num), fabsf((expf(num) - exp_pair) / num));
+				s[0] += fabsf((expf(num) - exp_order) / num);
+				s[1] += fabsf((expf(num) - exp_end) / num);
+				s[2] += fabsf((expf(num) - exp_pair) / num);
 			}
 		}
 

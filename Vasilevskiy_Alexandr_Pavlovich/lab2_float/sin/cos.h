@@ -1,5 +1,3 @@
 #pragma once
-float _1cos(float x);
-float _2cos(float x);
-float _3cos(float x);
+float* arr_cos(float x, int len);
 void coschoose();

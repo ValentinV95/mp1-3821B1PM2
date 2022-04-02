@@ -1,59 +1,29 @@
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "next.h"
 
-#define N 150 //elements in the Maclaurin series
-
-float _1cos(float x)
+float* arr_cos(float x, int len)
 {
-	float COS = 1, pred = 1;
-	int i;
-	for (i = 1; i < N; i++)
+	float* arr;
+	float pred = 1;
+	arr = (float*)malloc(len * sizeof(float));
+	if (arr)
 	{
-		pred = -next_cos(pred, i, x);
-		COS += pred;
+		arr[0] = 1;
+		for (int i = 1; i < len; i++)
+		{
+			pred = -next_cos(pred, i, x);
+			arr[i] = pred;
+		}
 	}
-	return COS;
-}
-
-float _2cos(float x)
-{
-	float COS = 0, pred = 1, a[N];
-	int i;
-	a[0] = 0;
-	for (i = 1; i < N; i++)
-	{
-		a[i] = 0;
-		pred = -next_cos(pred, i, x);
-		a[i] = pred;
-	}
-	i--;
-	for (; i > 0; i--)
-	{
-		COS += a[i];
-	}
-	return COS+1;
-}
-
-float _3cos(float x)
-{
-	float COS = 0, pred = 1, a1 = 0, a2 = 0, b = 0, pr1, pr2;
-	int i, j = 0;
-	for (i = 1; i < N; i += 2)
-	{
-		pred = -next_cos(pred, i, x);
-		pr1 = pred;
-		pred = -next_cos(pred, i + 1, x);
-		pr2 = pred;
-		COS += pr1 + pr2;
-	}
-	return COS + 1;
+	return arr;
 }
 
 FILE* fl;
 void coschoose()
 {
-	float num = 0.0, _cos_ = 0.0, x, step, s[3];
+	float num = 0.0, _cos_ = 0.0, x, step, s[3],cos_order,cos_end,cos_pair;
 	int print = 1,sp = 0,err;
 	printf("choose the summation method:\n\t1 - summation in order\n\t2 - summing from the end with an array\n\t3 - summation in pairs\n\t4 - print\n");
 	scanf_s("%d", &sp);
@@ -62,14 +32,13 @@ void coschoose()
 	switch (sp)
 	{
 	case 1:
-		_cos_ = _1cos(num);
-
+		_cos_ = sum_in_order(arr_cos(num, 150), 150);
 		break;
 	case 2:
-		_cos_ = _2cos(num);
+		_cos_ = sum_from_the_end(arr_cos(num, 150), 150);
 		break;
 	case 3:
-		_cos_ = _3cos(num);
+		_cos_ = sum_in_pairs(arr_cos(num, 150), 150);
 		break;
 	case 4:
 		print = 0;
@@ -86,20 +55,26 @@ void coschoose()
 		{
 			for (num = -x; num < x; num += step)
 			{
-				fprintf_s(fl, "%.8f\t%.8f\t%.8f\t%.8f\n",num, fabsf(cosf(num) - _1cos(num)), fabsf(cosf(num) - _2cos(num)), fabsf(cosf(num) - _3cos(num)));
-				s[0] += fabsf(cosf(num) - _1cos(num));
-				s[1] += fabsf(cosf(num) - _2cos(num));
-				s[2] += fabsf(cosf(num) - _3cos(num));
+				cos_order = sum_in_order(arr_cos(num, 150), 150);
+				cos_end = sum_from_the_end(arr_cos(num, 150), 150);
+				cos_pair = sum_in_pairs(arr_cos(num, 150), 150);
+				fprintf_s(fl, "%.8f\t%.8f\t%.8f\t%.8f\n",num, fabsf(cosf(num) - cos_order), fabsf(cosf(num) - cos_end), fabsf(cosf(num) - cos_pair));
+				s[0] += fabsf(cosf(num) - cos_order);
+				s[1] += fabsf(cosf(num) - cos_end);
+				s[2] += fabsf(cosf(num) - cos_pair);
 			}
 		}
 		else if (err == 2)
 		{
 			for (num = -x; num < x; num += step)
 			{
-				fprintf_s(fl, "%.8f\t%.8f\t%.8f\t%.8f\n",num, fabsf((cosf(num) - _1cos(num)) / num), fabsf((cosf(num) - _2cos(num)) / num), fabsf((cosf(num) - _3cos(num)) / num));
-				s[0] += fabsf((cosf(num) - _1cos(num)) / num);
-				s[1] += fabsf((cosf(num) - _2cos(num)) / num);
-				s[2] += fabsf((cosf(num) - _3cos(num)) / num);
+				cos_order = sum_in_order(arr_cos(num, 150), 150);
+				cos_end = sum_from_the_end(arr_cos(num, 150), 150);
+				cos_pair = sum_in_pairs(arr_cos(num, 150), 150);
+				fprintf_s(fl, "%.8f\t%.8f\t%.8f\t%.8f\n",num, fabsf((cosf(num) - cos_order) / num), fabsf((cosf(num) - cos_end) / num), fabsf((cosf(num) - cos_pair) / num));
+				s[0] += fabsf((cosf(num) - cos_order) / num);
+				s[1] += fabsf((cosf(num) - cos_end) / num);
+				s[2] += fabsf((cosf(num) - cos_pair) / num);
 			}
 		}
 

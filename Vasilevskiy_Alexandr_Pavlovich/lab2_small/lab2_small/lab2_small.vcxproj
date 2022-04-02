@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{3b0d5a30-bca1-422b-93b5-bf927235bf3a}</ProjectGuid>
-    <RootNamespace>sin</RootNamespace>
+    <ProjectGuid>{e613387d-0b2e-43ac-bb5a-084a77c86cb3}</ProjectGuid>
+    <RootNamespace>lab2small</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>lab2</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,19 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ALL.c" />
-    <ClCompile Include="cos.c" />
-    <ClCompile Include="exp.c" />
-    <ClCompile Include="ln.c" />
-    <ClCompile Include="next.c" />
-    <ClCompile Include="sin.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="cos.h" />
-    <ClInclude Include="exp.h" />
-    <ClInclude Include="ln.h" />
-    <ClInclude Include="next.h" />
-    <ClInclude Include="sin.h" />
+    <ClCompile Include="lab2_small.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
