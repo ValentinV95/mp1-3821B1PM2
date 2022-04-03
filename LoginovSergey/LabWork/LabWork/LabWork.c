@@ -86,7 +86,7 @@ void ArrayFill(float* array, int n, float(*res)(float, float, int), float param)
 
 void Menu(float* array, int n)
 {
-	int choice;
+	enum function(choice);
 	double x;
 	float summ = 0;
 	enum function{SIN = 1, COS, EXP, LN};
