@@ -89,17 +89,18 @@ void Menu(float* array, int n)
 	int choice;
 	double x;
 	float summ = 0;
-
+	enum function{SIN = 1, COS, EXP, LN};
+	
 	printf("Choose function:\n");
 	printf("Enter:\n 1 for sin(x)\n 2 for cos(x)\n 3 for exp(x)\n 4 for ln(1+x)\n");
 	scanf_s("%d", &choice);
 	printf("Enter x:\n");
 	scanf_s("%lf", &x);
-
-
+	
+	
 	switch (choice)
 	{
-	case(1):
+	case(SIN):
 
 		array[0] = (float)x;
 		ArrayFill(array, n, SinNext, x);
@@ -108,7 +109,7 @@ void Menu(float* array, int n)
 		CorrectCheck(summ, sin, x);
 		break;
 
-	case(2):
+	case(COS):
 
 		array[0] = 1.f;
 		ArrayFill(array, n, CosNext, x);
@@ -117,7 +118,7 @@ void Menu(float* array, int n)
 		CorrectCheck(summ, cos, x);
 		break;
 
-	case(3):
+	case(EXP):
 
 		array[0] = 1.f;
 		ArrayFill(array, n, ExpNext, x);
@@ -126,7 +127,7 @@ void Menu(float* array, int n)
 		CorrectCheck(summ, exp, x);
 		break;
 
-	case(4):
+	case(LN):
 
 		array[0] = (float)x;
 		ArrayFill(array, n, LnNext, x);
