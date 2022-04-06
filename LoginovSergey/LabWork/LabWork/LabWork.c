@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define SummType SimpleSumm(array, n);  
-//#define SummType ReverseSumm(array, n);
-//#define SummType PairwiseSumm (array, n); 
+#define SummType(array, n) SimpleSumm(array,n);  
+//#define SummType(array, n) ReverseSumm(array,n); 
+//#define SummType(array, n) PairwiseSumm(array,n);  
+
 
 float SinNext(float prev, float x, int i)
 {
@@ -104,7 +105,7 @@ void Menu(float* array, int n)
 
 		array[0] = (float)x;
 		ArrayFill(array, n, SinNext, x);
-		summ = SummType;
+		summ = SummType(array,n);
 		printf("\nsin(%.8f) = %.8f", x, summ);
 		CorrectCheck(summ, sin, x);
 		break;
@@ -113,7 +114,7 @@ void Menu(float* array, int n)
 
 		array[0] = 1.f;
 		ArrayFill(array, n, CosNext, x);
-		summ = SummType;
+		summ = SummType(array,n);
 		printf("\ncos(%lf) = %.16lf", x, summ);
 		CorrectCheck(summ, cos, x);
 		break;
@@ -122,7 +123,7 @@ void Menu(float* array, int n)
 
 		array[0] = 1.f;
 		ArrayFill(array, n, ExpNext, x);
-		summ = SummType;
+		summ = SummType(array,n);
 		printf("\nexp(%lf) = %.16lf", x, summ);
 		CorrectCheck(summ, exp, x);
 		break;
@@ -131,7 +132,7 @@ void Menu(float* array, int n)
 
 		array[0] = (float)x;
 		ArrayFill(array, n, LnNext, x);
-		summ = SummType;
+		summ = SummType(array,n);
 		printf("\nln(1 + %lf) = %.16lf", x, summ);
 		CorrectCheck(summ, log, x + 1);
 		break;
