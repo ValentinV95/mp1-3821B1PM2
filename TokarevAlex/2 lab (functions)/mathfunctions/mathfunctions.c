@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include<math.h>
 
-#define summ_type pairwise_summ(array, n);
+#define summ_type(array, n) pairwise_summ(array, n)
 
 typedef float(*function)(float, float, int);
 
@@ -85,9 +85,10 @@ void correct_check(float res, double(*original)(double x), double x)
 
 void main()
 {
+	enum function{SIN = 1,COS,EXP,LN};
 	float* array;
 	double x;
-	int choose;
+	enum function choose;
 	int n = 100;
 	float summ = 0;
 
@@ -101,40 +102,42 @@ void main()
 
 	switch (choose)
 	{
-	case(1):
+	case(SIN):
 
 		array[0] = (float)x;
 		create_array(array, n, sin_next,(float)x);
-		summ = summ_type;
+		summ = summ_type(array, n);
 		printf("\nsin(%.3f) = %.8f", x, summ);
 		correct_check(summ, sin, x);
 		break;
 
-	case(2):
+	case(COS):
 
 		array[0] = 1.f;
 		create_array(array, n, cos_next, (float)x);
-		summ = summ_type;
+		summ = summ_type(array, n);;
 		printf("\ncos(%.3f) = %.8f", x, summ);
 		correct_check(summ, cos, x);
 		break;
 
-	case(3):
+	case(EXP):
 
 		array[0] = 1.f;
 		create_array(array, n, exp_next,(float)x);
-		summ = summ_type;
+		summ = summ_type(array, n);
 		printf("\nexp(%.3f) = %.8f", x, summ);
 		correct_check(summ, exp, x);
 		break;
 
-	case(4):
+	case(LN):
 
 		array[0] =(float)x;
 		create_array(array, n, ln_next, (float)x);
-		summ = summ_type;
+		summ = summ_type(array, n);
 		printf("\nln(1 + %.3f) = %.8f", x, summ);
 		correct_check(summ, log, x + 1.0);
 		break;
 	}
+
+	free(array);
 }
