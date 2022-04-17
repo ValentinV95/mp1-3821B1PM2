@@ -6,7 +6,7 @@
 #include <math.h>
 
 #define MAX_FCTRL 14
-#define TYPE revers     /*simple*/    /*revers*/
+#define TYPE revers    /*simple*/    /*revers*/    /*pairs*/
 
 double factorial(double i)
 {
@@ -62,6 +62,88 @@ double NextExp(double element, double* x, double i)
 double NextLog(double element, double* x, double i)
 {
     return element * i / (i + 1) * (*x);
+}
+
+//----------------попарное суммирование--------------------------------\\
+
+void pairs(double* x, double* arr, int choose)
+{
+    double el;
+    int i, sgn, k;
+    k = 0;
+
+    if (choose == 1)
+    {
+        arr[0] = 1;
+        arr[1] = *x;
+        k = 2;
+        el = ((*x) * (*x)) / 2;
+        for (i = 2; i <= MAX_FCTRL; i+=2)
+        {
+            arr[k] = el;
+            k += 1;
+            el = NextExp(el, x, i);
+            arr[k++] = el;
+            el = NextExp(el, x, i+1);
+        }
+    }
+
+    if (choose == 2)
+    {
+        arr[0] = *x;
+        sgn = -1;
+        k = 1;
+        el = ((*x) * (*x) * (*x)) / 6;
+        for (i = 3; i <= MAX_FCTRL + 1; i += 4)
+        {
+            arr[k] = (el * sgn);
+            k += 1;
+            el = NextSinCos(el, x, i);
+            sgn *= -1;
+            arr[k] = (el * sgn);
+            el = NextSinCos(el, x, i+2);
+            sgn *= -1;
+            k += 1;
+        }
+    }
+
+    if (choose == 3)     
+    {
+        arr[0] = 1;
+        sgn = -1;
+        k = 1;
+        el = ((*x) * (*x)) / 2;
+        for (i = 2; i <= MAX_FCTRL; i += 4)
+        {
+            arr[k] = (el * sgn);
+            k += 1;
+            el = NextSinCos(el, x, i);
+            sgn *= -1;
+            arr[k] = (el * sgn);
+            el = NextSinCos(el, x, i+2);
+            sgn *= -1;
+            k += 1;
+        }
+    }
+
+    if (choose == 4)               
+    {       
+        arr[0] = *x;
+        sgn = -1;
+        k = 1;
+        el = ((*x) * (*x)) / 2;
+        for (i = 2; i <= MAX_FCTRL + 15; i+=2)
+        {
+            arr[k] = (el * sgn);
+            el = NextLog(el, x, i);
+            sgn *= -1;
+            k += 1;
+            arr[k] = (el * sgn);
+            el = NextLog(el, x, i+1);
+            sgn *= -1;
+            k += 1;
+        }
+    }
 }
 
 //----------------обратный ход--------------------------------\\
@@ -123,7 +205,6 @@ void revers(double* x, double* arr, int choose)
             arr[k++] = (el * sgn);
             el = PrevLog(el, x, i);
             sgn *= -1;
-            printf("%lf\n", arr[k - 1]);
         }
 
         arr[0] = *x;
@@ -205,17 +286,6 @@ double summa(double* arr)
     return print;
 }
 
-double summa_pair(double* arr)
-{
-    int i;
-    for (i = 0; i <= MAX_FCTRL; i += 2)
-    {
-        arr[i] += arr[i + 1];
-        arr[i + 1] = 0;
-    }
-    return summa(arr);
-}
-
 double exp_sin_cos_ln(double x, double* arr, int choose)
 {
     /*double pi = 2 * 3.14159265358979323846264338327950;
@@ -225,8 +295,7 @@ double exp_sin_cos_ln(double x, double* arr, int choose)
 
     TYPE(&x, arr, choose);
 
-    //return summa(arr);
-    return summa_pair(arr); //попарное суммирование
+    return summa(arr);
 }
 
 
@@ -236,13 +305,20 @@ int main()
     double x, arr[MAX_FCTRL + 16], result;
     int select, i;
     setlocale(LC_ALL, "Rus");
-    printf("Введите число:");
-    scanf_s("%lf", &x);
-    printf("Что вычислить:\n1 - экспонента\n2 - синус\n3 - косинус\n4 - натуральный логарифм от 1+х (-1<x<=1)\n");
-    scanf_s("%d", &select);
 
     for (i = 0; i < MAX_FCTRL + 16; i++)
         arr[i] = 0;
+
+    for (x = 0; x <= 10; x += 0.2)
+    {
+        result = exp_sin_cos_ln(x, arr, 3);
+        printf("%.9lf\n", fabs(((cos(x) - result) / cos(x)) * 100));
+    }
+
+    /*printf("Введите число:");
+    scanf_s("%lf", &x);
+    printf("Что вычислить:\n1 - экспонента\n2 - синус\n3 - косинус\n4 - натуральный логарифм от 1+х (-1<x<=1)\n");
+    scanf_s("%d", &select);
 
     switch (select)
     {
@@ -287,5 +363,5 @@ int main()
         printf("ERROR");
         break;
     }
-    }
+    }*/
 }
