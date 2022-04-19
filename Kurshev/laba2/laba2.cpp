@@ -3,20 +3,7 @@
 #define pi 3.14159265358979323846
 
 
-unsigned long long int fac(int a)
-{
-    unsigned long long int b = 1;
-    if (a == 0)
-    {
-        return 1;
-    }
-    for (int i = 1; i <= a; i++)
-    {
-        b *= i;
-        
-    }
-    return b;
-}
+
 
 float absolute_pogr(float a, float b)
 {
@@ -27,8 +14,6 @@ float absolute_pogr(float a, float b)
     return e;
 
 }
-
-
 
 float otn_pogr (float a, float b)
 {
@@ -53,169 +38,172 @@ float otn_pogr (float a, float b)
      }
  }
 
-float my_sin1(float x) 
-{
-    float a = 0;
-    
-    x = period(x);
-
-    for (int i = 0; i <= 11; i++)
-    {       
-        a += pow(-1, i) * (pow(x, 2 * i + 1) / fac(2 * i + 1));
-    }
-    return a;
-}
-
-float my_sin2 (float x)
+void my_sin(float x,float* mas)
 {
     x = period(x);
 
-    float a = x;
-    float b = a;
+    mas[0] = x;
+    for (int i = 1; i < 150; i++)
+    {
+        mas[i] = mas[i - 1] *(-1)* pow(x, 2) / ((2. * i + 1.) * (2. * i));
+    }
     
-
-    for (float i = 1; i <= 100; i++)
-    {
-        b = b * (-1)* pow(x, 2) / ((2 * i + 1.) * (2 * i ));
-        a += b;
-
-    }
-    return a;
-
-}
-float my_cos1(float x) //вроде нет проблем
-{
-    long double a = 0;
-    x = period(x);
-    for (int i = 0; i <= 11; i++)
-    {
-        a += (pow(-1, i) * pow(x, 2 * i)) / fac(2*i);
-
-    }
-    return a;
 }
 
-float my_cos2 (float x)
+void my_cos(float x, float* mas)
 {
     x = period(x);
-    float a = 1;
-    float b = a;
-    for (float i = 1; i <= 100; i++)
-    {
-        b = b * (-1) * pow(x, 2) / ((2 * i)*(2*i-1.));
-        a += b;
 
+    mas[0] = 1;
+    for (int i = 1; i < 150; i++)
+    {
+        mas[i] = mas[i - 1] * (-1) * pow(x, 2) / ((2 * i) * (2 * i - 1.));
     }
-    return a;
+
 }
 
-float my_exp1(float x)
+void my_exp(float x, float* mas)
 {
-
-    float a = 1;
-    for (int i = 1; i <= 11; i++)
+    mas[0] = 1;
+    for (int i = 1; i < 150; i++)
     {
-        a += pow(x, i) / fac(i);
+        mas[i] = mas[i - 1] * x / i;
     }
-    return a;
 }
 
-float my_exp2(float x) 
+void my_ln(float x, float* mas)
 {
-    long double a = 1;
-    long double b = a;
-    
-    
-    for (int i = 1; i <= 150; i++)
+    mas[0] = 0;
+    for (int i = 1; i < 150; i++)
     {
-        b = b * x / i;
-        a += b;  
+        mas[i] = (pow(-1, i - 1) * pow(x, i)) / i;
     }
-    return a;
- 
 }
 
-
-float my_ln1(float x)
+float straight_sum(float* mas, int n)
 {
-    float a = 0;
-
-    for (int i = 1; i <= 11; i++)
+    float sum = 0;
+    for (int i = 0; i < n; i++)
     {
-        a += (pow(-1, i - 1) * pow(x, i)) / i;
+        sum += mas[i];
     }
-    return a;
+    return sum;
+
 }
 
-float my_ln2(float x)
+
+
+float double_sum(float* mas, int n)
 {
-
-    float a = x;
-    float b = a;
-
-    for (float i = 1; i <= 100; i++)
+    float sum = 0;
+    for (int i =0; i < n-1; i+=2)
     {
-        b = b *x* pow(-1, i)*i/(i+1.) ;
-        a += b;
-
+        sum += mas[i] + mas[i + 1];
     }
-    return a;
+    return sum;
 }
 
+float reverse_sum(float* mas, int n)
+{
+    float sum = 0;
+    for (int i = 0; i < n; i++)
+    {
+        sum += mas[n - i-1];
+    }
+    return sum;
+}
 
+enum function 
+{
+    SIN =1,
+    COS,
+    EXP,
+    LN
+};
 
 
 int main()
 {
     float x;
-    printf("1: sin\n2: cos\n3: exp\n4: ln\n");
-    int a = 1;
-    while (a)
+    float* mas;
+    float sum;
+    enum function func_num;
+    
+    
+    while (1)
     {
-        int a = 0;
-
-        printf("select function : ");
-        scanf_s("%d", &a);
-        printf("enter x : ");
-        scanf_s("%f", &x);
-        
-
-        switch(a)
+        printf("choose function: \n1) sin\n2) cos\n3) exp\n4)ln\nenter: ");
+        scanf_s("%d", &func_num);
+        switch (func_num)
         {
-            case 1:
-            
-                printf("my sin 1 :%f  absolute error: %f relative error: %f\n", my_sin1(x), absolute_pogr(my_sin1(x),sin(x)), otn_pogr(sin(x),my_sin1(x)));
 
-                printf("my sin 2 : %f absolute error: %f relative error: %f\n", my_sin2(x), absolute_pogr(my_sin2(x), sin(x)), otn_pogr(sin(x), my_sin2(x)));
+        case SIN:
+            printf("enter x: ");
+            scanf_s("%f", &x);
+            mas = (float*)malloc(150 * sizeof(float));
+            sum = 0;
+            my_sin(x, &mas[0]);
+            sum = straight_sum(&mas[0], 150);
+            printf("straight sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(sin(x),sum), absolute_pogr(sin(x),sum));
+            sum = reverse_sum(&mas[0], 150);
+            printf("reverse sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(sin(x), sum), absolute_pogr(sin(x), sum));
+            sum = double_sum(&mas[0], 150);
+            printf("double sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(sin(x), sum), absolute_pogr(sin(x), sum));
+            
+            printf("standart sin: %f \n\n", sin(x));
+            free(mas);
+            break;
 
-                printf("standart sin: %f\n", sin(x));
+        case COS:
+            scanf_s("%f", &x);
+            mas = (float*)malloc(150 * sizeof(float));
+            sum = 0;
+            my_cos(x, &mas[0]);
+            sum = straight_sum(&mas[0], 150);
+            printf("straight sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(cos(x), sum), absolute_pogr(cos(x), sum));
+            sum = reverse_sum(&mas[0], 150);
+            printf("reverse sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(cos(x), sum), absolute_pogr(cos(x), sum));
+            sum = double_sum(&mas[0], 150);
+            printf("double sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(cos(x), sum), absolute_pogr(cos(x), sum));
+            printf("standart cos: %f \n\n", cos(x));
+            free(mas);
+            break;
 
-                break;
-            
-            case 2:
-            
+        case EXP:
+            scanf_s("%f", &x);
+            mas = (float*)malloc(150 * sizeof(float));
+            sum = 0;
+            my_exp(x, &mas[0]);
+            sum = straight_sum(&mas[0], 150);
+            printf("straight sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(exp(x), sum), absolute_pogr(exp(x), sum));
+            sum = reverse_sum(&mas[0], 150);
+            printf("reverse sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(exp(x), sum), absolute_pogr(exp(x), sum));
+            sum = double_sum(&mas[0], 150);
+            printf("double sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(exp(x), sum), absolute_pogr(exp(x), sum));
+            printf("standart exp: %f \n\n", exp(x));
+            free(mas);
+            break;
 
-                printf("my cos 1: %f  absolute error: %f relative error: %f \n", my_cos1(x), absolute_pogr(my_cos1(x), cos(x)), otn_pogr(cos(x), my_cos1(x)));
-                printf("my cos 2: %f  absolute error: %f relative error: %f \n", my_cos2(x), absolute_pogr(my_cos2(x), cos(x)), otn_pogr(cos(x), my_cos2(x)));
-                printf("standart cos: %f \n", cos(x));
-                break;
-            
-            case 3:
-            
-                printf("my exp 1: %f  absolute error: %f relative error: %f \n", my_exp1(x), absolute_pogr(my_exp1(x), exp(x)), otn_pogr(exp(x), my_exp1(x)));
-                printf("my exp 2: %f  absolute error: %f relative error: %f \n", my_exp2(x), absolute_pogr(my_exp2(x), exp(x)), otn_pogr(exp(x), my_exp2(x)));
-                printf("standart exp: %f \n", exp(x));
-                break;
-            
-            case 4:
-            
-                printf("my ln1: %f  absolute error: %f relative error: %f \n", my_ln1(x), absolute_pogr(my_ln1(x), log(x+1)), otn_pogr(log(x+1), my_ln1(x)));
-                printf("my ln2: %f  absolute error: %f relative error: %f \n",my_ln2(x), absolute_pogr(my_ln2(x), log(x + 1)), otn_pogr(log(x + 1), my_ln2(x)));
-                printf("standart ln: %lf\n", log(x+1));
-                break;
-            
-            
+        case LN:
+            scanf_s("%f", &x);
+            mas = (float*)malloc(150 * sizeof(float));
+            sum = 0;
+            my_ln(x, &mas[0]);
+            sum = straight_sum(&mas[0], 150);
+            printf("straight sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(log(x+1), sum), absolute_pogr(log(x+1), sum));
+            sum = reverse_sum(&mas[0], 150);
+            printf("reverse sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(log(x + 1), sum), absolute_pogr(log(x + 1), sum));
+            sum = double_sum(&mas[0], 150);
+            printf("double sum: %f  relative error: %f   absolute error: %f\n", sum, otn_pogr(log(x + 1), sum), absolute_pogr(log(x + 1), sum));
+            printf("standart ln: %f \n\n", log(x + 1));
+            free(mas);
+            break;
+
+        default:
+            break;
         }
+
     }
+    
 }
 
