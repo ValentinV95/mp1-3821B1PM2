@@ -18,7 +18,7 @@ float absolute_pogr(float a, float b)
 float otn_pogr (float a, float b)
 {
     float e = 0;
-    e = abs(b / a);
+    e = abs((abs(abs(a)-abs(b))) / abs(a));
     return e;
 }
  
@@ -155,6 +155,7 @@ int main()
             break;
 
         case COS:
+            printf("enter x: ");
             scanf_s("%f", &x);
             mas = (float*)malloc(150 * sizeof(float));
             sum = 0;
@@ -170,6 +171,7 @@ int main()
             break;
 
         case EXP:
+            printf("enter x: ");
             scanf_s("%f", &x);
             mas = (float*)malloc(150 * sizeof(float));
             sum = 0;
@@ -185,6 +187,7 @@ int main()
             break;
 
         case LN:
+            printf("enter x: ");
             scanf_s("%f", &x);
             mas = (float*)malloc(150 * sizeof(float));
             sum = 0;
