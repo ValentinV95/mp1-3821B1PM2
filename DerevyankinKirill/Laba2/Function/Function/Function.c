@@ -64,6 +64,7 @@ float pairwise_sum(float* mas)
 }
 int main()
 {
+	enum function{sin=1, cos=2, exp=3, ln=4};
 	int choose;
 	float* mas;
 	float x, prev, function = 0, answer1 = 0, answer2 = 0, answer3 = 0;
@@ -74,7 +75,7 @@ int main()
 	scanf_s("%f", &x);
 	switch (choose)
 	{
-	case 1:
+	case (sin):
 		prev = x;
 		mas = (float*)malloc(N * sizeof(float));
 		mas[0] = x;
@@ -90,7 +91,7 @@ int main()
 		printf("sin(x)= %.8f\n", function);
 		free(mas);
 		break;
-	case 2:
+	case (cos):
 		prev = 1.f;
 		mas = (float*)malloc(N * sizeof(float));
 		mas[0] = 1.f;
@@ -106,7 +107,7 @@ int main()
 		printf("cos(x)= %.8f\n", function);
 		free(mas);
 		break;
-	case 3:
+	case (exp):
 		prev = 1.f;
 		mas = (float*)malloc(N * sizeof(float));
 		mas[0] = 1.f;
@@ -122,7 +123,7 @@ int main()
 		printf("e^x= %.8f\n", function);
 		free(mas);
 		break;
-	case 4:
+	case (ln):
 		prev = x;
 		mas = (float*)malloc(N * sizeof(float));
 		mas[0] = x;
@@ -140,6 +141,7 @@ int main()
 		break;
 	default:
 		printf("Ошибка в выборе операции");
+		break;
 	}
 	printf("| Аргумент X |       function    |         Проверка         |    Абсолютная ошибка    |    Относительная ошибка   |\n");
 	printf("Прямое суммирование\n");
