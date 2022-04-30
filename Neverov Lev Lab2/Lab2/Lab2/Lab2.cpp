@@ -2,11 +2,16 @@
 #include <stdlib.h>
 #include<math.h>
 
-#define summType standartSumm(nums,n);
-//#define summType inverseSumm(nums,n);
-//#define summType pairwiseSumm(nums,n);
+#define summType(nums,n) standartSumm(nums,n);
+//#define summType(nums,n) inverseSumm(nums,n);
+//#define summType(nums,n) pairwiseSumm(nums,n);
 
 typedef float(*function)(float, float, int);
+
+enum allFunctions {
+	sin_x = 1, cos_x, exp_x, ln_x
+};
+enum allFunctions your;
 
 void createNums(float* nums, int n, function data, float param)
 {
@@ -75,8 +80,9 @@ void check(float data, float(*original)(float x), float x) {
 
 void main() {
 	float* nums = NULL;
-	int choice, i, n = 1000;
+	int n = 1000;
 	float x, summ = 0;
+	enum your choice;
 
 	nums = (float*)malloc(n * sizeof(float));
 
@@ -87,34 +93,34 @@ void main() {
 	scanf_s("%f", &x);
 
 	switch (choice) {
-	case(1):
+	case(sin_x):
 		nums[0] = x;
 		createNums(nums, n, sinNext, x);
-		summ = summType;
+		summ = summType(nums, n);
 		printf("\nsin(%f) = %f", x, summ);
 		check(summ, sinf, x);
 		break;
 
-	case(2):
+	case(cos_x):
 		nums[0] = 1;
 		createNums(nums, n, cosNext, x);
-		summ = summType;
+		summ = summType(nums, n);
 		printf("\ncos(%f) = %f", x, summ);
 		check(summ, cosf, x);
 		break;
 
-	case(3):
+	case(exp_x):
 		nums[0] = 1;
 		createNums(nums, n, expNext, x);
-		summ = summType;
+		summ = summType(nums, n);
 		printf("\nexp(%lf) = %lf", x, summ);
 		check(summ, expf, x);
 		break;
 
-	case(4):
+	case(ln_x):
 		nums[0] = x;
 		createNums(nums, n, lnNext, x);
-		summ = summType;
+		summ = summType(nums, n);
 		printf("\nln(1 + %f) = %f", x, summ);
 		check(summ, logf, x + 1);
 		break;
