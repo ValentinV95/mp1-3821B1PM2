@@ -302,11 +302,6 @@ double exp_sin_cos_ln(double x, double* arr, int choose)
 
     TYPE(&x, arr, choose, &size);
 
-    for (i = 0; i < size; i++)
-    {
-        printf("%lf\n", arr[i]);
-    }
-
     return summa(arr, size);
 }
 
