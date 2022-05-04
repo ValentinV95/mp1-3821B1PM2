@@ -55,13 +55,13 @@ float pairwise_summ(float* array, int n)
 	int i;
 	float summ = 0;
 
-	for (i = 0; i < n - 1; i += 2)
+	for (i = 0; i < n - 1; i += 2) 
+	{
 		array[i] += array[i + 1];
+		summ += array[i];
+	}
 
 	if (n % 2 == 1)
-		summ += array[i + 2];
-
-	for (i = 0; i < n; i += 2)
 		summ += array[i];
 
 	return summ;
