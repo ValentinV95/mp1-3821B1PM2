@@ -57,7 +57,6 @@ void main()
 		float Array_for_exp[100];
 		float Array_for_ln[100];
 
-		float pairSin = 0, pairCos = 0, pairExp = 0, pairLn = 0;
 
 		Array_for_sin[0] = PredElSin;   //первый элемент sin
 		Array_for_cos[0] = PredElCos;   //первый элемент cos
@@ -82,17 +81,6 @@ void main()
 			Array_for_ln[i] = x1 * PredElLn;
 		}
 
-
-
-
-		// Обратное попарное суммирование
-		for (i = 99; i > 0; i -= 2)
-		{
-			pairSin += Array_for_sin[i] + Array_for_sin[i - 1];
-			pairCos += Array_for_cos[i] + Array_for_cos[i - 1];
-			pairExp += Array_for_exp[i] + Array_for_exp[i - 1];
-			pairLn += Array_for_ln[i] + Array_for_ln[i - 1];
-		}
 
 
 
