@@ -2,33 +2,53 @@
 //
 
 #include <iostream>
-#include <stdio.h>
 
 template <typename T>
 class myVector {
 public:
-    int size;
     T* arr;
+    int size;
 public:
+    myVector()
+    {
+        size = 0;
+        arr = new T[1];
+        std::cout << "create Vector[1]\n";
+    }
+
     myVector(int n)
     {
-        size = n;
-        arr = new T(size);
+        this->size = n;
+        this->arr = new T[n];
+        std::cout << "create Vector\n";
     }
 
     T& operator[](const int index)     ////
     {
         return arr[index];
-    } 
+    }
+
+    void operator=(const myVector <T>& a)
+    {
+        for (int i = 0; i < size; i++)
+            arr[i] = a.arr[i];
+    }
 
     void resize(const int _size)
     {
-        delete[] arr;
         this->size = _size;
-        arr = new T(size);
+        delete[] arr;
+        this->arr = new T[_size];
+
+        for (int i = 0; i < _size; i++)
+            this->arr[i] = 0;
     }
 
-    ~myVector() {  }
+    ~myVector() 
+    { 
+        std::cout << "delete vector\n";
+        delete[] arr;
+    }
 };
 
 template <typename T>
@@ -37,15 +57,38 @@ private:
     int size_string;
     int size_column;
 public:
-    myMatrix(const int m,const int n) : myVector <myVector <T>>(n)
+    myMatrix(const int n) : myVector <myVector <T>>(n)
     {
         size_column = n;
-        size_string = m;
-        for (int i = 0; i < size_column; i++)
-            this->arr[i].resize(size_string);
+        size_string = 1;
+        std::cout << "create matrix\n";
     }
 
-    int max_index(const int& j)
+    void show()
+    {
+        for (int i = 0; i < size_column; i++)
+        {
+            for (int j = 0; j < size_string; j++)
+            {
+                std::cout << this->arr[i][j] << "\t";
+            }
+            std::cout << "\n";
+        }
+    }
+
+    void Add_arr(const int size_str)
+    {
+        size_string = size_str;
+        for (int i = 0; i < size_column; i++)
+        {
+            this->arr[i].resize(size_string);
+            std::cout << "¬ведите коэфициенты " << i+1 << " уравнени€: " << std::endl;
+            for (int j = 0; j < size_string; j++)
+                std::cin >> this->arr[i][j];
+        }        
+    }
+
+    int max_index(const int j)
     {
         int id = 1;
         for (int i = 0; i < size_column; i++)
@@ -55,11 +98,18 @@ public:
         return id;
     }
 
-    ~myMatrix() 
+    void swap(int first_id, int second_id)
     {
-        for (int i = 0; i < size_column; i++)
-            delete this->arr[i].arr;
-        delete this->arr;
+        myVector <T> tmp(size_string);
+        tmp = this->arr[first_id];
+        this->arr[first_id] = this->arr[second_id];
+        this->arr[second_id] = tmp;
+        std::cout << "by by\n";
+    }
+
+    ~myMatrix()  
+    { 
+        std::cout << "delete matrix\n";
     }
 };
 
@@ -73,44 +123,22 @@ void Input_size(int& size_string, int& size_column)
 }
 
 template <typename T>
-void Input_arr(myMatrix <T>& slu, const int size_string, const int size_column)
-{
-    for (int i = 0; i < size_column; i++)
-    {
-        //std::cout << "¬ведите коэфициенты " << i+1 << " уравнени€: " << std::endl;
-        printf("¬ведите коэфициенты %i уравнени€:\n", i+1);
-        for (int j = 0; j < size_string; j++)
-            //std::cin >> slu[i][j];
-            scanf_s("%lf", &slu[i][j]);
-    }        
-}
-
-
-
-template <typename T>
-void swap(myMatrix <T>& slu, int first_id, int second_id)
-{
-    myVector <T> tmp = slu[first_id];
-    slu[first_id] = slu[second_id];
-    slu[second_id] = tmp;
-}
-
-template <typename T>
 void Method_Gaus(myMatrix <T>& slu, const int size_string, const int size_column)                 //прототип дл€ рекурсивного метода гаусса
 {
-    for (int k = 0; k < size_string; k++)
-    {
-        //int id = slu.max_index(k);
-        int id = 0;
-        swap(slu, k, id);
+    for (int this_row = 0, this_str = 0; this_str < size_column - 1; this_row++, this_str++)    // проход по каждому столбцу, проход по каждой строке
+    {            
+        int id = slu.max_index(this_row);         // нахождение максимального элемента в выбранном столбце
 
-        for (int i = 0; i < size_column; i++)
-            for (int j = 0; j < size_string; j++)
-                slu[i][j] = slu[i][j] / slu[i][k];
+        if(this_str != id)                        // ставит строку с максимальным элементом наверх
+            slu.swap(this_str, id);
+                                
+        for (int i = this_str; i < size_column; i++)       // делит в каждой строке каждый последующий элемент на выбранный элемент
+            for (int j = this_row; j < size_string; j++)
+                slu[i][j] = slu[i][j] / slu[i][this_row];
 
-        for (int i = 1; i < size_column; i++)
-            for (int j = 0; j < size_string; j++)
-                slu[i][j] -= slu[k][j]; 
+        for (int i = this_str+1; i < size_column; i++)    // из всех последующих строчек вычитает выбранную строчку
+            for (int j = this_row; j < size_string; j++)
+                slu[i][j] -= slu[this_str][j];
     } 
 }
 
@@ -119,18 +147,16 @@ int main()
     setlocale(LC_ALL, "RUS");
     int size_string;
     int size_column;
+
     Input_size(size_string, size_column);
-    myMatrix <double> slu(size_string, size_column);
-    Input_arr(slu, size_string, size_column);
 
-    //Method_Gaus(slu, size_string, size_column);
+    myMatrix <double> slu(size_column);
 
-    for (int i = 0; i < size_column; i++)
-    {
-        for (int j = 0; j < size_string; j++)
-            printf("%lf\t", slu[i][j]);
-        printf("\n");
-    } 
+    slu.Add_arr(size_string);
 
-    std::cout << "good";
+    Method_Gaus(slu, size_string, size_column);
+    
+    slu.show(); 
+
+    std::cout << "good\n";
 }
