@@ -310,13 +310,16 @@ double exp_sin_cos_ln(double x, double* arr, int choose)
 int main()
 {
     double x, arr[MAX_FCTRL + 16], result;
-    int select;
+    int select, i;
     setlocale(LC_ALL, "Rus");
 
     printf("Введите число:");
     scanf_s("%lf", &x);
     printf("Что вычислить:\n1 - экспонента\n2 - синус\n3 - косинус\n4 - натуральный логарифм от 1+х (-1<x<=1)\n");
     scanf_s("%d", &select);
+
+    for (i = 0; i < MAX_FCTRL + 16; i++)
+        arr[i] = 0;
 
     switch (select)
     {

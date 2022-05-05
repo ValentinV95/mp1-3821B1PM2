@@ -6,7 +6,7 @@
 
 template <typename T>
 class myVector {
-protected:
+public:
     int size;
     T* arr;
 public:
@@ -21,13 +21,14 @@ public:
         return arr[index];
     } 
 
-    void resize(const int size)
+    void resize(const int _size)
     {
         delete[] arr;
+        this->size = _size;
         arr = new T(size);
     }
 
-    ~myVector() { delete arr; }
+    ~myVector() {  }
 };
 
 template <typename T>
@@ -44,12 +45,22 @@ public:
             this->arr[i].resize(size_string);
     }
 
-    myVector <T>& operator[](const int index)
+    int max_index(const int& j)
     {
-        return this->arr[index];
+        int id = 1;
+        for (int i = 0; i < size_column; i++)
+            if (this->arr[i][j] > this->arr[id][j])
+                id = i;
+
+        return id;
     }
 
-    ~myMatrix() {  }
+    ~myMatrix() 
+    {
+        for (int i = 0; i < size_column; i++)
+            delete this->arr[i].arr;
+        delete this->arr;
+    }
 };
 
 void Input_size(int& size_string, int& size_column)
@@ -74,16 +85,7 @@ void Input_arr(myMatrix <T>& slu, const int size_string, const int size_column)
     }        
 }
 
-template <typename T>
-int max_index(myMatrix <T>& slu, const int size_column, const int j)
-{
-    int id = 1;
-    for (int i = 0; i < size_column; i++)
-        if (slu[i][j] > slu[id][j])
-            id = i;
 
-    return id;
-}
 
 template <typename T>
 void swap(myMatrix <T>& slu, int first_id, int second_id)
@@ -98,7 +100,8 @@ void Method_Gaus(myMatrix <T>& slu, const int size_string, const int size_column
 {
     for (int k = 0; k < size_string; k++)
     {
-        int id = max_index(slu, size_column, k);
+        //int id = slu.max_index(k);
+        int id = 0;
         swap(slu, k, id);
 
         for (int i = 0; i < size_column; i++)
@@ -120,7 +123,7 @@ int main()
     myMatrix <double> slu(size_string, size_column);
     Input_arr(slu, size_string, size_column);
 
-    Method_Gaus(slu, size_string, size_column);
+    //Method_Gaus(slu, size_string, size_column);
 
     for (int i = 0; i < size_column; i++)
     {
