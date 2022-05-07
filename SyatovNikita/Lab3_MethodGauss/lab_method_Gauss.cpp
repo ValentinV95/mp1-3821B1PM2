@@ -13,14 +13,12 @@ public:
     {
         size = 0;
         arr = new T[1];
-        std::cout << "create Vector[1]\n";
     }
 
     myVector(int n)
     {
         this->size = n;
         this->arr = new T[n];
-        std::cout << "create Vector\n";
     }
 
     T& operator[](const int index)     ////
@@ -46,14 +44,13 @@ public:
 
     ~myVector() 
     { 
-        std::cout << "delete vector\n";
         delete[] arr;
     }
 };
 
 template <typename T>
 class myMatrix:public myVector <myVector <T>> {
-private:
+protected:
     int size_string;
     int size_column;
 public:
@@ -61,7 +58,6 @@ public:
     {
         size_column = n;
         size_string = 1;
-        std::cout << "create matrix\n";
     }
 
     void show()
@@ -104,13 +100,44 @@ public:
         tmp = this->arr[first_id];
         this->arr[first_id] = this->arr[second_id];
         this->arr[second_id] = tmp;
-        std::cout << "by by\n";
     }
 
-    ~myMatrix()  
-    { 
-        std::cout << "delete matrix\n";
+    ~myMatrix() {}
+};
+
+template <typename T>
+class SLAU: public myMatrix<T>
+{
+public:
+    SLAU(const int _size_column) :myMatrix<T>(_size_column) {}
+
+    void solve()                                                    //реализация метода гаусса
+    {
+        for (int this_row = 0, this_str = 0; this_str < this->size_column; this_row++, this_str++)        // проход по каждому столбцу, проход по каждой строке
+        {
+            if (this_row < this->size_string)
+            {
+                int id = this->max_index(this_row);                                                           // нахождение максимального элемента в выбранном столбце
+
+                if (this_str < id)
+                    this->swap(this_str, id);                                                                 // ставит строку с максимальным элементом наверх
+                    
+
+                for (int i = this_str; i < this->size_column; i++)                                            // делит в каждой строке каждый последующий элемент на выбранный элемент
+                {    
+                    for (int j = this_row+1; j < this->size_string; j++)
+                        this->arr[i][j] /= this->arr[i][this_row];
+                    this->arr[i][this_row] = 1;
+                }     
+
+                for (int i = this_str + 1; i < this->size_column; i++)                                        // из всех последующих строчек вычитает выбранную строчку
+                    for (int j = this_row; j < this->size_string; j++)
+                        this->arr[i][j] -= this->arr[this_str][j];
+            }
+        }
     }
+
+    ~SLAU() {}
 };
 
 void Input_size(int& size_string, int& size_column)
@@ -122,26 +149,6 @@ void Input_size(int& size_string, int& size_column)
     std::cin >> size_column;
 }
 
-template <typename T>
-void Method_Gaus(myMatrix <T>& slu, const int size_string, const int size_column)                 //прототип для рекурсивного метода гаусса
-{
-    for (int this_row = 0, this_str = 0; this_str < size_column - 1; this_row++, this_str++)    // проход по каждому столбцу, проход по каждой строке
-    {            
-        int id = slu.max_index(this_row);         // нахождение максимального элемента в выбранном столбце
-
-        if(this_str != id)                        // ставит строку с максимальным элементом наверх
-            slu.swap(this_str, id);
-                                
-        for (int i = this_str; i < size_column; i++)       // делит в каждой строке каждый последующий элемент на выбранный элемент
-            for (int j = this_row; j < size_string; j++)
-                slu[i][j] = slu[i][j] / slu[i][this_row];
-
-        for (int i = this_str+1; i < size_column; i++)    // из всех последующих строчек вычитает выбранную строчку
-            for (int j = this_row; j < size_string; j++)
-                slu[i][j] -= slu[this_str][j];
-    } 
-}
-
 int main()
 {
     setlocale(LC_ALL, "RUS");
@@ -150,13 +157,11 @@ int main()
 
     Input_size(size_string, size_column);
 
-    myMatrix <double> slu(size_column);
+    SLAU <double> slu(size_column);
 
     slu.Add_arr(size_string);
 
-    Method_Gaus(slu, size_string, size_column);
+    slu.solve();
     
     slu.show(); 
-
-    std::cout << "good\n";
 }
