@@ -1,7 +1,8 @@
-// lab_method_Gauss.cpp : реализация метода гаусса ведущим элементом
-//
+// lab_method_Gauss.cpp : реализация метода гаусса ведущим элементом 
+//в квадратных матрицах
 
 #include <iostream>
+#include <locale.h>
 
 template <typename T>
 class myVector {
@@ -19,6 +20,14 @@ public:
     {
         this->size = n;
         this->arr = new T[n];
+    }
+
+    myVector(const T* arr, int n)
+    {
+        this->size = n;
+        this->arr = new T[n];
+        for (int i = 0; i < n; i++)
+            this->arr[i] = arr[i];
     }
 
     T& operator[](const int index)     ////
@@ -44,7 +53,7 @@ public:
 
     ~myVector() 
     { 
-        delete[] arr;
+        delete[] this->arr;
     }
 };
 
@@ -102,6 +111,18 @@ public:
         this->arr[second_id] = tmp;
     }
 
+    T multiply_matrixA(const myVector<T>& x, T* res)                   //перемножение матрицы левого столбца на вектор
+    {
+        for (int i = 0; i < size_column; i++)
+            res[i] = 0;
+
+        for (int i = 0, k = 0; i < size_column; i++, k++)
+            for (int j = 0; j < size_string-1; j++)
+                res[k] += this->arr[i][j] * x.arr[j];
+
+        return *res;
+    }
+
     ~myMatrix() {}
 };
 
@@ -111,9 +132,52 @@ class SLAU: public myMatrix<T>
 public:
     SLAU(const int _size_column) :myMatrix<T>(_size_column) {}
 
-    void solve()                                                    //реализация метода гаусса
+    int check(const T* res)                       //проверка правильности решения
     {
-        for (int this_row = 0, this_str = 0; this_str < this->size_column; this_row++, this_str++)        // проход по каждому столбцу, проход по каждой строке
+        myVector<T> X(res, this->size_string-1);
+        T* tmp = new T [this->size_column];
+        *tmp = this->multiply_matrixA(X, tmp);
+
+        for (int i = 0; i < this->size_column; i++)
+        {
+            if (tmp[i] == this->arr[i][this->size_string-1]) {}
+            else 
+            {
+                std::cout << "ERROR: решение не корректно\n" << std::endl;
+                return 0;
+            }
+        }
+        delete[] tmp;
+
+        std::cout << "Получен правильный результат\n" << std::endl;
+        return 0;
+    }
+
+    void revers_motion()                                 //обратный ход метода Гаусса
+    {
+        T* result = new T [this->size_string-1];
+
+        int k = this->size_string-1;
+
+        for (int i = this->size_column-1; i >= 0; i--)
+        {
+            k -= 1;
+            result[k] = this->arr[i][this->size_string - 1];
+            for (int j = this->size_string - 2; j > k; j--)
+                result[k] -= (this->arr[i][j] * result[k+1]);
+        }
+
+        for (int i = 0; i < this->size_string - 1; i++)
+            std::cout << "X" << i << " = " << result[i] << std::endl;
+
+        check(result);
+
+        delete[] result;
+    }
+
+    void solve()                                                                                              //реализация метода гаусса
+    {
+        for (int this_row = 0, this_str = 0; this_str < this->size_column; this_row++, this_str++)            // проход по каждому столбцу, проход по каждой строке
         {
             if (this_row < this->size_string)
             {
@@ -135,6 +199,9 @@ public:
                         this->arr[i][j] -= this->arr[this_str][j];
             }
         }
+        this->show();
+
+        revers_motion();
     }
 
     ~SLAU() {}
@@ -144,9 +211,9 @@ void Input_size(int& size_string, int& size_column)
 {
     std::cout << "Введите количество неизвестных:" << std::endl;
     std::cin >> size_string;
+    size_column = size_string;
     size_string++;
-    std::cout << "Введите количество уравнений:" << std::endl;
-    std::cin >> size_column;
+    
 }
 
 int main()
@@ -162,6 +229,4 @@ int main()
     slu.Add_arr(size_string);
 
     slu.solve();
-    
-    slu.show(); 
 }
