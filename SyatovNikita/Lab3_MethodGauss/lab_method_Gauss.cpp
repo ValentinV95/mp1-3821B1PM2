@@ -222,6 +222,8 @@ public:
 
                 for (int i = this_str; i < this->size_column; i++) // делит в каждой строке каждый последующий элемент на выбранный элемент
                 {    
+                    if (this->arr[i][this_row] == 0)
+                        throw Gauss_exceptions<T>("Деление на ноль", this->arr[i]);
                     for (int j = this_row+1; j < this->size_string; j++)
                         this->arr[i][j] /= this->arr[i][this_row];
                     this->arr[i][this_row] = 1;
