@@ -21,23 +21,29 @@ float next_element(char func_type, float x, float prev_element, int i)
 		return 0;
 	}
 }
-float sum(char func_type, float x, float first_element)
+float forward_sum(char func_type, float x, float first_element)
 {
-	return first_element + recursion_sum(func_type, first_element, x, 1);
+	int i = 1;
+	float last_elem;
+	float _sum = first_element;
+	float next_elem = first_element;
+	last_elem = next_elem;
+	while (fabs(last_elem) > 0.00001)
+	{
+		last_elem = next_element(func_type, x, last_elem, i);
+		i++;
+	}
+	int n = i;
+	i = 0;
+	for (i = 1; i < n; i++)
+	{
+		next_elem = next_element(func_type, x, next_elem, i);
+		_sum += next_elem;
+	}
+
+	return _sum;
 }
 
-static float recursion_sum(char func_type,float prev_elem, float x, int i)
-{
-	float nextel = next_element(func_type, x, prev_elem, i);
-	if (fabs(nextel) > 0.00001)
-	{
-		return nextel + recursion_sum(func_type, nextel, x, i + 1);
-	}
-	else
-	{
-		return nextel;
-	}
-}
 
 float invers_sum(char func_type, float first_elem, float x)
 {
