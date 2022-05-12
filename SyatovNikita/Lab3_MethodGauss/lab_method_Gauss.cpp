@@ -30,6 +30,11 @@ public:
             this->arr[i] = arr[i];
     }
 
+    int& GetSize()
+    {
+        return size;
+    }
+
     T& operator[](const int index)     ////
     {
         return arr[index];
@@ -37,7 +42,7 @@ public:
 
     void operator=(const myVector <T>& a)
     {
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < a.size; i++)
             arr[i] = a.arr[i];
     }
 
@@ -58,6 +63,27 @@ public:
 };
 
 template <typename T>
+class Gauss_exceptions :public std::exception {
+private:
+    myVector<T> error_string;
+public:
+    Gauss_exceptions(const char* message, myVector<T>& error_string) : std::exception(message)
+    {
+        this->error_string.resize(error_string.GetSize());
+        this->error_string = error_string;
+    }
+
+    void Get_error_string(int Size)
+    {
+        for (int i = 0; i < Size; i++)
+            std::cout << error_string[i] << "\t";
+        std::cout << "\n";
+    }
+
+    ~Gauss_exceptions() {}
+};
+
+template <typename T>
 class myMatrix:public myVector <myVector <T>> {
 protected:
     int size_string;
@@ -74,9 +100,7 @@ public:
         for (int i = 0; i < size_column; i++)
         {
             for (int j = 0; j < size_string; j++)
-            {
                 std::cout << this->arr[i][j] << "\t";
-            }
             std::cout << "\n";
         }
     }
@@ -175,26 +199,35 @@ public:
         delete[] result;
     }
 
-    void solve()                                                                                              //реализация метода гаусса
+    void solve() //реализация метода гаусса
     {
-        for (int this_row = 0, this_str = 0; this_str < this->size_column; this_row++, this_str++)            // проход по каждому столбцу, проход по каждой строке
+        for (int this_row = 0, this_str = 0; this_str < this->size_column; this_row++, this_str++) // проход по каждому столбцу, проход по каждой строке
         {
             if (this_row < this->size_string)
             {
-                int id = this->max_index(this_row);                                                           // нахождение максимального элемента в выбранном столбце
+                int id = this->max_index(this_row); // нахождение максимального элемента в выбранном столбце
 
                 if (this_str < id)
-                    this->swap(this_str, id);                                                                 // ставит строку с максимальным элементом наверх
-                    
+                    this->swap(this_str, id); // ставит строку с максимальным элементом наверх
 
-                for (int i = this_str; i < this->size_column; i++)                                            // делит в каждой строке каждый последующий элемент на выбранный элемент
+                int tmp = 0;
+                for (int i = 1; i < this->size_column; i++)
+                {
+                    for (int j = 0; j < this->size_string - 1; j++)
+                        if (this->arr[i][j] != 0)
+                            tmp = 1;
+                    if (this->arr[i][this->size_string - 1] != 0 && tmp == 0)
+                        throw Gauss_exceptions<T>("Система не совместна", this->arr[i]);
+                }
+
+                for (int i = this_str; i < this->size_column; i++) // делит в каждой строке каждый последующий элемент на выбранный элемент
                 {    
                     for (int j = this_row+1; j < this->size_string; j++)
                         this->arr[i][j] /= this->arr[i][this_row];
                     this->arr[i][this_row] = 1;
                 }     
 
-                for (int i = this_str + 1; i < this->size_column; i++)                                        // из всех последующих строчек вычитает выбранную строчку
+                for (int i = this_str + 1; i < this->size_column; i++) // из всех последующих строчек вычитает выбранную строчку
                     for (int j = this_row; j < this->size_string; j++)
                         this->arr[i][j] -= this->arr[this_str][j];
             }
@@ -228,5 +261,14 @@ int main()
 
     slu.Add_arr(size_string);
 
-    slu.solve();
+    try 
+    {
+        slu.solve(); 
+    }
+    catch (Gauss_exceptions<double>& ex)
+    {
+        std::cout << "ERROR:" << std::endl;
+        ex.Get_error_string(size_string);
+        std::cout << ex.what() << std::endl;
+    }
 }
