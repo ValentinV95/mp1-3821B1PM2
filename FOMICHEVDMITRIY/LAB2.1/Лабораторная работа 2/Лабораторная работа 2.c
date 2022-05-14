@@ -277,6 +277,8 @@ void sinus(float a)
 	sum2 = tr_sign(1) * reverse_sum(array, 9);
 	sum3 = tr_sign(1) * duo_sum(array, 10);
 
+	st = 0;
+
 	printf("\nСинус из библиотеки:                         %.20f\n\n", lib);
 	printf("Синус, прямое суммирование:                  %.20f\n", sum1);
 	error(lib, sum1);
@@ -307,6 +309,8 @@ void cosinus(float a)
 	sum1 = tr_sign(2) * sum(array, 10);
 	sum2 = tr_sign(2) * reverse_sum(array, 9);
 	sum3 = tr_sign(2) * duo_sum(array, 10);
+
+	st = 0;
 
 	printf("\nКосинус из библиотеки:                       %.20f\n\n", lib);
 	printf("Косинус, прямое суммирование:                %.20f\n", sum1);
