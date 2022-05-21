@@ -1,1 +1,35 @@
-﻿LINK : fatal error LNK1104: не удается открыть файл "C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\x64\Debug\lab_method_Gauss.exe"
+﻿  lab_method_Gauss.cpp
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(41,24): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(40): message : во время компиляции функции-члена класс шаблон "void myVector<T>::Add_vecRandom(void)"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(268): message : выполняется компиляция ссылки на экземпляр шаблон функции "void myVector<T>::Add_vecRandom(void)"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(265): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "myVector<T>"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(116,24): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(115): message : во время компиляции функции-члена класс шаблон "void myMatrix<T>::Add_arrRandom(void)"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(267): message : выполняется компиляция ссылки на экземпляр шаблон функции "void myMatrix<T>::Add_arrRandom(void)"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(161): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "myMatrix<T>"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(264): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "SLAU<double>"
+  lab_method_Gauss.vcxproj -> C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\x64\Debug\lab_method_Gauss.exe

@@ -1,5 +1,4 @@
-// lab_method_Gauss.cpp : реализация метода гаусса ведущим элементом 
-//в квадратных матрицах
+// lab_method_Gauss.cpp : реализация метода гаусса ведущим элементом в квадратных матрицах
 
 #include <iostream>
 #include <locale.h>
@@ -39,10 +38,10 @@ public:
 
     void Add_vecRandom()
     {
-        srand(time(0));
+        std::srand(time(0));
         for (int j = 0; j < this->size; j++)
         {
-            this->arr[j] = (rand() % 101) * 10;
+            this->arr[j] = (std::rand() % 101) * 10;
         }
     }
 
@@ -114,20 +113,20 @@ public:
 
     void Add_arrRandom()
     {
-        srand(time(0));
+        std::srand(time(0));
         for (int i = 0; i < this->size; i++)
         {
             this->arr[i].resize(this->size);
 
             for (int j = 0; j < this->size; j++)
             {
-                this->arr[i][j] = rand() % 2 + ((rand() % 1000)/1000) + 0.1;
+                this->arr[i][j] = std::rand() % 2 + ((std::rand() % 1000)/1000) + 0.1;
             }
         }
 
         for (int i = 0, j = 0; i < this->size; i++, j++)
         {
-            this->arr[i][j] = (this->arr[i][j] + 1) * ((rand() % 100 + 1) * 10);
+            this->arr[i][j] = (this->arr[i][j] + 1) * ((std::rand() % 100 + 1) * 10);
         }
     }
 
