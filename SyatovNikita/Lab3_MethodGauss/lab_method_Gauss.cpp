@@ -6,7 +6,7 @@
 
 template <typename T>
 class myVector {
-public:
+protected:
     T* arr;
     int size;
 public:
@@ -30,13 +30,36 @@ public:
             this->arr[i] = arr[i];
     }
 
+    void Add_vec()
+    {
+        std::cout << "Введите вектор b:" << std::endl;
+        for (int i = 0; i < this->size; i++)
+                std::cin >> this->arr[i];
+    }
+
+    void Add_vecRandom()
+    {
+        srand(time(0));
+        for (int j = 0; j < this->size; j++)
+        {
+            this->arr[j] = (rand() % 101) * 10;
+        }
+    }
+
     int& GetSize()
     {
         return size;
     }
 
+    T* GetArr()
+    {
+        return arr;
+    }
+
     T& operator[](const int index)     ////
     {
+        if (index >= size)
+            throw std::exception("Выход за границы массива");
         return arr[index];
     }
 
@@ -63,88 +86,72 @@ public:
 };
 
 template <typename T>
-class Gauss_exceptions :public std::exception {
-private:
-    myVector<T> error_string;
-public:
-    Gauss_exceptions(const char* message, myVector<T>& error_string) : std::exception(message)
-    {
-        this->error_string.resize(error_string.GetSize());
-        this->error_string = error_string;
-    }
-
-    void Get_error_string(int Size)
-    {
-        for (int i = 0; i < Size; i++)
-            std::cout << error_string[i] << "\t";
-        std::cout << "\n";
-    }
-
-    ~Gauss_exceptions() {}
-};
-
-template <typename T>
 class myMatrix:public myVector <myVector <T>> {
-protected:
-    int size_string;
-    int size_column;
 public:
-    myMatrix(const int n) : myVector <myVector <T>>(n)
-    {
-        size_column = n;
-        size_string = 1;
-    }
+    myMatrix(const int n) : myVector <myVector <T>>(n) {}
 
-    void show()
+    void show(myVector<T>& b)
     {
-        for (int i = 0; i < size_column; i++)
+        for (int i = 0; i < this->size; i++)
         {
-            for (int j = 0; j < size_string; j++)
+            for (int j = 0; j < this->size; j++)
                 std::cout << this->arr[i][j] << "\t";
+            std::cout << b[i];
             std::cout << "\n";
         }
     }
 
-    void Add_arr(const int size_str)
+    void Add_arr()
     {
-        size_string = size_str;
-        for (int i = 0; i < size_column; i++)
+        for (int i = 0; i < this->size; i++)
         {
-            this->arr[i].resize(size_string);
+            this->arr[i].resize(this->size);
             std::cout << "Введите коэфициенты " << i+1 << " уравнения: " << std::endl;
-            for (int j = 0; j < size_string; j++)
+            for (int j = 0; j < this->size; j++)
                 std::cin >> this->arr[i][j];
         }        
+    }
+
+    void Add_arrRandom()
+    {
+        srand(time(0));
+        for (int i = 0; i < this->size; i++)
+        {
+            this->arr[i].resize(this->size);
+
+            for (int j = 0; j < this->size; j++)
+            {
+                this->arr[i][j] = rand() % 2 + ((rand() % 1000)/1000) + 0.1;
+            }
+        }
+
+        for (int i = 0, j = 0; i < this->size; i++, j++)
+        {
+            this->arr[i][j] = (this->arr[i][j] + 1) * ((rand() % 100 + 1) * 10);
+        }
     }
 
     int max_index(const int j)
     {
         int id = 1;
-        for (int i = 0; i < size_column; i++)
+        for (int i = 0; i < this->size; i++)
             if (this->arr[i][j] > this->arr[id][j])
                 id = i;
 
         return id;
     }
 
-    void swap(int first_id, int second_id)
+    T* multiply_matrix(myVector<T>& X)                   //перемножение матрицы левого столбца на вектор
     {
-        myVector <T> tmp(size_string);
-        tmp = this->arr[first_id];
-        this->arr[first_id] = this->arr[second_id];
-        this->arr[second_id] = tmp;
-    }
+        T* tmp = new T [this->size] {0};
 
-    T multiply_matrixA(const myVector<T>& x, T* res)                   //перемножение матрицы левого столбца на вектор
-    {
-        for (int i = 0; i < size_column; i++)
-            res[i] = 0;
+        for (int i = 0; i < this->size; i++)
+            for (int j = i; j < this->size; j++)
+                tmp[i] += (this->arr[i][j] * X[j]);
 
-        for (int i = 0, k = 0; i < size_column; i++, k++)
-            for (int j = 0; j < size_string-1; j++)
-                res[k] += this->arr[i][j] * x.arr[j];
+        return tmp;
 
-        return *res;
+        delete[] tmp;
     }
 
     ~myMatrix() {}
@@ -154,123 +161,123 @@ template <typename T>
 class SLAU: public myMatrix<T>
 {
 public:
-    SLAU(const int _size_column) :myMatrix<T>(_size_column) {}
+    SLAU(const int _size) :myMatrix<T>(_size) {}
 
-    int check(const T* res)                       //проверка правильности решения
+    void swap(int first_id, int second_id, myVector<T>& b)
     {
-        myVector<T> X(res, this->size_string-1);
-        T* tmp = new T [this->size_column];
-        *tmp = this->multiply_matrixA(X, tmp);
+        myVector <T> tmp(this->size);
+        tmp = this->arr[first_id];
+        this->arr[first_id] = this->arr[second_id];
+        this->arr[second_id] = tmp;
 
-        for (int i = 0; i < this->size_column; i++)
+        T _tmp = b[first_id];
+        b[first_id] = b[second_id];
+        b[second_id] = _tmp;
+    }
+
+    void check(myVector<T>& X, myVector<T>& b)                       //проверка правильности решения
+    {
+        myVector<T> tmp(this->multiply_matrix(X), this->size);
+
+        std::cout << "Погрешность:" << std::endl;
+        for (int i = 0; i < this->size; i++)
+            std::cout << tmp[i] - b[i] << std::endl;
+    }
+
+    void revers_motion(myVector<T>& X, myVector<T>& b)                                 //обратный ход метода Гаусса
+    {
+        X[this->size-1] = b[this->size-1]; 
+
+        for (int i = this->size - 2; i >= 0; i--)
         {
-            if (tmp[i] == this->arr[i][this->size_string-1]) {}
-            else 
+            X[i] = b[i];
+            for (int j = i+1, q = 1; j < this->size; j++, q++)
             {
-                std::cout << "ERROR: решение не корректно\n" << std::endl;
-                return 0;
+                X[i] = X[i] - (X[i+q] * (this->arr[i][j]));
             }
         }
-        delete[] tmp;
 
-        std::cout << "Получен правильный результат\n" << std::endl;
-        return 0;
+        std::cout << "Ответ:" << std::endl;
+        for (int i = 0; i < this->size; i++)
+            std::cout << "X" << i+1 << " = " << X[i] << std::endl;
+
+        check(X, b);
     }
 
-    void revers_motion()                                 //обратный ход метода Гаусса
+    void solve(myVector<T>& b) //реализация метода гаусса
     {
-        T* result = new T [this->size_string-1];
-
-        int k = this->size_string-1;
-
-        for (int i = this->size_column-1; i >= 0; i--)
+        for (int this_i = 0; this_i < this->size; this_i++) // проход по каждому столбцу, проход по каждой строке
         {
-            k -= 1;
-            result[k] = this->arr[i][this->size_string - 1];
-            for (int j = this->size_string - 2; j > k; j--)
-                result[k] -= (this->arr[i][j] * result[k+1]);
-        }
+            int id = this->max_index(this_i); // нахождение максимального элемента в выбранном столбце
 
-        for (int i = 0; i < this->size_string - 1; i++)
-            std::cout << "X" << i << " = " << result[i] << std::endl;
+            if (this_i < id)
+                this->swap(this_i, id, b); // ставит строку с максимальным элементом наверх
 
-        check(result);
-
-        delete[] result;
-    }
-
-    void solve() //реализация метода гаусса
-    {
-        for (int this_row = 0, this_str = 0; this_str < this->size_column; this_row++, this_str++) // проход по каждому столбцу, проход по каждой строке
-        {
-            if (this_row < this->size_string)
+            int tmp = 0;
+            for (int i = 1; i < this->size; i++)
             {
-                int id = this->max_index(this_row); // нахождение максимального элемента в выбранном столбце
+                for (int j = 0; j < this->size - 1; j++)
+                    if (this->arr[i][j] != 0)
+                        tmp = 1;
+                if (this->arr[i][this->size - 1] != 0 && tmp == 0)
+                    throw std::exception("Система не совместна");
+            }
 
-                if (this_str < id)
-                    this->swap(this_str, id); // ставит строку с максимальным элементом наверх
-
-                int tmp = 0;
-                for (int i = 1; i < this->size_column; i++)
+            for (int i = this_i; i < this->size; i++) // делит в каждой строке каждый последующий элемент на выбранный элемент
+            {
+                if (this->arr[i][this_i] == 0)
+                    throw std::exception("Деление на ноль");
+                for (int j = this_i + 1; j < this->size; j++)
                 {
-                    for (int j = 0; j < this->size_string - 1; j++)
-                        if (this->arr[i][j] != 0)
-                            tmp = 1;
-                    if (this->arr[i][this->size_string - 1] != 0 && tmp == 0)
-                        throw Gauss_exceptions<T>("Система не совместна", this->arr[i]);
+                    this->arr[i][j] /= this->arr[i][this_i];
                 }
+                b[i] /= this->arr[i][this_i];
+                this->arr[i][this_i] = 1;
+            }
 
-                for (int i = this_str; i < this->size_column; i++) // делит в каждой строке каждый последующий элемент на выбранный элемент
-                {    
-                    if (this->arr[i][this_row] == 0)
-                        throw Gauss_exceptions<T>("Деление на ноль", this->arr[i]);
-                    for (int j = this_row+1; j < this->size_string; j++)
-                        this->arr[i][j] /= this->arr[i][this_row];
-                    this->arr[i][this_row] = 1;
-                }     
-
-                for (int i = this_str + 1; i < this->size_column; i++) // из всех последующих строчек вычитает выбранную строчку
-                    for (int j = this_row; j < this->size_string; j++)
-                        this->arr[i][j] -= this->arr[this_str][j];
+            for (int i = this_i + 1; i < this->size; i++) // из всех последующих строчек вычитает выбранную строчку
+            {
+                for (int j = this_i; j < this->size; j++)
+                    this->arr[i][j] -= this->arr[this_i][j];
+                b[i] -= b[this_i];
             }
         }
-        this->show();
-
-        revers_motion();
+        myVector<T> X(this->size);
+        revers_motion(X, b);
     }
 
     ~SLAU() {}
 };
 
-void Input_size(int& size_string, int& size_column)
+void Input_size(int& size)
 {
     std::cout << "Введите количество неизвестных:" << std::endl;
-    std::cin >> size_string;
-    size_column = size_string;
-    size_string++;
-    
+    std::cin >> size;
 }
 
 int main()
 {
     setlocale(LC_ALL, "RUS");
-    int size_string;
-    int size_column;
+    int size;
 
-    Input_size(size_string, size_column);
+    Input_size(size);
 
-    SLAU <double> slu(size_column);
+    SLAU <double> slu(size);
+    myVector <double> b(size);
 
-    slu.Add_arr(size_string);
+    slu.Add_arrRandom(); //slu.Add_arr() - для ввода пользователем
+    b.Add_vecRandom();   //b.Add_vec() - для ввода пользователем
 
-    try 
+    std::cout << "Расширенная матрица:" << std::endl;
+    slu.show(b);
+
+    try
     {
-        slu.solve(); 
+        slu.solve(b); 
     }
-    catch (Gauss_exceptions<double>& ex)
+    catch (std::exception& ex)
     {
         std::cout << "ERROR:" << std::endl;
-        ex.Get_error_string(size_string);
         std::cout << ex.what() << std::endl;
     }
 }
