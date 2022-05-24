@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <locale.h>
+#define EPSILON 0.0000001
 
 template <typename T>
 class myVector {
@@ -120,7 +121,7 @@ public:
 
             for (int j = 0; j < this->size; j++)
             {
-                this->arr[i][j] = std::rand() % 2 + ((std::rand() % 1000)/1000) + 0.1;
+                this->arr[i][j] = (((double)(std::rand() % 1000))/1000) + 0.001;
             }
         }
 
@@ -180,7 +181,14 @@ public:
 
         std::cout << "Погрешность:" << std::endl;
         for (int i = 0; i < this->size; i++)
-            std::cout << tmp[i] - b[i] << std::endl;
+        {
+            if (tmp[i] - b[i] > EPSILON)
+            {
+                std::cout << "Решение неверно" << std::endl;
+                break;
+            }
+        }
+        std::cout << "Решение верно" << std::endl;
     }
 
     void revers_motion(myVector<T>& X, myVector<T>& b)                                 //обратный ход метода Гаусса
@@ -212,16 +220,16 @@ public:
             if (this_i < id)
                 this->swap(this_i, id, b); // ставит строку с максимальным элементом наверх
 
-            int tmp = 0;
-            for (int i = 1; i < this->size; i++)
+            int index = 0;
+            for (int i = 0; i < this->size - 1; i += 2)
             {
-                for (int j = 0; j < this->size - 1; j++)
-                    if (this->arr[i][j] != 0)
-                        tmp = 1;
-                if (this->arr[i][this->size - 1] != 0 && tmp == 0)
-                    throw std::exception("Система не совместна");
+                for (int j = 0; j < this->size; j++)
+                    if (this->arr[i][j] == this->arr[i + 1][j])
+                        index = 1;
+                if (b[i] != b[i + 1] && index == 1)
+                    std::exception("система не совместна");
             }
-
+                
             for (int i = this_i; i < this->size; i++) // делит в каждой строке каждый последующий элемент на выбранный элемент
             {
                 if (this->arr[i][this_i] == 0)
@@ -267,8 +275,8 @@ int main()
     slu.Add_arrRandom(); //slu.Add_arr() - для ввода пользователем
     b.Add_vecRandom();   //b.Add_vec() - для ввода пользователем
 
-    std::cout << "Расширенная матрица:" << std::endl;
-    slu.show(b);
+    //std::cout << "Расширенная матрица:" << std::endl;
+    //slu.show(b);     // показать матрицу
 
     try
     {
