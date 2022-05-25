@@ -1,0 +1,19 @@
+﻿  Laboratory 2.cpp
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(125,16): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(126,21): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(131,25): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(136,26): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(144,17): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(145,22): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(150,26): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(155,27): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(166,16): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(167,21): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(172,25): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(177,26): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(184,16): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(185,21): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(190,25): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(195,26): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\nastm\source\repos\Laboratory 2\Laboratory 2\Laboratory 2.cpp(218,15): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  Laboratory 2.vcxproj -> C:\Users\nastm\source\repos\Laboratory 2\Debug\Laboratory 2.exe
