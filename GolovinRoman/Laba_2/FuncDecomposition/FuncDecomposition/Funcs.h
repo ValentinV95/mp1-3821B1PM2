@@ -7,24 +7,24 @@
 //Первый у экспоненты - 1
 //Первый у логорифма - x
 
-double revSum(double (*nextEl)(double x, double pref, int i), double first, double x);
+float revSum(float (*nextEl)(float x, float pref, int i), float first, float x);
 
-static double recSum(double (*nextEl)(double x, double pref, int i), double x, double pref, int i);
+static float recSum(float (*nextEl)(float x, float pref, int i), float x, float pref, int i);
 
 //Сумма влоб
-double straightSum(double (*nextEl)(double x, double pref, int i), double first, double x);
+float straightSum(float (*nextEl)(float x, float pref, int i), float first, float x);
 
 //Сумма соседних элементов
-double nearbySum(double (*nextEl)(double x, double pref, int i), double first, double x);
+float nearbySum(float (*nextEl)(float x, float pref, int i), float first, float x);
 
-double nextSin(double x, double pref, int i);
+float nextSin(float x, float pref, int i);
 
-double nextCos(double x, double pref, int i);
+float nextCos(float x, float pref, int i);
 
-double nextExp(double x, double pref, int i);
+float nextExp(float x, float pref, int i);
 
-double nextLn(double x, double pref, int i);
+float nextLn(float x, float pref, int i);
 
-double absoluteDeviation(double value, double standard);
+float absoluteDeviation(float value, double standard);
 
-double relativeDeviation(double value, double standard);
+float relativeDeviation(float value, double standard);
