@@ -180,11 +180,43 @@ public:
 						}
 					}
 				}
+
+//-----------------[ Оптимизация метода Гаусса ]--------------------------
+
+				int j;
+
 				if (this->array[i].array[i] != 0)
 				{
+					T maxArray = this->array[i].array[i];
+					int maxJ = i;
+					for (j = i+1; j < this->size; j++)
+					{
+						if (this->array[j].array[i] > maxArray)
+						{
+							maxArray = this->array[j].array[i];
+							maxJ = j;
+						}
+
+					}
+
+
+
 					Vector<T> tmp;
+
 					tmp.change_size(this->size);
-					for (int j = 0; j < i; j++)
+							tmp = this->array[maxJ];
+							this->array[maxJ] = this->array[i];
+							this->array[i] = tmp;
+						
+							tmp.array[i] = b.array[maxJ];
+							b.array[maxJ] = b.array[i];
+							b.array[i] = tmp.array[i];
+
+
+//----------------------------------------------------------------------------
+
+
+					for (j = 0; j < i; j++)
 					{
 						if (this->array[j].array[i] != 0)
 						{
@@ -218,6 +250,10 @@ public:
 				{
 					this->array[i] << cout << " | " << b.array[i];
 					throw MyException(2);
+				}
+				if (k == 0 && b.array[i] == 0)
+				{
+					throw MyException(3);
 				}
 				x.array[i] = b.array[i];
 				for (int j = this->size - 1; j >= 0; j--)

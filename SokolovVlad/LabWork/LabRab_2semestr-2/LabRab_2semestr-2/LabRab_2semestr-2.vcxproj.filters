@@ -29,9 +29,6 @@
     <ClInclude Include="Matrix(with_SLAU).h">
       <Filter>Includes</Filter>
     </ClInclude>
-    <ClInclude Include="nothing.h">
-      <Filter>Commentaries</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="(Just in case).txt">

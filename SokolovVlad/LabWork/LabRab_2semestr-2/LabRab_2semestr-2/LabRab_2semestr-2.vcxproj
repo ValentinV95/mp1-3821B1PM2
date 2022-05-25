@@ -128,7 +128,6 @@
   <ItemGroup>
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Matrix(with_SLAU).h" />
-    <ClInclude Include="nothing.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>

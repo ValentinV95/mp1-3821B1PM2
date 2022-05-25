@@ -1,5 +1,5 @@
 
-#include"nothing.h"
+#include"Matrix(with_SLAU).h"
 
 
 int main() 
@@ -69,7 +69,7 @@ int main()
 			cout << "|                                                        |\n";
 			cout << "| 1) double [рациональные]                               |\n";
 			cout << "|                                                        |\n";
-			cout << "| 2) int  [целочисленные]                                |\n";
+			cout << "| 2) другого нет   [ X ]                                 |\n";
 			cout << "|                                                        |\n";
 			cout << "|                                                        |\n";
 			cout << "|     > Введите цифру нужного вам типа данных            |\n";
@@ -81,7 +81,7 @@ int main()
 
 			system("CLS");
 
-			if (type == 1 || type == 2 || type == 6) noCorrectAnswer = false;
+			if (type == 1 ) noCorrectAnswer = false;
 			else
 			{
 				cout << "                                                          \n";
@@ -91,7 +91,7 @@ int main()
 				cout << "      |  Ошибка ввода ! |                                 \n";
 				cout << "      |_________________|                                 \n";
 				cout << "                                                          \n";
-				cout << "      > Ожидалась одна из цифр:  1 или 2                  \n";
+				cout << "      > Ожидалась одна из цифр:  1 или    х [2] x         \n";
 				cout << "                                                          \n";
 				cout << "                                                          \n";
 			}
@@ -140,8 +140,7 @@ int main()
 
 
 
-		if (type == 1)
-		{
+	
 			Matrix<double> Matr(n);
 			cout << "\n\n        > СЛАУ\n\n";
 			Matr << cout;
@@ -150,33 +149,7 @@ int main()
 
 			cout << "----->  [Программа завершилась не выдав ни одного исключения и ошибки]\n";
 
-		}
-		else if (type == 2)
-		{
-			Matrix<int> Matr(n);
-			cout << "\n\n        > СЛАУ:\n\n";
-			Matr << cout;
-			Matr.Method_Gaussa();
-			
-			cout << "                                                               \n";
-			cout << "      _                                                        \n";
-			cout << "     | |                                                       \n";
-			cout << "     | |   ____________________________________________________________________________\n";
-			cout << "     | |  |                                                                            |\n";
-			cout << "     | |  | Вы решали в int и поэтому ответ скорее всего (шанс 99.999%) неправильный!  |\n";
-			cout << "     |_|  |____________________________________________________________________________|\n";
-			cout << "      _                                                        \n";
-			cout << "     |_|                                                       \n";
-			cout << "                                                               \n";
-
-
-
-		}
-		else if (type == 6 && n == 9) easter_egg();
-
-
-		
-
+	
 	}
 	catch (MyException& e)
 	{
