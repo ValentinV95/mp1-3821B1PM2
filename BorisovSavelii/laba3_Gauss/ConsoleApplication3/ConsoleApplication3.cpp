@@ -91,11 +91,6 @@ public:
 		}
 		return this->coordinates[index];
 	}
-
-	void show_matrix()
-	{
-
-	}
 };
 
 template<typename T>
@@ -137,7 +132,6 @@ private:
 		{
 			cout << "The solution is correct" << endl;
 		}
-
 	}
 
 public:
