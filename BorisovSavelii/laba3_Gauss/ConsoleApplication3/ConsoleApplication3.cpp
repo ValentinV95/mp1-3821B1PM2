@@ -32,16 +32,6 @@ public:
 		}
 	}
 
-	Vector& operator =(const Vector<T>& other)
-	{
-		size = other.size;
-		for (int i = 0; i < other.size; i++)
-		{
-			coordinates[i] = other.coordinates[i];
-		}
-		return *this;
-	}
-
 	T& operator[](int index)
 	{
 		if (index >= size)
@@ -101,15 +91,18 @@ public:
 		}
 		return this->coordinates[index];
 	}
+
+	void show_matrix()
+	{
+
+	}
 };
 
 template<typename T>
 class SLAU : public Matrix<T>
 {
 private:
-	T** tmp_copy;   //for check
-
-	void create_tmp_copy()
+	void create_tmp_copy(Matrix<T>& tmp_copy)
 	{
 		for (int i = 0; i < this->size; i++)
 		{
@@ -120,16 +113,7 @@ private:
 		}
 	}
 
-	void delete_tmp_copy()
-	{
-		for (int i = 0; i < this->size; i++)
-		{
-			delete[] tmp_copy[i];
-		}
-		delete[] tmp_copy;
-	}
-
-	void check(Vector<T>& b, Vector<T>& x)
+	void check(Matrix<T>& A, Vector<T>& b, Vector<T>& x)
 	{
 		cout << "\nChecking the correctness of the solution:\n" << endl;
 		bool solution_correct = true;
@@ -139,7 +123,7 @@ private:
 			_x = 0;
 			for (int j = 0; j < this->size; j++)
 			{
-				_x += x[j] * tmp_copy[j][i];
+				_x += x[j] * A[j][i];
 			}
 			if (fabs(b[i] - _x) > 0.0000000001)
 			{
@@ -154,22 +138,16 @@ private:
 			cout << "The solution is correct" << endl;
 		}
 
-		delete_tmp_copy();
 	}
 
 public:
 	SLAU(int slau_size = 1) : Matrix<T>(slau_size)
 	{
-		tmp_copy = new T * [slau_size];
-		for (int row = 0; row < slau_size; row++)
-		{
-			tmp_copy[row] = new T[slau_size];
-		}
+		
 	}
 
 	void solve(Vector<T>& b)
 	{
-
 		for (int i = 0; i < this->size; i++)
 		{
 			if (this->coordinates[i][i] == 0)
@@ -180,7 +158,8 @@ public:
 		}
 
 		int max_row;
-		create_tmp_copy();
+		Matrix<T> A_copy(this->size);
+		create_tmp_copy(A_copy);
 		Vector<T> b_copy(b);
 		Vector<T> x(this->size);
 
@@ -276,7 +255,6 @@ public:
 			if (zero_counter == this->size && b[row] != 0)
 			{
 				cout << "\nNo solutions" << endl;
-				delete_tmp_copy();
 				return;
 			}
 			else if (zero_counter == this->size && b[row] == 0)
@@ -303,12 +281,11 @@ public:
 				cout << "x" << i + 1 << " = " << x[i] << endl;
 			}
 
-			check(b_copy, x);
+			check(A_copy, b_copy, x);
 		}
 		else
 		{
 			cout << "\nInfinitely many solutions" << endl;
-			delete_tmp_copy();
 		}
 	}
 };
