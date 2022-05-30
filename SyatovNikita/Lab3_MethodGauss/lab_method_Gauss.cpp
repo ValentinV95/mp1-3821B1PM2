@@ -1,7 +1,9 @@
 // lab_method_Gauss.cpp : реализация метода гаусса ведущим элементом в квадратных матрицах
 
 #include <iostream>
-#include <locale.h>
+#include <clocale>
+#include <ctime>
+#include <cmath>
 #define EPSILON 0.0000001
 
 template <typename T>
@@ -12,14 +14,21 @@ protected:
 public:
     myVector()
     {
-        size = 0;
+        size = 1;
         arr = new T[1];
     }
 
     myVector(int n)
     {
         this->size = n;
-        this->arr = new T[n];
+        this->arr = new T[size];
+    }
+
+    myVector(const myVector& a)
+    {
+        size = a.size;
+        for (int i = 0; i < size; i++)
+            arr[i] = a.arr[i];
     }
 
     myVector(const T* arr, int n)
@@ -39,10 +48,10 @@ public:
 
     void Add_vecRandom()
     {
-        std::srand(time(0));
+        srand(time(0));
         for (int j = 0; j < this->size; j++)
         {
-            this->arr[j] = (std::rand() % 101) * 10;
+            this->arr[j] = (rand() % 101) * 10;
         }
     }
 
@@ -51,12 +60,12 @@ public:
         return size;
     }
 
-    T* GetArr()
+    T& GetArr()
     {
         return arr;
     }
 
-    T& operator[](const int index)     ////
+    T& operator[](const int index)  
     {
         if (index >= size)
             throw std::exception("Выход за границы массива");
@@ -88,7 +97,13 @@ public:
 template <typename T>
 class myMatrix:public myVector <myVector <T>> {
 public:
-    myMatrix(const int n) : myVector <myVector <T>>(n) {}
+    myMatrix(int n = 1) : myVector<myVector <T>>(n) 
+    {
+        for (int i = 0; i < n; i++)
+        {
+            this->arr[i].resize(n);
+        }
+    }
 
     void show(myVector<T>& b)
     {
@@ -105,7 +120,6 @@ public:
     {
         for (int i = 0; i < this->size; i++)
         {
-            this->arr[i].resize(this->size);
             std::cout << "Введите коэфициенты " << i+1 << " уравнения: " << std::endl;
             for (int j = 0; j < this->size; j++)
                 std::cin >> this->arr[i][j];
@@ -114,20 +128,18 @@ public:
 
     void Add_arrRandom()
     {
-        std::srand(time(0));
+        srand(time(0));
         for (int i = 0; i < this->size; i++)
         {
-            this->arr[i].resize(this->size);
-
             for (int j = 0; j < this->size; j++)
             {
-                this->arr[i][j] = (((double)(std::rand() % 1000))/1000) + 0.001;
+                this->arr[i][j] = (((double)(rand() % 1000))/1000) + 0.001;
             }
         }
 
         for (int i = 0, j = 0; i < this->size; i++, j++)
         {
-            this->arr[i][j] = (this->arr[i][j] + 1) * ((std::rand() % 100 + 1) * 10);
+            this->arr[i][j] = (this->arr[i][j] + 1) * ((rand() % 100 + 1) * 10);
         }
     }
 
@@ -135,7 +147,7 @@ public:
     {
         int id = 1;
         for (int i = 0; i < this->size; i++)
-            if (this->arr[i][j] > this->arr[id][j])
+            if (std::abs(this->arr[i][j]) > std::abs(this->arr[id][j]))
                 id = i;
 
         return id;
@@ -182,7 +194,7 @@ public:
         std::cout << "Погрешность:" << std::endl;
         for (int i = 0; i < this->size; i++)
         {
-            if (tmp[i] - b[i] > EPSILON)
+            if (std::abs(tmp[i] - b[i]) > EPSILON)
             {
                 std::cout << "Решение неверно" << std::endl;
                 break;
@@ -266,14 +278,26 @@ int main()
 {
     setlocale(LC_ALL, "RUS");
     int size;
+    int select;
 
     Input_size(size);
 
     SLAU <double> slu(size);
     myVector <double> b(size);
 
-    slu.Add_arrRandom(); //slu.Add_arr() - для ввода пользователем
-    b.Add_vecRandom();   //b.Add_vec() - для ввода пользователем
+    std::cout << "Каким образом вводить данные?\n1 - рандомно\n2 - вручную" << std::endl;
+    std::cin >> select;
+
+    if (select == 2)
+    {
+        slu.Add_arr();
+        b.Add_vec();
+    }
+    else
+    {
+        slu.Add_arrRandom(); 
+        b.Add_vecRandom();
+    }
 
     //std::cout << "Расширенная матрица:" << std::endl;
     //slu.show(b);     // показать матрицу
