@@ -4,15 +4,16 @@
 #include <string>
 #include <exception>
 #include <conio.h>
-double Rasbros = 0.000000000001; //процент допустимой погрешности при проверке корректности 10**(-9)%, он нужен так как в проверке используется алгоритм 
+#include <cmath>
+double Rasbros = 0.00000000001; //процент допустимой погрешности при проверке корректности 10**(-9)%, он нужен так как в проверке используется алгоритм 
 double procent_error = 0;                       //подсчета числа b который в случае с числами с плавающей запятой при перемножение может давать погрешность(в том числе и потому-что он не может правильно высчитывать обыкновенные дроби)
 using namespace std;
 template<class T>class Vecktor
 {
 public:
 
-    T* mas = new T;
-    int size = 1;
+    T* mas;
+    int size = 0;
 
 
     Vecktor(){}
@@ -23,6 +24,7 @@ public:
     }
     void resize(int n)
     {
+        if (size != 0)
         delete[]mas;
         mas = new T[n];
         size = n;
@@ -36,6 +38,7 @@ public:
     Vecktor& operator=(Vecktor& a)
     {
         size = a.size;
+        delete[]mas;
         mas = new T[a.size];
         for (int i = 0; i < a.size; i++)
         {
@@ -54,11 +57,22 @@ public:
     }
     Vecktor& operator-=(Vecktor& a)
     {
-        for (int i = 0; i < size; i++)
+        if (a.size > size)
         {
-            mas[i] -= a.mas[i];
+            for (int i = 0; i < size; i++)
+            {
+                mas[i] -= a.mas[i];
+            }
+            return *this;
         }
-        return *this;
+        else
+        {
+            for (int i = 0; i < a.size; i++)
+            {
+                mas[i] -= a.mas[i];
+            }
+            return *this;
+        }
     }
     ostream& operator<<(ostream& out)
     {
@@ -154,11 +168,10 @@ public:
             }
         }
     }
-    int Check( Vecktor<T>& B,Matrix<T>& M) // Проверка корректности вектора x с учетом позволенного процента погрешности
+    double Check( Vecktor<T>& B,Matrix<T>& M) // Проверка корректности вектора x с учетом позволенного процента погрешности
     {
-        int D = 0;
         Vecktor<T> Check;
-        double range = 0;
+        double maxxrange = 0,range = 0;
         Check.resize(this->size);
         bool flg = true;
         for (int i = 0; i < this->size; i++)
@@ -168,23 +181,14 @@ public:
             {
                 Check.mas[i] += M.mas[i].mas[j] * x.mas[j];
             }
-            if (Check.mas[i] > B[i] && Check.mas[i] != 0)
-            {
-                range = ((Check.mas[i] - B[i]) / (Check.mas[i])) * 100.0;
-            }
-            else if (Check.mas[i] < B[i] && B[i] != 0)
-            {
-                range = ((B.mas[i] - Check.mas[i]) / (B.mas[i])) * 100.0;
-            }
-            else range = 0;
+            range = abs(Check.mas[i] - B[i]);
             if (range >= Rasbros)
             {
-                flg = false;
-                break;
+                if (range > maxxrange)
+                    maxxrange = range;
             }
         }
-        if (flg) D = 1;
-        return D;
+        return maxxrange;
     }
     void Method_Gaussa(Vecktor<T> &b1,Vecktor<T> &X) 
     {
@@ -199,8 +203,7 @@ public:
         for (int i = 0; i < this->size; i++)
             for (int j = 0; j < this->size; j++)
                 M.mas[i].mas[j] = this->mas[i].mas[j];
-        B.resize(this->size);
-        B = b1;
+
         b.resize(this->size);
         b = b1;
 
@@ -213,7 +216,7 @@ public:
                 int maxi = i;
                 for (int j = i+1; j < this->size; j++)
                 {
-                    if (this->mas[j].mas[i] > maxx)
+                    if (abs(this->mas[j].mas[i]) > maxx)
                     {
                         maxi = j;
                         maxx = this->mas[j].mas[i];
@@ -291,10 +294,10 @@ public:
                 if (this->mas[i].mas[i] != 0)
                 x.mas[i] /= this->mas[i].mas[i];
             }
-            int correct = Check(B,M);
-            if (correct == 0)
+            double max_pogresh = Check(b1,M);
+            if (max_pogresh)
             {
-                cout << " x isnot correct" << endl;
+                cout << "x isnot correct on " << max_pogresh << endl;
                 procent_error++;
             }
             X = x;
@@ -304,7 +307,6 @@ public:
 int main() // Создание СЛАУ с вызовом метода Гаусса, попытка поймать исключение на данном участке
 {
     setlocale(LC_ALL, "Russian");
-
     try {
         int N;
         cout << "Введите размер вашей матрицы одним числом N, размер будет N*N" << endl;
@@ -333,7 +335,7 @@ int main() // Создание СЛАУ с вызовом метода Гаус�
                 s++;
             }
             procent_error = procent_error / s * 100;
-            cout << endl << procent_error << "% Случаев из 200 решений когда погрешность превышала " << Rasbros << endl;
+            cout << endl << procent_error << "% Случаев из 200 решений когда погрешность превышала " << Rasbros << "%" << endl;
         }catch (exception& e)
         {
             cout << "exception:" << e.what() << endl;
