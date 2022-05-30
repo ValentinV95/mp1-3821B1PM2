@@ -1,0 +1,76 @@
+#include"classVector.h"
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+template<class T>
+class classMatrix : public classVector<classVector<T>>
+{
+public:
+
+    classMatrix(int size = 5) : classVector<classVector<T>>(size)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            this->vector[i].resize(size);
+        }
+    }
+    classMatrix(classMatrix& other) :classVector<classVector<T>>(other.get_size())
+    {
+        for (int i = 0; i < this->size; i++)
+        {
+            this->vector[i] = other[i];
+        }
+    }
+
+    const classVector<T> operator * (classVector<T>& other)
+    {
+        classVector<T> res(this->size);
+        for (int i = 0; i < this->size; i++)
+        {
+            res[i] = this->vector[i] * other;
+        }
+        return res;
+    }
+    classVector<T>& operator [](int index)
+    {
+        return this->vector[index];
+    }
+};
+
+template<class T>
+istream& operator >> (istream& in, classMatrix<T>& Matrix)
+{
+    for (int i = 0; i < Matrix.get_size(); i++)
+    {
+        for (int j = 0; j < Matrix.get_size(); j++)
+        {
+            cout << "A[" << i + 1 << "][" << j + 1 << "] = ";
+            cin >> Matrix[i][j];
+        }
+    }
+    return in;
+}
+
+template<class T>
+ostream& operator << (ostream& out, classMatrix<T>& Matrix)
+{
+    cout << fixed;
+    for (int i = 0; i < Matrix.get_size(); i++)
+    {
+        cout << "|";
+        for (int j = 0; j < Matrix.get_size(); j++)
+        {
+            cout.width(10);
+            cout << setprecision(5)
+                << Matrix[i][j] << ' ';
+        }
+        cout << " |";
+        cout.width(10);
+        cout << setprecision(5) << "\n";
+
+    }
+    cout << "\n\n";
+    return out;
+}
