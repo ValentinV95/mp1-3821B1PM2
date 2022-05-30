@@ -49,10 +49,10 @@ public:
     }
     void print_vector()
     {
-        std::cout << "{ ";
+        std::cout << "{  ";
         for (int i = 0; i < size; ++i)
         {
-            std::cout << mas[i] << ", ";
+            std::cout << mas[i] << "  ";
         }
         std::cout << "}" << std::endl;
     }
@@ -194,15 +194,15 @@ public:
                 int k = 0;
                 for (; k < rows; k++)
                 {
-                    if ((a[j][k] > 0.0000001) && (a[k][j] > 0.0000001))
+                    if ((abs(a[j][k]) > 0.0000001) && (abs(a[k][j]) > 0.0000001))
                         break;
                 }
-                if ((k == rows) && (y[j] < 0.0000001))
+                if ((k == rows) && (abs(y[j]) < 0.0000001))
                 {
                     std::cout << "\nThe solution is not the only one";
                     return 0;
                 }
-                else if (((k == rows) && (y[j] > 0.0000001)) || (j == rows))
+                else if (((k == rows) && (abs(y[j]) > 0.0000001)) || (j == rows))
                 {
                     throw std::exception("There are no solutions");
                     return 0;
@@ -216,12 +216,8 @@ public:
             }
             a.swap_rows(imax, i);
             y.swap_rows(imax, i);
-            a.print_matrix();
-            y.print_vector();
             y[i] /= a[i][i];
             a[i].division_val(a[i][i]);
-            a.print_matrix();
-            y.print_vector();
             for (int j = i + 1; j < rows; j++)
             {
                 double tmp = a[j][i];
@@ -231,8 +227,6 @@ public:
                 }
                 y[j] -= y[i] * tmp;
             }
-            a.print_matrix();
-            y.print_vector();
         }
         y[rows - 1] /= a[rows - 1][rows - 1];
         a[rows - 1][rows - 1] /= a[rows - 1][rows - 1];
@@ -267,7 +261,6 @@ public:
     }
     void correct_check()
     {
-        A.multiply_vec(X).print_vector();
         for (int i = 0; i < rows; i++)
         {
             if (abs(A.multiply_vec(X)[i] - Y[i]) > 0.0000001)
