@@ -15,7 +15,7 @@ public:
     myVector()
     {
         size = 1;
-        arr = new T[1];
+        arr = new T[1]{0};
     }
 
     myVector(int n)
