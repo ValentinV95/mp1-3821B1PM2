@@ -72,12 +72,9 @@ public:
     void swap_rows(int i1, int i2)
     {
         T tmp;
-        for (int i = 0; i < size; ++i)
-        {
-            tmp = mas[i1];
-            mas[i1] = mas[i2];
-            mas[i2] = tmp;
-        }
+        tmp = mas[i1];
+        mas[i1] = mas[i2];
+        mas[i2] = tmp;
     }
 };
 
@@ -219,8 +216,12 @@ public:
             }
             a.swap_rows(imax, i);
             y.swap_rows(imax, i);
+            a.print_matrix();
+            y.print_vector();
             y[i] /= a[i][i];
             a[i].division_val(a[i][i]);
+            a.print_matrix();
+            y.print_vector();
             for (int j = i + 1; j < rows; j++)
             {
                 double tmp = a[j][i];
@@ -230,6 +231,8 @@ public:
                 }
                 y[j] -= y[i] * tmp;
             }
+            a.print_matrix();
+            y.print_vector();
         }
         y[rows - 1] /= a[rows - 1][rows - 1];
         a[rows - 1][rows - 1] /= a[rows - 1][rows - 1];
@@ -264,6 +267,7 @@ public:
     }
     void correct_check()
     {
+        A.multiply_vec(X).print_vector();
         for (int i = 0; i < rows; i++)
         {
             if (abs(A.multiply_vec(X)[i] - Y[i]) > 0.0000001)
@@ -280,31 +284,33 @@ public:
 int main()
 {
     int n, type;
-    std::cout << "\nInput size: ";
-    std::cin >> n;
-    SLAU<double> a(n);
-    std::cout << "Press 0 to enter the system from the keyboard and 1 to randomly generate the system: ";
-    std::cin >> type;
-    if (type == 0)
-        a.set_SLAU();
-    else if (type == 1)
-        a.fill_rand();
-    else
     {
-        std::cout << "ERROR!";
-        return 0;
-    }
-    std::cout << std::endl;
-    if (n < 10)
-        a.print_SLAU();
-    std::cout << std::endl;
-    try
-    {
-        a.Gauss();
-    }
-    catch (std::exception& ex)
-    {
-        std::cout << ex.what();
+        std::cout << "\nInput size: ";
+        std::cin >> n;
+        SLAU<double> a(n);
+        std::cout << "Press 0 to enter the system from the keyboard and 1 to randomly generate the system: ";
+        std::cin >> type;
+        if (type == 0)
+            a.set_SLAU();
+        else if (type == 1)
+            a.fill_rand();
+        else
+        {
+            std::cout << "ERROR!";
+            return 0;
+        }
+        std::cout << std::endl;
+        if (n < 10)
+            a.print_SLAU();
+        std::cout << std::endl;
+        try
+        {
+            a.Gauss();
+        }
+        catch (std::exception& ex)
+        {
+            std::cout << ex.what();
+        }
     }
     return 0;
 }
