@@ -7,8 +7,8 @@ template<class T>class Vector
 {
 public:
 
-	T* array = new T;
-	int size = 1;
+	T* array;
+	int size=0;
 
 
 	Vector() {}
@@ -20,6 +20,10 @@ public:
 
 	void change_size(int n)
 	{
+		if (size != 0)
+		{
+			delete[]array;
+		}
 		array = new T[n];
 		size = n;
 	}
@@ -42,7 +46,8 @@ public:
 
 	Vector& operator=(Vector& a)
 	{
-
+		delete[]array;
+		size = a.size;
 		array = new T[a.size];
 		for (int i = 0; i < a.size; i++)
 		{
@@ -54,11 +59,27 @@ public:
 
 	Vector& operator-=(Vector& a)
 	{
-		for (int i = 0; i < size; i++)
+
+		if (a.size >= size)
 		{
-			array[i] -= a.array[i];
+			for (int i = 0; i < size; i++)
+			{
+
+				array[i] -= a.array[i];
+			}
+
 		}
+		else
+		{
+			for (int i = 0; i < a.size; i++)
+			{
+
+				array[i] -= a.array[i];
+			}
+		}
+
 		return *this;
+
 	}
 
 	Vector& operator*=(T s)
@@ -80,10 +101,11 @@ public:
 		cout << "(";
 		for (int i = 0; i < size - 1; i++)
 		{
-			cout << array[i] << ", ";
+			std::cout << array[i] << ", ";
 		}
+		
+		std::cout << array[size - 1] << ")";
 		out << "";
-		cout << array[size - 1] << ")";
 		return out;
 	}
 };

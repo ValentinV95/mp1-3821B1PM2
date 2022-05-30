@@ -1,5 +1,5 @@
 
-#include"Matrix(with_SLAU).h"
+#include"SLAU.h"
 
 
 int main() 
@@ -140,11 +140,15 @@ int main()
 
 
 
-	
-			Matrix<double> Matr(n);
+
+			
+
+			
+			Slau<double> answ(n);
 			cout << "\n\n        > СЛАУ\n\n";
-			Matr << cout;
-			Matr.Method_Gaussa();
+			answ << cout;
+
+			answ.Method_Gaussa();
 		
 
 			cout << "----->  [Программа завершилась не выдав ни одного исключения и ошибки]\n";
