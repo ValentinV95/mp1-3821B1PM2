@@ -32,15 +32,6 @@ public:
 		}
 	}
 
-	T& operator[](int index)
-	{
-		if (index >= size)
-		{
-			throw "Array index out of bounds";
-		}
-		return coordinates[index];
-	}
-
 	void resize(int rsize)
 	{
 		size = rsize;
@@ -63,6 +54,26 @@ public:
 				coordinates[i] = 10 + (size * size - size) * 5 + rand() % (5 * size);
 			}
 		}
+	}
+
+	Vector<T>& operator = (const Vector<T>& other)
+	{
+		resize(other.size);
+
+		for (int i = 0; i < other.size; i++)
+		{
+			this->coordinates[i] = other.coordinates[i];
+		}
+		return *this;
+	}
+
+	T& operator[](int index)
+	{
+		if (index >= size)
+		{
+			throw "Array index out of bounds";
+		}
+		return coordinates[index];
 	}
 
 	~Vector()
@@ -118,7 +129,7 @@ private:
 			_x = 0;
 			for (int j = 0; j < this->size; j++)
 			{
-				_x += x[j] * A[j][i];
+				_x += x[j] * A[i][j];
 			}
 			if (fabs(b[i] - _x) > 0.0000000001)
 			{
@@ -137,7 +148,7 @@ private:
 public:
 	SLAU(int slau_size = 1) : Matrix<T>(slau_size)
 	{
-		
+
 	}
 
 	void solve(Vector<T>& b)
@@ -162,30 +173,24 @@ public:
 			max_row = column;
 			for (int row = column + 1; row < this->size; row++)    // finding maximum element in a column
 			{
-				if (fabs(this->coordinates[column][max_row]) < fabs(this->coordinates[column][row]))
+				if (fabs(this->coordinates[max_row][column]) < fabs(this->coordinates[row][column]))
 				{
 					max_row = row;
 				}
 			}
 
-			if (column != max_row)
+			if (column != max_row)   // row swap
 			{
 				T tmp;
-				for (int tmp_column = column; tmp_column < this->size + 1; tmp_column++)    // row swap
-				{
-					if (tmp_column == this->size)
-					{
-						tmp = b[column];
-						b[column] = b[max_row];
-						b[max_row] = tmp;
-					}
-					else
-					{
-						tmp = this->coordinates[tmp_column][column];
-						this->coordinates[tmp_column][column] = this->coordinates[tmp_column][max_row];
-						this->coordinates[tmp_column][max_row] = tmp;
-					}
-				}
+				Vector<T> tmp_vector;
+
+				tmp = b[column];
+				b[column] = b[max_row];
+				b[max_row] = tmp;
+
+				tmp_vector = this->coordinates[column];
+				this->coordinates[column] = this->coordinates[max_row];
+				this->coordinates[max_row] = tmp_vector;
 			}
 
 			for (int row = column; row < this->size; row++)     // row normalization
@@ -193,7 +198,7 @@ public:
 				for (int column_tmp = this->size; column_tmp > column - 1; column_tmp--)
 				{
 
-					if (this->coordinates[column][row] == 0)
+					if (this->coordinates[row][column] == 0)
 					{
 						throw "\nZero Devision Error";
 					}
@@ -201,11 +206,11 @@ public:
 					{
 						if (column_tmp == this->size)
 						{
-							b[row] /= this->coordinates[column][row];
+							b[row] /= this->coordinates[row][column];
 						}
 						else
 						{
-							this->coordinates[column_tmp][row] /= this->coordinates[column][row];
+							this->coordinates[row][column_tmp] /= this->coordinates[row][column];
 						}
 					}
 
@@ -224,7 +229,7 @@ public:
 						}
 						else
 						{
-							this->coordinates[column_tmp][row] -= this->coordinates[column_tmp][column];
+							this->coordinates[row][column_tmp] -= this->coordinates[column][column_tmp];
 						}
 					}
 				}
@@ -240,7 +245,7 @@ public:
 			zero_counter = 0;
 			for (int column = 0; column < this->size; column++)
 			{
-				if (this->coordinates[column][row] == 0)
+				if (this->coordinates[row][column] == 0)
 				{
 					zero_counter++;
 				}
@@ -256,7 +261,7 @@ public:
 				one_solution = false;
 			}
 		}
-	
+
 		if (one_solution)     // finding x
 		{
 			x[this->size - 1] = b[this->size - 1];
@@ -265,11 +270,11 @@ public:
 			{
 				for (int column_x = row_x + 1; column_x < this->size; column_x++)
 				{
-					b[row_x] -= (this->coordinates[column_x][row_x] * x[column_x]);
+					b[row_x] -= (this->coordinates[row_x][column_x] * x[column_x]);
 				}
 				x[row_x] = b[row_x];
 			}
-	
+
 			for (int i = 0; i < this->size; i++)
 			{
 				cout << "x" << i + 1 << " = " << x[i] << endl;
@@ -322,8 +327,8 @@ int main()
 		}
 		else //Manual filling
 		{
-			cout << "\nManual filling: A(column, row)" << endl;
-			
+			cout << "\nManual filling: A(row, column)" << endl;
+
 			for (int i = 0; i < dimension; i++)
 			{
 				for (int j = 0; j < dimension; j++)
@@ -348,7 +353,7 @@ int main()
 			{
 				if (j != dimension)
 				{
-					cout << A[j][i] << "    ";
+					cout << A[i][j] << "    ";
 				}
 				else
 				{
