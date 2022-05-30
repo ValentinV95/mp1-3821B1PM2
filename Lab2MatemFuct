@@ -6,7 +6,7 @@
 #define amount_type syma_revers (massive,n);
 using namespace std;
 typedef float(*option)(float, float, int);
-//Сумма рядов
+//Сумма прямая
 float syma_dir(float* massive, int m)
 {
 	float syma = 0;
@@ -17,6 +17,7 @@ float syma_dir(float* massive, int m)
 	}
 	return syma;
 }
+//Сумма обратная
 float syma_revers(float* massive, int m)
 {
 	float syma = 0;
@@ -27,7 +28,7 @@ float syma_revers(float* massive, int m)
 	}
 	return syma;
 }
-//Сумма пар
+//Сумма попарная
 float syma_para(float* massive, int m)
 {
 	int i;
