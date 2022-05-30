@@ -16,7 +16,6 @@ public:
     }
     vector()
     {
-        mas = new T[0];
         size = 0;
     }
     vector(vector& s)
@@ -65,7 +64,8 @@ public:
     }
     void resize(int size_)
     {
-        delete[] mas;
+        if (size > 0)
+            delete[] mas;
         mas = new T[size_];
         size = size_;
     }
@@ -75,6 +75,15 @@ public:
         tmp = mas[i1];
         mas[i1] = mas[i2];
         mas[i2] = tmp;
+    }
+    vector<T>& operator = (const vector<T>& s)
+    {
+        if (mas == s.mas)
+            return *this;
+        size = s.size;
+        resize(size);
+        memcpy(mas, s.mas, size * sizeof(T));
+        return *this;
     }
 };
 
@@ -128,13 +137,9 @@ public:
     }
     void swap_rows(int i1, int i2)
     {
-        T tmp;
-        for (int i = 0; i < this->size; ++i)
-        {
-            tmp = this->mas[i1][i];
-            this->mas[i1][i] = this->mas[i2][i];
-            this->mas[i2][i] = tmp;
-        }
+        vector<T> tmp (this->mas[i1]);
+        this->mas[i1] = this->mas[i2];
+        this->mas[i2] = tmp;
     }
 };
 
