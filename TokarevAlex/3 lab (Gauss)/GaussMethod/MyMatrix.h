@@ -7,13 +7,10 @@ using namespace std;
 template<class T>
 class MyMatrix: public MyVector<MyVector<T>>
 {
-private:
-    int size;
 public:
     
     MyMatrix(int size = 5): MyVector<MyVector<T>>(size)
     {
-        this->size = size;
         for (int i = 0; i < size; i++) 
         {
             this->vector[i].resize(size);
@@ -21,19 +18,16 @@ public:
     }
     MyMatrix(MyMatrix &other):MyVector<MyVector<T>>(other.get_size())
     {
-        this->size = other.size;
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < this->size; i++)
         {
             this->vector[i] = other[i];   
         }
     }
 
-    int get_size() { return size; }
-
     const MyVector<T> operator * (MyVector<T>& other)
     {
-        MyVector<T> res(size);
-        for (int i = 0; i < size; i++)
+        MyVector<T> res(this->size);
+        for (int i = 0; i < this->size; i++)
         {
                 res[i] = this->vector[i] * other;
         }

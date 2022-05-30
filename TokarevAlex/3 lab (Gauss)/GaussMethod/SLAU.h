@@ -25,7 +25,6 @@ public:
 	}
     bool solve(bool check_activated) //solve by modificated Gauss Method
     {
-        
         MyMatrix<double> OrigA(A); //copy for correct check
         MyVector<double> OrigB(B);
 
@@ -56,8 +55,11 @@ public:
                     cout << "\n\n";
                 }
             }
-            if (A[maxJ][j] == 0)
+            if (A[maxJ][j] == 0) 
+            {   
+                cout << "System matrix contains zero column!" << endl;
                 return false;
+            }
       
             for (int i = j + 1; i < size; i++)
             {
@@ -100,7 +102,7 @@ public:
         
         for (int i = 0; i < size; i++)
         {
-            if (abs(mult_res[i] - OrigB[i]) > 0.000000000001) 
+            if (abs(mult_res[i] - OrigB[i]) > 0.0000000000001) 
                 return false;
         }
         return true;

@@ -43,14 +43,16 @@ public:
 	}
 	const T operator * (MyVector<T>& other) const //scalar mult
 	{
-		T scalar_res = static_cast <T> (0);
-
 		if (size == other.size)
 		{
+			T scalar_res = static_cast <T> (0);
+
 			for (int i = 0; i < size; i++)
 				scalar_res += vector[i] * other[i];
+
+			return scalar_res;
 		}
-		return scalar_res;
+		else throw exception("Dot product of vectors of different lengths");	
 	}
 	MyVector<T> operator * (const T a)
 	{
