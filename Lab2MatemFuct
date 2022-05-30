@@ -176,11 +176,6 @@ void main()
 	
 		break;
 	}
-	// В случае ошибки в вводе
-	default:
-	{
-		printf("No");
-		break;
-	}
+	
 	}
 }
