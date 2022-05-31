@@ -60,23 +60,18 @@ public:
 	Vector& operator-=(Vector& a)
 	{
 
-		if (a.size >= size)
+		if (a.size != size)
 		{
-			for (int i = 0; i < size; i++)
-			{
-
-				array[i] -= a.array[i];
-			}
+			throw MyException(4);
 
 		}
-		else
-		{
+		
 			for (int i = 0; i < a.size; i++)
 			{
 
 				array[i] -= a.array[i];
 			}
-		}
+		
 
 		return *this;
 
