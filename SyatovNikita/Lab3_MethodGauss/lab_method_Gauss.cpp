@@ -27,6 +27,7 @@ public:
     myVector(const myVector& a)
     {
         size = a.size;
+        this->arr = new T[size];
         for (int i = 0; i < size; i++)
             arr[i] = a.arr[i];
     }
@@ -158,7 +159,7 @@ public:
         T* tmp = new T [this->size] {0};
 
         for (int i = 0; i < this->size; i++)
-            for (int j = i; j < this->size; j++)
+            for (int j = 0; j < this->size; j++)
                 tmp[i] += (this->arr[i][j] * X[j]);
 
         return tmp;
@@ -175,6 +176,15 @@ class SLAU: public myMatrix<T>
 public:
     SLAU(const int _size) :myMatrix<T>(_size) {}
 
+    void operator =(SLAU<T>& a)
+    {
+        if (this->size != a.size)
+            std::exception("Матрицы разных размеров");
+        for (int i = 0; i < this->size; i++)
+            for (int j = 0; j < this->size; j++)
+                this->arr[i][j] = a.arr[i][j];
+    }
+
     void swap(int first_id, int second_id, myVector<T>& b)
     {
         myVector <T> tmp(this->size);
@@ -187,23 +197,22 @@ public:
         b[second_id] = _tmp;
     }
 
-    void check(myVector<T>& X, myVector<T>& b)                       //проверка правильности решения
+    void check(myVector<T>& X, SLAU<T>& copy, myVector<T>& copy_b)                       //проверка правильности решения
     {
-        myVector<T> tmp(this->multiply_matrix(X), this->size);
+        myVector<T> tmp(copy.multiply_matrix(X), this->size);
 
-        std::cout << "Погрешность:" << std::endl;
         for (int i = 0; i < this->size; i++)
         {
-            if (std::abs(tmp[i] - b[i]) > EPSILON)
+            if (std::abs(tmp[i] - copy_b[i]) > EPSILON)
             {
-                std::cout << "Решение неверно" << std::endl;
-                break;
+                std::cout << "Погрешность:" << std::abs(tmp[i] - copy_b[i]) << std::endl;
+                throw std::exception("Получено неверное решение");
             }
         }
         std::cout << "Решение верно" << std::endl;
     }
 
-    void revers_motion(myVector<T>& X, myVector<T>& b)                                 //обратный ход метода Гаусса
+    void revers_motion(myVector<T>& X, myVector<T>& b, SLAU<T>& copy, myVector<T>& copy_b)                                 //обратный ход метода Гаусса
     {
         X[this->size-1] = b[this->size-1]; 
 
@@ -220,11 +229,15 @@ public:
         for (int i = 0; i < this->size; i++)
             std::cout << "X" << i+1 << " = " << X[i] << std::endl;
 
-        check(X, b);
+        check(X, copy, copy_b);
     }
 
     void solve(myVector<T>& b) //реализация метода гаусса
     {
+        SLAU<T> copy(this->size);
+        myVector<T> copy_b(b);
+        copy = *this;
+
         for (int this_i = 0; this_i < this->size; this_i++) // проход по каждому столбцу, проход по каждой строке
         {
             int id = this->max_index(this_i); // нахождение максимального элемента в выбранном столбце
@@ -262,7 +275,7 @@ public:
             }
         }
         myVector<T> X(this->size);
-        revers_motion(X, b);
+        revers_motion(X, b, copy, copy_b);
     }
 
     ~SLAU() {}
