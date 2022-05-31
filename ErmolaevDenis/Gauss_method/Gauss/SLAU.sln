@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SLAU", "SLAU\SLAU.vcxproj", "{D865BCB0-82F3-4F0F-A74E-3412A43FC357}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D865BCB0-82F3-4F0F-A74E-3412A43FC357}.Debug|x64.ActiveCfg = Debug|x64
+		{D865BCB0-82F3-4F0F-A74E-3412A43FC357}.Debug|x64.Build.0 = Debug|x64
+		{D865BCB0-82F3-4F0F-A74E-3412A43FC357}.Debug|x86.ActiveCfg = Debug|Win32
+		{D865BCB0-82F3-4F0F-A74E-3412A43FC357}.Debug|x86.Build.0 = Debug|Win32
+		{D865BCB0-82F3-4F0F-A74E-3412A43FC357}.Release|x64.ActiveCfg = Release|x64
+		{D865BCB0-82F3-4F0F-A74E-3412A43FC357}.Release|x64.Build.0 = Release|x64
+		{D865BCB0-82F3-4F0F-A74E-3412A43FC357}.Release|x86.ActiveCfg = Release|Win32
+		{D865BCB0-82F3-4F0F-A74E-3412A43FC357}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F0DEF95A-F0F4-4266-B89B-A078458AC61B}
+	EndGlobalSection
+EndGlobal
