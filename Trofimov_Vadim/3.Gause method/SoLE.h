@@ -33,8 +33,17 @@ public:
 	void Gause(bool doCheckCorrect) {
 		Matrix<double> baseA(A);
 		Vector<double> baseB(b);
-
+		if (rank_ == 1) { x[0] = b[0] / A[0][0]; }
 		for (int k = 1; k < rank_; ++k) {
+			double a_max = fabs(A[k - 1][k - 1]); ;
+			int i_max = k - 1;
+			for (int l = k ; l < rank_; ++l) {
+				if (fabs(A[l][k- 1]) > a_max) {
+					a_max = fabs(A[l][k- 1]);
+					i_max = l;
+				}
+			}
+			A.swap(k - 1, i_max); b.swap(k - 1, i_max);
 			for (int j = k; j < rank_; ++j) {
 				double m = A[j][k - 1] / A[k - 1][k - 1];
 				b[j] -= m * b[k - 1];
@@ -61,4 +70,3 @@ public:
 		system("pause");
 	}
 };
-

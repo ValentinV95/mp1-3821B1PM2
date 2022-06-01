@@ -43,7 +43,7 @@ public:
 	T& operator[](const int a) {
 		return arr_[a];
 	}
-	Vector<T> operator =(const Vector<T>& a) {
+	const Vector<T>& operator =(const Vector<T>& a) {
 		len_ = a.len_;
 		delete arr_;
 		arr_ = new T[len_];
@@ -53,7 +53,7 @@ public:
 		return *this;
 	}
 	};
-template<typename T> Vector<T> operator -=(Vector<T>&x, Vector<T>& y) {
+template<typename T> const Vector<T>& operator -=(Vector<T>&x, Vector<T>& y) {
 	int lenF = x.getLength(), lenS = y.getLength();
 	if (lenF == lenS) {
 		for (int i = 0; i < lenF; ++i) {
@@ -65,7 +65,7 @@ template<typename T> Vector<T> operator -=(Vector<T>&x, Vector<T>& y) {
 		throw std::length_error("vectors shoud be the same length");
 	};
 };
-template<typename T> Vector <T> operator *(Vector<T>& x, const T a) {
+template<typename T> Vector <T> operator *(const Vector<T>& x, const T a) {
 	int lenF = x.getLength();
 	Vector<T> res(lenF);
 	for (int i = 0; i < lenF; ++i) {
@@ -74,7 +74,7 @@ template<typename T> Vector <T> operator *(Vector<T>& x, const T a) {
 	return res;
 };
 
-template<typename T>const T operator *( Vector<T>& x,Vector<T>& y) {
+template<typename T> T operator *( Vector<T>& x,Vector<T>& y) {
 	if (x.getLength() == y.getLength()) {
 		int lenF = x.getLength();
 		T res = static_cast<T>(0);

@@ -27,7 +27,7 @@ int main() {
 				break;
 			case RESIZE:
 			{
-				std::cout << "Set a new size";
+				std::cout << "Set a new size\n";
 				std::cin >> rank;
 				break;
 			}
@@ -49,7 +49,7 @@ int main() {
 			}
 			default:
 			{
-				std::cout << "incorrect imput. Try again" << endl;
+				std::cout << "incorrect input. Try again" << endl;
 				break;
 			}
 
