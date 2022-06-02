@@ -37,12 +37,12 @@ public:
 		return size;
 	}
 
-	void random(int size)
+	void random()
 	{
 		double min = -100.0;
 		double max = 100.0;
 		srand(1000);
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < this->size; i++)
 		{
 			massive[i] = min + (double)(rand()) / (double)(RAND_MAX / (max - min));
 		}
@@ -69,16 +69,9 @@ public:
 		return *this;
 	}
 
-	T& operator[](int index)
+	T& operator[](int i)
 	{
-		if (index > size)
-		{
-			throw exception("Выход за границу массива");
-		}
-		else
-		{
-			return this->massive[index];
-		}
+		return this->massive[i];
 	}
 
 	void resize(int new_size)
@@ -97,15 +90,22 @@ public:
 
 	const T operator*(Vector<T> &a) const
 	{
-		T scalar = (T) 0;
 		if (size == a.size)
 		{
-			for (int i = 0; i < size; i++)
+			T scalar = (T)0;
+			if (size == a.size)
 			{
-				scalar += massive[i] * a[i];
+				for (int i = 0; i < size; i++)
+				{
+					scalar += massive[i] * a[i];
+				}
 			}
+			return scalar;
 		}
-		return scalar;
+		else
+		{
+			throw exception("Длины векторов не совпадают");
+		}
 	}
 
 	const Vector<T> operator*(const T a) const 
@@ -131,13 +131,9 @@ public:
 
 template<class T> class Matrix : public Vector<Vector<T>>
 {
-private:
-	int size;
-
 public:
 	Matrix(int size) : Vector<Vector<T>>(size)
 	{
-		this->size = size;
 		for (int i = 0; i < size; i++)
 		{
 			this->massive[i].resize(size);
@@ -146,8 +142,7 @@ public:
 
 	Matrix(Matrix& mat):Vector<Vector<T>>(mat.Get_size())
 	{
-		this->size = mat.size;
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < this->size; i++)
 		{
 			this->massive[i] = mat[i];
 		}
@@ -155,43 +150,36 @@ public:
 
 	int Get_size()
 	{
-		return size;
+		return this->size;
 	}
 
-	void random(int size)
+	void random()
 	{
 		double min = -100.0;
 		double max = 100.0;
 		srand(1000);
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < this->size; i++)
 		{
-			for (int j = 0; j < size; j++)
+			for (int j = 0; j < this->size; j++)
 			{
 				this->massive[i][j] = min + (double)(rand()) / (double)(RAND_MAX / (max - min));
 				if (i == j)
 				{
-					this->massive[i][j] = size*max + (double)(rand()) / (double)(RAND_MAX / (size*max));
+					this->massive[i][j] = this->size*max + (double)(rand()) / (double)(RAND_MAX / (this->size*max));
 				}
 			}
 		}
 	}
 
-	Vector<T>& operator [](int index)
+	Vector<T>& operator [](int i)
 	{
-		if (index > size)
-		{
-			throw exception("Выход за границу массива");
-		}
-		else
-		{
-			return this->massive[index];
-		}
+		return this->massive[i];
 	}
 
 	const Vector<T> operator *(Vector<T>& a)
 	{
-		Vector<T> vec(size);
-		for (int i = 0; i < size; i++)
+		Vector<T> vec(this->size);
+		for (int i = 0; i < this->size; i++)
 		{
 			vec[i] = this->massive[i] * a;
 		}
@@ -209,7 +197,6 @@ public:
 			cout << endl;
 		}
 	}
-
 };
 
 template<class T> ostream& operator <<(ostream& out, Vector<T>& vec)
@@ -278,8 +265,8 @@ public:
 		this->size = size;
 		if (random)
 		{
-			mat.random(size);
-			vec.random(size);
+			mat.random();
+			vec.random();
 		}
 		else
 		{
