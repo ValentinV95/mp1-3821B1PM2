@@ -4,6 +4,10 @@ using std::cin;
 using std::cout;
 using std::endl;
 using std::cerr;
+using std::exception;
+using std::ostream;
+using std::istream;
+
 template <typename T>
 void swap(T& a, T& b) {
 	if (&a != &b) {
@@ -11,30 +15,6 @@ void swap(T& a, T& b) {
 		a = b;
 		b = temp;
 	}
-}
-
-void error(int a)
-{
-	if (a == 1)
-	{
-		cout << "The problem with the dimension of vectors." << endl;
-		exit;
-	}
-	if (a == 2)
-	{
-		cout << "There are infinitely many solutions." << endl;
-		exit;
-	}
-	if (a == 3)
-	{
-		cout << "System problem" << endl;
-		exit;
-	}
-	if (a == 0)
-	{
-		exit;
-	}
-
 }
 
 template <typename T>
@@ -68,15 +48,15 @@ public:
 	}
 
 	Vector operator+ (const Vector& vec) {
-		if (this->size != vec.size) error(1);
-		Vector res= *this;
+		if (this->size != vec.size) throw exception("Проблема с размерностью векторов.");
+		Vector res = *this;
 		for (size_t i = 0; i < size; i++)
 			res.mas[i] += vec.mas[i];
 		return res;
 	}
 
 	Vector operator- (const Vector& vec) {
-		if (this->size != vec.size) error(1);
+		if (this->size != vec.size) throw exception("Проблема с размерностью векторов.");
 
 		Vector res = *this;
 		for (size_t i = 0; i < size; i++)
@@ -85,12 +65,35 @@ public:
 		return res;
 	}
 
+	Vector operator-= (const Vector& vec) {
+		if (this->size != vec.size) throw exception("Проблема с размерностью векторов.");
+
+		for (size_t i = 0; i < size; i++)
+			mas[i] -= vec.mas[i];
+
+		return *this;
+	}
+
 	Vector operator*(const T& number) {
 		Vector res = *this;
 		for (size_t i = 0; i < size; i++)
 			res.mas[i] *= number;
 
 		return res;
+	}
+
+	const T operator * (Vector<T>& other) const
+	{
+		if (size == other.size)
+		{
+			T scalar_res = static_cast <T> (0);
+
+			for (int i = 0; i < size; i++)
+				scalar_res += mas[i] * other[i];
+
+			return scalar_res;
+		}
+		else throw exception("Проблема с размерностью векторов.");
 	}
 
 	Vector operator/ (const T& number) {
@@ -123,19 +126,17 @@ public:
 
 	size_t GetSize() { return size; }
 
-	friend std::ostream& operator<< (std::ostream& ost, const Vector& vec) {
+	friend ostream& operator<< (ostream& ost, const Vector& vec) {
 		for (size_t i = 0; i < vec.size; i++)
 			ost << vec.mas[i] << " ";
 		ost << endl;
 		return ost;
 	}
-
-	friend std::istream& operator>> (std::istream& ist, const Vector& vec) {
+	friend istream& operator>> (istream& ist, const Vector& vec) {
 		for (size_t i = 0; i < vec.size; i++)
 			ist >> vec.mas[i];
 
 		return ist;
 	}
-
 };
 
