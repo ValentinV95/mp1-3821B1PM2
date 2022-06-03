@@ -254,24 +254,32 @@ public:
                 if (b[i] != b[i + 1] && index == 1)
                     std::exception("система не совместна");
             }
+
+            if (this->arr[this_i][this_i] == 0)
+                throw std::exception("Деление на ноль");
                 
             for (int i = this_i; i < this->size; i++) // делит в каждой строке каждый последующий элемент на выбранный элемент
             {
-                if (this->arr[i][this_i] == 0)
-                    throw std::exception("Деление на ноль");
-                for (int j = this_i + 1; j < this->size; j++)
-                {
-                    this->arr[i][j] /= this->arr[i][this_i];
+                if (this->arr[i][this_i] == 0) {}
+                else
+                { 
+                    for (int j = this_i + 1; j < this->size; j++)
+                    {
+                        this->arr[i][j] /= this->arr[i][this_i];
+                    }
+                    b[i] /= this->arr[i][this_i];
+                    this->arr[i][this_i] = 1;
                 }
-                b[i] /= this->arr[i][this_i];
-                this->arr[i][this_i] = 1;
             }
 
             for (int i = this_i + 1; i < this->size; i++) // из всех последующих строчек вычитает выбранную строчку
             {
-                for (int j = this_i; j < this->size; j++)
-                    this->arr[i][j] -= this->arr[this_i][j];
-                b[i] -= b[this_i];
+                if (this->arr[i][this_i] != 0)
+                {
+                    for (int j = this_i; j < this->size; j++)
+                        this->arr[i][j] -= this->arr[this_i][j];
+                    b[i] -= b[this_i];
+                }
             }
         }
         myVector<T> X(this->size);
