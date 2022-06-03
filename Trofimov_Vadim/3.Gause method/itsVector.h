@@ -44,13 +44,18 @@ public:
 		return arr_[a];
 	}
 	const Vector<T>& operator =(const Vector<T>& a) {
-		len_ = a.len_;
-		delete arr_;
-		arr_ = new T[len_];
-		for (int i = 0; i < len_; ++i) {
-			arr_[i] = a.arr_[i];
+		if (&(*this) != &a) {
+			len_ = a.len_;
+			delete arr_;
+			arr_ = new T[len_];
+			for (int i = 0; i < len_; ++i) {
+				arr_[i] = a.arr_[i];
+			}
+			return *this;
 		}
-		return *this;
+		else {
+			return a;
+		}
 	}
 	};
 template<typename T> const Vector<T>& operator -=(Vector<T>&x, Vector<T>& y) {
@@ -86,7 +91,7 @@ template<typename T> T operator *( Vector<T>& x,Vector<T>& y) {
 	else { throw std::exception("vectors shoud be the same length"); }
 };
 
-template<typename T> bool operator ==(const Vector<T>& x,const Vector<T>& y) {
+template<typename T> bool operator ==( Vector<T>& x,Vector<T>& y) {
 	int lenF = x.getLength(), lenS = y.getLength();
 	if (lenF != lenS) { throw std::exception("vectors shoud be the same length"); }
 	else {
