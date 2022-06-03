@@ -1,0 +1,7 @@
+﻿  Calc.c
+D:\Nagornaya_Elena\mp1-3821B1PM2\Laba2\Calc.c(87,82): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
+D:\Nagornaya_Elena\mp1-3821B1PM2\Laba2\Calc.c(88,110): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
+D:\Nagornaya_Elena\mp1-3821B1PM2\Laba2\Calc.c(95,45): warning C4101: k: неиспользованная локальная переменная
+D:\Nagornaya_Elena\mp1-3821B1PM2\Laba2\Calc.c(94,45): warning C4101: j: неиспользованная локальная переменная
+D:\Nagornaya_Elena\mp1-3821B1PM2\Laba2\Calc.c(94,6): warning C4101: i: неиспользованная локальная переменная
+  Calc.vcxproj -> D:\Nagornaya_Elena\mp1-3821B1PM2\Laba2\Debug\Calc.exe
