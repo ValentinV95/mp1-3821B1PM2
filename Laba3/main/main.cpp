@@ -5,26 +5,24 @@ using namespace std;
 
 int main()
 {
-	bool exit = false;
-	bool check = true;
 	bool generation;
 	int size;
+	setlocale (LC_ALL, "Russian"); 
 
-	cout << "Enter Size:" << endl; cin >> size;
-	cout << "Choise: \n1) random generate \n0) enter from keyboard\n" << endl; cin >> generation;
+	cout << "Введите размерность:" << endl; cin >> size;
+	cout << "Массив вводится: \n1) рандомно \n0) с клавиатуры" << endl; cin >> generation;
 	cout << endl;
 
 	SLAU Gauss(size, generation); 
 	try
 	{
-		if (Gauss.solve(check)) 
-			cout << "solved!" << "\n";
-		else
-			cout << "not resolved!" << "\n";
+		cout << "Решение: " << Gauss.solve() << endl;
 	}
 	catch (exception& ex)
 	{
-		cout << "Error" << ex.what() << "\n";
+		cout << "Ошибка " << ex.what() << "\n";
 	}
 	
+	return 0;
 }
+

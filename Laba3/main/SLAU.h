@@ -23,118 +23,114 @@ public:
             cin >> B;
         }
     }
-    bool solve(bool check) 
+    classVector<double>& solve() 
     {
-        classMatrix<double> OrigA(A); 
-        classVector<double> OrigB(B);
+        classMatrix<double> _A(A); 
+        classVector<double> _B(B);
 
         if (size <= 10)
         {
-            cout << "Your massiv:\n\n";
-            print_system();
+            cout << "Матрица:\n\n";
+            print();
             cout << "\n\n";
         }
         for (int j = 0; j < size; j++)
         {
-            double alpha;
+            double r;
+            int max = j;
 
-            int maxJ = j;
             for (int i = j + 1; i < size; i++)
+                if (abs(A[max][j]) < abs(A[i][j]))
+                    max = i;
+            if (j != max)
             {
-                if (abs(A[maxJ][j]) < abs(A[i][j]))
-                    maxJ = i;
-            }
-            if (j != maxJ)
-            {
-                A.swap(j, maxJ);
-                B.swap(j, maxJ);
-                if (size <= 10)
-                {
-                    cout << "swap " << j + 1 << " with " << maxJ + 1 << "\n\n";
-                    print_system();
-                    cout << "\n\n";
-                }
-            }
-            if (A[maxJ][j] == 0)
-            {
-                cout << "System matrix contains zero column!" << endl;
-                return false;
+                A.swap(j, max);
+                B.swap(j, max);
             }
 
+            if (A[max][j] == 0)
+                cout << "Система несовместна" << endl;
+                
             for (int i = j + 1; i < size; i++)
             {
                 if (A[j][j] != 0)
-                    alpha = A[i][j] / A[j][j];
+                    r = A[i][j] / A[j][j];
                 else
-                    throw exception("attempt to divide by 0");
+                    throw exception("Деление на ноль ");
 
-                A[i] -= A[j] * alpha;
-                B[i] -= B[j] * alpha;
+                A[i] -= A[j] * r;
+                B[i] -= B[j] * r;
             }
         }
         for (int i = size - 1; i >= 0; i--)
         {
-            double sum = 0;
-            for (int j = i + 1; j < size; j++)
-                sum += A[i][j] * X[j];
-
-            X[i] = (B[i] - sum) / A[i][i];
+             double sum = 0;
+             for (int j = i + 1; j < size; j++)
+                 sum += A[i][j] * X[j];
+                  X[i] = (B[i] - sum) / A[i][i];
         }
-        cout << "X = " << X << endl;
-        if (check)
+        if (size <= 10) cout << "X = " << X << endl;
+   
+        if (prov(_A,_B))
         {
-            if (correct_check(OrigA, OrigB))
-                cout << "Correctly ";
+            if (prov(_A, _B))
+                cout << "Верно " << endl;
             else
-                cout << "Incorrectly ";
+                cout << "Неверно " << endl;
         }
-        return true;
+        return X;
     }
-    bool correct_check(classMatrix<double>& OrigA, classVector<double>& OrigB)
+    bool prov(classMatrix<double>& _A, classVector<double>& _B)
     {
-        classVector<double> mult_res = OrigA * X; 
+        classVector<double> mult_res = _A * X; 
 
         for (int i = 0; i < size; i++)
         {
-            if (abs(mult_res[i] - OrigB[i]) > 0.0000000000001)
+            if (abs(mult_res[i] - _B[i]) > 0.0000000000001)
                 return false;
         }
         return true;
     }
-    void print_system()
+    void print()
     {
-        cout << fixed;
-        for (int i = 0; i < size; i++)
+        if (size <= 10)
         {
-            cout << "|";
-            for (int j = 0; j < size; j++)
+            cout << fixed;
+            for (int i = 0; i < size; i++)
             {
+                cout << "|";
+                for (int j = 0; j < size; j++)
+                {
+                    cout.width(10);
+                    cout << setprecision(5)
+                        << A[i][j] << ' ';
+                }
+                cout << " |";
                 cout.width(10);
                 cout << setprecision(5)
-                    << A[i][j] << ' ';
+                    << B[i] << "  |" << '\n';
             }
-            cout << " |";
-            cout.width(10);
-            cout << setprecision(5)
-                << B[i] << "  |" << '\n';
         }
     }
     void generation(int size)
     {
-        double LO = -10.0;
-        double HI = 10.0;
-
-        srand(static_cast <unsigned> (time(0)));
+        double minimal = -10.0;
+        double maximal = 10.0;
+        srand(700);
 
         for (int i = 0; i < size; i++)
         {
-            B[i] = LO + (static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / (HI - LO))));
+            B[i] = minimal + (double)(rand()) / (double)(RAND_MAX / (maximal - minimal));
             for (int j = 0; j < size; j++)
             {
-                A[i][j] = LO + (static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / (HI - LO))));
+                A[i][j] = minimal + (double)(rand()) / (double)(RAND_MAX / (maximal - minimal));
                 if (i == j)
-                    A[i][j] = size * HI + (static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / (size * HI))));
+                    A[i][j] = size * maximal + (double)(rand()) / (double)(RAND_MAX / (size * maximal));
             }
         }
     }
 };
+
+
+
+

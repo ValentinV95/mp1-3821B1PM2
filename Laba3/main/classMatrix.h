@@ -8,19 +8,23 @@ template<class T>
 class classMatrix : public classVector<classVector<T>>
 {
 public:
-
-    classMatrix(int size = 5) : classVector<classVector<T>>(size)
+    int get_size()
+    {
+        return this->size;
+    }
+    
+    classMatrix(int size) : classVector<classVector<T>>(size)
     {
         for (int i = 0; i < size; i++)
         {
             this->vector[i].resize(size);
         }
     }
-    classMatrix(classMatrix& other) :classVector<classVector<T>>(other.get_size())
+    classMatrix(classMatrix& mas) :classVector<classVector<T>>(mas.get_size())
     {
         for (int i = 0; i < this->size; i++)
         {
-            this->vector[i] = other[i];
+            this->vector[i] = mas[i];
         }
     }
 
@@ -40,14 +44,14 @@ public:
 };
 
 template<class T>
-istream& operator >> (istream& in, classMatrix<T>& Matrix)
+istream& operator >> (istream& in, classMatrix<T>& mat)
 {
-    for (int i = 0; i < Matrix.get_size(); i++)
+    for (int i = 0; i < mat.get_size(); i++)
     {
-        for (int j = 0; j < Matrix.get_size(); j++)
+        for (int j = 0; j < mat.get_size(); j++)
         {
             cout << "A[" << i + 1 << "][" << j + 1 << "] = ";
-            cin >> Matrix[i][j];
+            cin >> mat[i][j];
         }
     }
     return in;
@@ -74,3 +78,4 @@ ostream& operator << (ostream& out, classMatrix<T>& Matrix)
     cout << "\n\n";
     return out;
 }
+
