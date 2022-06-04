@@ -1,0 +1,40 @@
+﻿  lab_method_Gauss.cpp
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(52,19): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(51): message : во время компиляции функции-члена класс шаблон "void myVector<T>::Add_vecRandom(void)"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(312): message : выполняется компиляция ссылки на экземпляр шаблон функции "void myVector<T>::Add_vecRandom(void)"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(299): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "myVector<T>"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(132,19): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(131): message : во время компиляции функции-члена класс шаблон "void myMatrix<T>::Add_arrRandom(void)"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(311): message : выполняется компиляция ссылки на экземпляр шаблон функции "void myMatrix<T>::Add_arrRandom(void)"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(175): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "myMatrix<T>"
+          with
+          [
+              T=double
+          ]
+C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\lab_method_Gauss.cpp(298): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "SLAU<double>"
+  Создание кода
+  4 of 47 functions ( 8.5%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    6 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+  lab_method_Gauss.vcxproj -> C:\Users\syato\1_КУРС\ЯиМП\лабараторная работа 1\mp1-3821B1PM2\SyatovNikita\Lab3_MethodGauss\x64\Release\lab_method_Gauss.exe
