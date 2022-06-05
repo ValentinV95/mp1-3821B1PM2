@@ -1,0 +1,16 @@
+﻿  Laba_3.cpp
+C:\Users\nastm\source\repos\Laba_3\Laba_3\classes.h(299,26): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\nastm\source\repos\Laba_3\Laba_3\classes.h(275): message : во время компиляции функции-члена класс шаблон "void matrix<double>::triangle_lower(matrix<double> &,size_t,vector<T> &)"
+          with
+          [
+              T=double
+          ]
+C:\Users\nastm\source\repos\Laba_3\Laba_3\Laba_3.cpp(69): message : выполняется компиляция ссылки на экземпляр шаблон функции "void matrix<double>::triangle_lower(matrix<double> &,size_t,vector<T> &)"
+          with
+          [
+              T=double
+          ]
+C:\Users\nastm\source\repos\Laba_3\Laba_3\Laba_3.cpp(11): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "matrix<double>"
+  main.cpp
+  Создание кода...
+  Laba_3.vcxproj -> C:\Users\nastm\source\repos\Laba_3\Debug\Laba_3.exe

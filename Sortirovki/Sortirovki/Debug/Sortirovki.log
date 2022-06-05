@@ -1,0 +1,3 @@
+﻿  Sortirovki.c
+C:\Users\nastm\source\repos\Sortirovki\Sortirovki\Sortirovki.c(242,15): warning C4244: функция: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Sortirovki.vcxproj -> C:\Users\nastm\source\repos\Sortirovki\Debug\Sortirovki.exe
