@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "radixsort", "radixsort\radixsort.vcxproj", "{FF0768AA-E5F4-4FB4-8AF5-F18F01D74A14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF0768AA-E5F4-4FB4-8AF5-F18F01D74A14}.Debug|x64.ActiveCfg = Debug|x64
+		{FF0768AA-E5F4-4FB4-8AF5-F18F01D74A14}.Debug|x64.Build.0 = Debug|x64
+		{FF0768AA-E5F4-4FB4-8AF5-F18F01D74A14}.Debug|x86.ActiveCfg = Debug|Win32
+		{FF0768AA-E5F4-4FB4-8AF5-F18F01D74A14}.Debug|x86.Build.0 = Debug|Win32
+		{FF0768AA-E5F4-4FB4-8AF5-F18F01D74A14}.Release|x64.ActiveCfg = Release|x64
+		{FF0768AA-E5F4-4FB4-8AF5-F18F01D74A14}.Release|x64.Build.0 = Release|x64
+		{FF0768AA-E5F4-4FB4-8AF5-F18F01D74A14}.Release|x86.ActiveCfg = Release|Win32
+		{FF0768AA-E5F4-4FB4-8AF5-F18F01D74A14}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {63C73A1B-C686-4300-8936-FDC7E53E5220}
+	EndGlobalSection
+EndGlobal
