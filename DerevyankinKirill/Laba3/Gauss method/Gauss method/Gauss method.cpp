@@ -70,27 +70,6 @@ public:
 		}
 		return *this;
 	}
-	bool operator== (const Vector& other_vect)
-	{
-		bool flag = true;
-		if (this->size != other_vect.size)
-		{
-			flag = false;
-			return flag;
-		}
-		else
-		{
-			for (int i = 0; i < other_vect.size; i++)
-			{
-				if (this->mas[i] != other_vect.mas[i])
-				{
-					flag = false;
-					return flag;
-				}
-			}
-			return flag;
-		}
-	}
 	Vector operator+ (const Vector& other_vect)
 	{
 		Vector temp(other_vect.size);
