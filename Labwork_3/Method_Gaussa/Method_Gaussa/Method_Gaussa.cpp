@@ -15,11 +15,12 @@ private:
     int k;
 public:
     Myexception(int k):k(k){}
-    virtual const char* what() const throw()
+    const char* what() const throw()
     {
-        const char* d = "unknown exception";
+        const char* d = "unknown_exception";
         if (k == 1) d = "bad_array_new_length";
         if (k == 2) d = "out_of_range";
+        if (k == 3) d = "different_lengh_vectors";
             return d;
     }
 };
@@ -73,22 +74,18 @@ public:
     }
     Vecktor& operator-=(Vecktor& a)
     {
-        if (a.size > size)
+        if (a.size != size)
+        {
+            throw Myexception(3);
+        }
+        else
         {
             for (int i = 0; i < size; i++)
             {
                 mas[i] -= a.mas[i];
             }
-            return *this;
         }
-        else
-        {
-            for (int i = 0; i < a.size; i++)
-            {
-                mas[i] -= a.mas[i];
-            }
             return *this;
-        }
     }
     ostream& operator<<(ostream& out)
     {
@@ -323,8 +320,13 @@ public:
 
 int main() // Создание СЛАУ с вызовом метода Гаусса, попытка поймать исключение на данном участке
 {
+
+
     setlocale(LC_ALL, "Russian");
     try {
+
+        //Vecktor<double> s1(3),s2(4);s1.setr(2);s2.setr(3);s1 << cout;s2 << cout;s1 -= s2;s1 << cout;s2 << cout;               //для проверки исключения при вычитании векторов разных размеров
+
         int N;
         cout << "Введите размер вашей матрицы одним числом N, размер будет N*N" << endl;
         cin >> N;
@@ -372,6 +374,6 @@ int main() // Создание СЛАУ с вызовом метода Гаус�
             cout << endl << procent_error << "% Случаев из "<< s-1 << " решений когда погрешность превышала " << Rasbros  << endl;
         }catch (Myexception& e)
         {
-            cout << "exception:" << e.what() << endl;
+            cout << "\n\nexception:" << e.what() << endl;
         }
 }
