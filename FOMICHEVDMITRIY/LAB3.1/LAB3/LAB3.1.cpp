@@ -200,7 +200,7 @@ public:
 		std::cout << std::endl;
 	}
 
-	T at(int i, int j)
+	T& at(int i, int j)
 	{
 		if (((-1 < i) && (i < this->size)) && ((-1 < j) && (j < this->size)))
 			return this->data[i][j];
@@ -208,6 +208,12 @@ public:
 		else
 			throw "\n\nВЫХОД ЗА ПРЕДЕЛЫ МАССИВА МАТРИЦЫ\n\n";
 	}
+
+	vector<T>& operator [] (int i)
+	{
+		return this->data[i];
+	}
+
 };
 
 // Меняет местами два вектора
