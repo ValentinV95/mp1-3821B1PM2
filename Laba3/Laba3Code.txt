@@ -1,0 +1,425 @@
+#include <locale.h>
+#include <stdio.h>
+#include <iomanip>
+#include <cstdlib>
+#include <exception>
+#include <iostream>
+using namespace std;
+
+
+//Класс T и Matrix_Vec
+template <class T> class Matrix_Vec
+{
+protected:
+	T* massive;
+	int razmer_matrix;
+public:
+	Matrix_Vec(int razmer_matrix = 5)
+	{
+		this->razmer_matrix = razmer_matrix;
+		massive = new T[razmer_matrix];
+	}
+	Matrix_Vec(const Matrix_Vec& Vector)
+	{
+		razmer_matrix = Vector.razmer_matrix;
+		massive = new T[razmer_matrix];
+		for (int i = 0; i < razmer_matrix; i++)
+		{
+			massive[i] = Vector.massive[i];
+		}
+	}
+	~Matrix_Vec()
+	{
+		delete[] massive;
+	}
+
+	int Razmer()
+	{
+		return razmer_matrix;
+	}
+	//Функция рандомной матрицы
+	void Matrix_random()
+	{
+		double min = -100.0;
+		double max = 100.0;
+		srand(1000);
+		for (int i = 0; i < this->razmer_matrix; i++)
+		{
+			massive[i] = min + (double)(rand()) / (double)(RAND_MAX / (max - min));
+		}
+	}
+
+
+	Matrix_Vec& operator=(const Matrix_Vec other)
+	{
+		delete[] massive;
+		this->razmer_matrix = other.razmer_matrix;
+		massive = new T[razmer_matrix];
+		for (int i = 0; i < razmer_matrix; i++)
+		{
+			this->massive[i] = other.massive[i];
+		}
+		return *this;
+	}
+
+	Matrix_Vec<T>& operator +=(Matrix_Vec<T> other)
+	{
+		for (int i = 0; i < razmer_matrix; i++)
+		{
+			massive[i] += other[i];
+		}
+		return *this;
+	}
+
+	T& operator[](int i)
+	{
+		return this->massive[i];
+	}
+
+
+	void resize(int razmer_novie)
+	{
+		delete[] massive;
+		razmer_matrix = razmer_novie;
+		massive = new T[razmer_matrix];
+	}
+
+	void swap(int i, int j)
+	{
+		T a = massive[i];
+		massive[i] = massive[j];
+		massive[j] = a;
+	}
+
+	const T operator*(Matrix_Vec<T>& a) const
+	{
+		if (razmer_matrix == a.razmer_matrix)
+		{
+			T scalar = (T)0;
+			if (razmer_matrix == a.razmer_matrix)
+			{
+				for (int i = 0; i < razmer_matrix; i++)
+				{
+					scalar += massive[i] * a[i];
+				}
+			}
+			return scalar;
+		}
+		else
+		{
+			//Длины векторов разные
+			throw exception("Dlina vectorov raznie");
+		}
+	}
+
+	const Matrix_Vec<T> operator*(const T a) const
+	{
+		Matrix_Vec<double> num(razmer_matrix);
+		for (int i = 0; i < razmer_matrix; i++)
+		{
+			num[i] = massive[i] * a;
+		}
+		return num;
+	}
+
+	const Matrix_Vec<T> operator+ (const Matrix_Vec<T>& a) const
+	{
+		Matrix_Vec<T> tmp(razmer_matrix);
+		for (int i = 0; i < razmer_matrix; i++)
+		{
+			tmp[i] = massive[i] + a[i];
+		}
+		return tmp;
+	}
+};
+
+
+
+template<class T> class Matrix : public Matrix_Vec<Matrix_Vec<T>>
+{
+public:
+	Matrix(int razmer_matrix) : Matrix_Vec<Matrix_Vec<T>>(razmer_matrix)
+	{
+		for (int i = 0; i < razmer_matrix; i++)
+		{
+			this->massive[i].resize(razmer_matrix);
+		}
+	}
+
+	Matrix(Matrix& MatrEl) :Matrix_Vec<Matrix_Vec<T>>(MatrEl.Razmer())
+	{
+		for (int i = 0; i < this->razmer_matrix; i++)
+		{
+			this->massive[i] = MatrEl[i];
+		}
+	}
+
+	int Razmer()
+	{
+		return this->razmer_matrix;
+	}
+	//Функция рандомной матрицы
+	void Matrix_random()
+	{
+		double min = -100.0;
+		double max = 100.0;
+		srand(1000);
+		for (int i = 0; i < this->razmer_matrix; i++)
+		{
+			for (int j = 0; j < this->razmer_matrix; j++)
+			{
+				this->massive[i][j] = min + (double)(rand()) / (double)(RAND_MAX / (max - min));
+				if (i == j)
+				{
+					this->massive[i][j] = this->razmer_matrix * max + (double)(rand()) / (double)(RAND_MAX / (this->razmer_matrix * max));
+				}
+			}
+		}
+	}
+
+	Matrix_Vec<T>& operator [](int i)
+	{
+		return this->massive[i];
+	}
+
+	const Matrix_Vec<T> operator *(Matrix_Vec<T>& a)
+	{
+		Matrix_Vec<T> Vector(this->razmer_matrix);
+		for (int i = 0; i < this->razmer_matrix; i++)
+		{
+			Vector[i] = this->massive[i] * a;
+		}
+		return Vector;
+	}
+
+	void Pokaz()
+	{
+		for (int i = 0; i < this->razmer_matrix; i++)
+		{
+			for (int j = 0; i < this->razmer_matrix; j++)
+			{
+				cout << this->massive[i][j];
+			}
+			cout << endl;
+		}
+	}
+};
+
+template<class T> ostream& operator <<(ostream& out, Matrix_Vec<T>& Vector)
+{
+	cout << "[";
+	for (int i = 0; i < Vector.Razmer() - 1; i++)
+	{
+		cout << Vector[i] << " ";
+	}
+	cout << Vector[Vector.Razmer() - 1] << "]\n";
+	return out;
+};
+
+template<class T> istream& operator >>(istream& in, Matrix_Vec<T>& Vector)
+{
+	for (int i = 0; i < Vector.Razmer(); i++)
+	{
+		//Вывод текста  для ввода элемента
+		cout << "Vector[" << i + 1 << "] =";
+		//Вести элемент
+		cin >> Vector[i];
+	}
+	return in;
+};
+
+template<class T> ostream& operator <<(ostream& out, Matrix<T>& MatrEl)
+{
+	cout << fixed;
+	for (int i = 0; i < MatrEl.Razmer(); i++)
+	{
+		cout << "|";
+		for (int j = 0; j < MatrEl.Razmer(); j++)
+		{
+			cout.width(10);
+			cout << setprecision(5) << MatrEl[i][j] << " ";
+		}
+		cout << "|";
+		cout.width(10);
+		cout << setprecision(5) << "\n";
+	}
+	cout << "\n\n";
+	return out;
+};
+
+template<class T> istream& operator >>(istream& in, Matrix<T>& MatrEl)
+{
+	for (int i = 0; i < MatrEl.Razmer(); i++)
+	{
+		for (int j = 0; j < MatrEl.Razmer(); j++)
+		{
+			//Вывод текста для ввода элемента
+			cout << "MatrEl[" << i + 1 << "][" << j + 1 << "] = ";
+			//Вести элемент
+			cin >> MatrEl[i][j];
+		}
+	}
+	return in;
+};
+//Класс Mare
+class Mare
+{
+private:
+	int razmer_matrix;
+	Matrix<double> MatrEl;
+	Matrix_Vec<double> Vector;
+	Matrix_Vec<double> res;
+public:
+	Mare(int razmer_matrix, bool Matrix_random) : MatrEl(razmer_matrix), Vector(razmer_matrix), res(razmer_matrix)
+	{
+		this->razmer_matrix = razmer_matrix;
+		if (Matrix_random)
+		{
+			MatrEl.Matrix_random();
+			Vector.Matrix_random();
+		}
+		else
+		{
+			cin >> MatrEl;
+			cin >> Vector;
+		}
+	}
+
+	~Mare()
+	{}
+
+	Matrix_Vec<double>& solve()
+	{
+		Matrix<double> Mat(MatrEl);
+		Matrix_Vec<double> Vec(Vector);
+
+		if (razmer_matrix <= 10)
+		{
+			//Вывод текста "Матрица"
+			cout << "Matrix:\n";
+			Pokaz();
+			cout << "\n\n";
+		}
+		for (int j = 0; j < razmer_matrix; j++)
+		{
+			double k;
+			int maxJ = j;
+			for (int i = j + 1; i < razmer_matrix; i++)
+			{
+				if (abs(MatrEl[maxJ][j]) < abs(MatrEl[i][j]))
+				{
+					maxJ = i;
+				}
+			}
+			if (j != maxJ)
+			{
+				MatrEl.swap(j, maxJ);
+				Vector.swap(j, maxJ);
+			}
+			if (MatrEl[maxJ][j] == 0)
+			{
+				//Система несовместная
+				throw exception("Nesovmesta sistema");
+			}
+			for (int i = j + 1; i < razmer_matrix; i++)
+			{
+				if (MatrEl[j][j] != 0)
+				{
+					k = MatrEl[i][j] / MatrEl[j][j];
+				}
+				else
+				{
+					//Деление на 0
+					throw exception("Delenie 0");
+				}
+				MatrEl[i] += MatrEl[j] * (-k);
+				Vector[i] += Vector[j] * (-k);
+			}
+		}
+		for (int i = razmer_matrix - 1; i >= 0; i--)
+		{
+			double syma = 0;
+			for (int j = i + 1; j < razmer_matrix; j++)
+			{
+				syma += MatrEl[i][j] * res[j];
+			}
+			res[i] = (Vector[i] - syma) / MatrEl[i][i];
+		}
+
+		if (examination(Mat, Vec))
+		{
+		//Вывод текста с правильным ответом
+			cout << "Proverka otveta->|Otvet veren|\n" << endl;
+		}
+		else
+		{
+		//Вывод текста"Ответ неверен(Ошибка)"
+			cout << "Proverka otveta->|Otvet neveren(Oshibka)|\n" << endl;
+		}
+		return res;
+	}
+	bool examination(Matrix<double>& Mat, Matrix_Vec<double>& Vec)
+	{
+		Matrix_Vec<double> exam = Mat * res;
+		if (razmer_matrix <= 10)
+		{
+			cout << "Proverka otveta:\n";
+			cout << "A = " << exam;
+		}
+		for (int i = 0; i < razmer_matrix; i++)
+		{
+			if (abs(exam[i] - Vec[i]) >= 0.0000000001)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	void Pokaz()
+	{
+		cout << fixed;
+		for (int i = 0; i < razmer_matrix; i++)
+		{
+			for (int j = 0; j < razmer_matrix; j++)
+			{
+				cout.width(10);
+				cout << setprecision(5)
+					<< MatrEl[i][j] << ' ';
+			}
+			cout << "|";
+			cout.width(10);
+			cout << setprecision(5)
+				<< Vector[i] << "\n";
+		}
+	}
+};
+
+// Функция вывода текста
+int main()
+{
+	int razmer_matrix;
+	
+	bool Matrix_random;
+//Ввод размера матрицы(если размер больше 10 то не выведется A и исходная матрица)
+	cout << "Vedite razmer matrix(Razmer MxM): " << endl;
+	cin >> razmer_matrix;
+//Вывод текста"Ведите:0-самостоятельный ввод, 1-рандомная матрица"
+	cout << "Vedite:0-vedite sami <> 1-random matrix" << endl;
+	cin >> Matrix_random;
+	cout << endl;
+
+	Mare Gauss(razmer_matrix, Matrix_random);
+
+	try
+	{
+//Вывод текста"Результат уравнения:Х = "	
+		cout << "Resultat uravnenia: X = " << Gauss.solve() << endl;
+	}
+	catch (exception& ex)
+	{
+//Вывод текста"Ответ неверен(Ошибка)"
+		cout << "!Otvet neveren(Oshibka)!" << ex.what();
+	}
+	cout << endl;
+	return 0;
+}
