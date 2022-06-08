@@ -11,19 +11,18 @@
 
 double eps = 0.0000000000001;
 
-template<typename T = double> 
+template<class T = double> 
 class Container
 {
 private:
-    unsigned int length, last;
-    T *data;
+    unsigned int length;
+    T *data = nullptr;
 public:
-	Container(unsigned int length=1)
+	Container(unsigned int length=1):length(length)
     {
         if (length)
         {
 			this->length = length;
-			last = 0;
 			data = new T[this->length];
         }
         else
@@ -35,10 +34,9 @@ public:
     Container(const Container &c) 
     {
         this->length = c.length;
-        this->last = c.last;
 
         data = new T[this->length];
-        for (unsigned int i=0;i< this->length;++i)
+        for (unsigned int i=0;i<this->length;++i)
         {
             this->data[i] = c.data[i];
         }
@@ -47,31 +45,31 @@ public:
     ~Container()
     {
         delete[] data;
-        last = 0;
         length = 0;
     }
 
-    void append(const T &a)
+    void resize(unsigned int newSize)
     {
-        if (length==last)
+        if (newSize)
         {
-            T *tmp = new T[length * 2];
-            for (unsigned int i=0;i<last;++i)
-            {
-                tmp[i] = data[i];
-            }
+            T* tmp = new T[newSize]{0};
+			length = newSize;
+			for (unsigned i = 0; i < length; i++)
+			{
+				tmp[i] = data[i];
+			}
             delete[] data;
-            length *= 2;
             data = tmp;
         }
-
-		data[last] = a;
-		last++;
+        else
+        {
+            throw std::exception("New size may not be equal to 0");
+        }
     }
 
     void swap(unsigned int first,unsigned int second)
 	{
-		if (first < last || second < last)
+		if (first < length || second < length)
 		{
 			if (first != second)
 			{
@@ -86,31 +84,17 @@ public:
 		}
 	}
 
-    void addData(unsigned int first, unsigned int second, double k)
-    {
-        if (first<last || second<last)
-        {
-			T tmp = data[second];
-			tmp *= k;
-			data[first] += tmp;
-        }
-        else
-        {
-            throw std::out_of_range("Index out of range in addData(unsigned int first, unsigned int second, double k)");
-        }
-    }
+    unsigned int getLength() const {return length;}
 
-    unsigned int getLength() const {return last;}
+    const T &operator [](int ind) const {return data[ind];} 
 
-    T const &operator [](int ind) const {return data[ind];} 
-
-    T &operator [](int ind) { return data[ind]; }
+    T& operator[](int ind) { return data[ind]; }
 
     void operator +=(const Container<T> &c)
     {
-        if (c.last==last)
+        if (c.length==length)
         {
-            for (int i=0;i<last;++i)
+            for (int i=0;i<length;++i)
             {
                 data[i] += c.data[i];
                 if(fabs(data[i]) < eps)
@@ -125,26 +109,27 @@ public:
         }
     }
 
-    Container<T> &operator *=(const T c)
+    Container<T> operator *(const T c)
     {
+        Container<T> res(length);
         for (int i=0;i<length;++i)
         {
-            data[i] *= c;
-            if(fabs(data[i]) < eps)
+            res[i] = data[i]*c;
+            if(fabs(res[i]) < eps)
             {
-                data[i] = 0.0;
+                res[i] = 0.0;
             }
         }
 
-        return *this;
+        return res;
     }
 
     T operator *(const Container<T> &c) const
     {
         T res = 0;
-        for (int i = 0; i < last; ++i)
+        for (int i = 0; i < length; ++i)
         {
-            res +=this->data[i] * c.data[i];
+            res += this->data[i] * c.data[i];
         }
 
         if (std::fabs(res)<eps)
@@ -155,18 +140,15 @@ public:
         return res;
     }
 
-    Container operator =(const Container &c)
+    Container<T> operator =(const Container<T> &c)
     {
         if (&(*this) != &c)
         {
 			length = c.length;
-			last = c.last;
-
 			delete[] data;
-
 			data = new T[c.length];
 
-			for (unsigned int i = 0; i < c.last; ++i)
+			for (unsigned int i = 0; i < c.length; ++i)
 			{
 				data[i] = c.data[i];
 			}
@@ -192,6 +174,14 @@ template<typename T = double>
 class Matrix:public Container<Container<typename T>>
 {
 public:
+    Matrix(unsigned int height):Container<Container<T>>(height)
+    {
+        for (unsigned int i=0;i<height;i++)
+        {
+            this->operator[](i).resize(height);
+        }
+    }
+
     unsigned int getColumnMaxInd(unsigned int columnInd) const
     {
         unsigned int res = columnInd;
@@ -210,37 +200,6 @@ public:
         else
         {
             return -1;
-        }
-    }
-
-    Container<T> operator *(const Container<T> &m) const
-    {
-        Matrix res;
-
-        for (unsigned int i=0;i<m.getLength();i++)
-        {
-            res.Add(Matrix::operator[](i)*m);
-        }
-
-        return res;
-    }
-
-    void append(const Container<T>& c)
-    {
-        if (this->getHeight())
-        {
-            if (Matrix::operator[](0).getLength() == c.getLength())
-            {
-                Matrix::Container::append(c);
-            }
-            else
-            {
-                throw std::exception("All rows of the matrix must be the same length");
-            }
-        }
-        else
-        {
-            Matrix::Container::append(c);
         }
     }
 
@@ -287,8 +246,8 @@ private:
 
     void addStr(unsigned int first, unsigned int second, double k)
     {
-        X.addData(first, second, k);
-        A1.addData(first, second, k);
+        X[first] += X[second] * k;
+        A1[first] += A1[second] * k;
     }
 
     void swap(unsigned int first, unsigned int second)
@@ -297,16 +256,12 @@ private:
 		X.swap(first, second);
     }
 public:
-    SLAE(){}
-
-    SLAE(Matrix<double> A,Container<double> B)
+    SLAE(unsigned int size):A(size),A1(size),B(size),X(size)
     {
-		this->A = A;
-        this->A1 = A;
-		this->B = B;
-        X = B;
-
-        printSist();
+        if (size > 2147483647)
+        {
+            throw std::invalid_argument("Size is to big");
+        }
     }
 
     void solveByGauss()
@@ -350,9 +305,8 @@ public:
 						addStr(i - 1, g - 1, (A1[i - 1][g - 1] / A1[g - 1][g - 1]) * (-1.0));
 					}
 				}
-
 				X[g - 1] = X[g - 1] * (1 / A1[g - 1][g - 1]);
-				A1[g - 1] *= (1 / A1[g - 1][g - 1]);
+                A1[g - 1] = A1[g - 1] * (1 / A1[g - 1][g - 1]);
 			}
         }
         else
@@ -426,24 +380,24 @@ public:
 
 			for (int i = 0; i < size; i++)
 			{
-				Container<double> tmp;
+				Container<double> tmp(size);
 				double sum = 0;
 				for (int j = 0; j < size - 1; j++)
 				{
 					double rnd = min + std::fmod(rand(), (max - min));
 					sum += fabs(rnd);
-					tmp.append(rnd);
+                    tmp[j] = rnd;
 				}
-				tmp.append(sum + 1);
+				tmp[size - 1] = sum + 1;
 				tmp.swap(i, size - 1);
-				A.append(tmp);
+				A[i] = tmp;
 			}
 
 			A1 = A;
 
 			for (int i = 0; i < size; i++)
 			{
-				B.append(min + std::fmod(rand(), (max - min)));
+				B[i] = min + std::fmod(rand(), (max - min));
 			}
 
 			X = B;
@@ -459,10 +413,10 @@ public:
 
 int main()
 {
-    SLAE sl;
     unsigned int size;
     std::cout << "Enter size ";
     std::cin >> size;
+    SLAE sl(size);
 	try
 	{
 		sl.setRandomSyst(size);
